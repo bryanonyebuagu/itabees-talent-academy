@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import ArrowUpRight from "./ArrowUpRight";
 import logo from "../assets/logo.jpeg";
 
 const links = [
@@ -19,7 +20,7 @@ export default function Header() {
     <button className={`menu-toggle ${open ? "is-open" : ""}`} type="button" aria-label="Toggle navigation" aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}><span /><span /></button>
     <nav className={`navigation ${open ? "is-open" : ""}`} id="main-navigation" aria-label="Main navigation">
       {links.map(([label, to]) => <NavLink key={to} to={to} end={to === "/"} onClick={() => setOpen(false)}>{label}</NavLink>)}
-      <Link className="nav-cta" to="/donate" onClick={() => setOpen(false)}>DONATE <span aria-hidden="true">↗</span></Link>
+      <Link className="nav-cta" to="/donate" onClick={() => setOpen(false)}>DONATE <span aria-hidden="true"><ArrowUpRight /></span></Link>
     </nav>
   </header>;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ArrowUpRight from "../components/ArrowUpRight";
 import "../App.css";
 
 const assets = import.meta.glob("../assets/*", {
@@ -56,7 +57,7 @@ const developmentAreas = [
     title: "Personal Growth",
     description:
       "Encourage leadership, respect, teamwork and the personal qualities that matter beyond football.",
-    icon: "↗",
+    icon: <ArrowUpRight />,
   },
 ];
 
@@ -170,7 +171,7 @@ export default function Home() {
 
             <div className="hero-actions">
               <a className="button button-yellow" href="/programs">
-                Explore our academy <span>↗</span>
+                Explore our academy <span><ArrowUpRight /></span>
               </a>
               <a className="text-link light-link" href="/about">
                 Discover ItaBEES <span>→</span>
@@ -193,7 +194,7 @@ export default function Home() {
           <h2>A PATHWAY FOR EVERY PLAYER.</h2>
           <p>At ItaBEES Talent Academy, we believe every player deserves the opportunity to grow, compete and discover how far the game can take them.</p>
           <p>Our supplemental soccer development programs are designed to work alongside your player’s current club, recreational, school or academy team. Through intentional training, mentorship and meaningful opportunities, we help players develop the technical ability, confidence, game intelligence and character needed for their next level.</p>
-          <div className="section-actions"><a className="button button-black" href={bookUrl}>FIND YOUR PROGRAM <span>↗</span></a><a className="text-link dark-link" href={bookUrl}>REGISTER FOR TRAINING <span>↗</span></a></div>
+          <div className="section-actions"><a className="button button-black" href={bookUrl}>FIND YOUR PROGRAM <span><ArrowUpRight /></span></a><a className="text-link dark-link" href={bookUrl}>REGISTER FOR TRAINING <span><ArrowUpRight /></span></a></div>
         </section>
 
         <section className="intro-section reveal" id="about">
@@ -283,7 +284,7 @@ export default function Home() {
                 </div>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                <span className="card-arrow">↗</span>
+                <span className="card-arrow"><ArrowUpRight /></span>
               </article>
             ))}
           </div>
@@ -299,13 +300,13 @@ export default function Home() {
 
         <section className="camps-section reveal" id="camps">
           <div className="editorial-photo"><img src={images.extra} alt="Soccer training on the pitch" /></div>
-          <div className="editorial-copy"><p className="eyebrow">CAMPS &amp; CLINICS</p><h2>MORE TOUCHES.<br /><span>MORE GROWTH.</span></h2><p>ItaBEES camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment.</p><p>From school-break and summer camps to position-specific clinics and special guest coaching events, each experience is designed with a clear developmental purpose.</p><p>Players leave with more than memories—they leave with new skills, greater confidence and a better understanding of the game.</p><a className="text-link dark-link" href={bookUrl}>View Upcoming Camps &amp; Clinics <span>↗</span></a></div>
+          <div className="editorial-copy"><p className="eyebrow">CAMPS &amp; CLINICS</p><h2>MORE TOUCHES.<br /><span>MORE GROWTH.</span></h2><p>ItaBEES camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment.</p><p>From school-break and summer camps to position-specific clinics and special guest coaching events, each experience is designed with a clear developmental purpose.</p><p>Players leave with more than memories—they leave with new skills, greater confidence and a better understanding of the game.</p><a className="text-link dark-link" href={bookUrl}>View Upcoming Camps &amp; Clinics <span><ArrowUpRight /></span></a></div>
         </section>
 
         <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,.93), rgba(255,255,255,.95)), url("${images.extra}")` }}>
           <div className="section-label"><span>03</span> / THE ITABEES WAY</div>
           <div className="section-heading-row"><div><p className="eyebrow">THE ITABEES WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The ItaBEES Way is built around four pillars that guide everything we do:</p></div>
-          <div className="pillar-grid">{pillars.map(([title, copy], index) => <article className="pillar-card" key={title}><span>0{index + 1} / 04</span><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span>↗</span></a></article>)}</div>
+          <div className="pillar-grid">{pillars.map(([title, copy], index) => <article className="pillar-card" key={title}><span>0{index + 1} / 04</span><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
         </section>
 
         <section className="pathway-section reveal" id="pathway">
@@ -333,7 +334,7 @@ export default function Home() {
                 <span className="pathway-number">0{index + 1}</span>
                 <h3>{title}</h3>
                 <p>{copy}</p>
-                <span className="pathway-arrow">↗</span>
+                <span className="pathway-arrow"><ArrowUpRight /></span>
               </article>
             ))}
           </div>
@@ -343,7 +344,7 @@ export default function Home() {
           <div className="editorial-copy"><p className="eyebrow">WHY ITABEES?</p><h2>Your Team Develops the Team.<br /><span>We Help Develop the Individual.</span></h2><p>ItaBEES is designed to complement, not replace, a player's existing soccer environment.</p><p>Players from recreational leagues, competitive clubs, school teams and other academies are welcome.</p><p>Our supplemental model allows us to focus on something team environments don't always have enough time to provide: the individual player.</p><p>More touches. More feedback. More repetition. More confidence.</p><p>And most importantly, a development plan centered around the player rather than the roster.</p><strong>Club-Neutral · Player-Centered · Development-Focused</strong></div>
         </section>
 
-        <section className="assessments-section reveal"><div><p className="eyebrow">PLAYER ASSESSMENTS</p><h2>Know Where You Are.<br /><span>Understand What's Next.</span></h2></div><div><p>Development becomes more meaningful when players understand what they're working toward.</p><p>ItaBEES Player Assessments help identify strengths, developmental priorities and areas of opportunity.</p><p>Our goal isn't simply to tell a player how they're performing. It's to give players and families a clearer picture of what to work on next.</p><strong>Assess. Develop. Reassess. Progress.</strong><div className="section-actions"><a className="button button-yellow" href={bookUrl}>Find Your Program <span>↗</span></a><a className="text-link light-link" href={contactUrl}>Register Today <span>↗</span></a></div></div></section>
+        <section className="assessments-section reveal"><div><p className="eyebrow">PLAYER ASSESSMENTS</p><h2>Know Where You Are.<br /><span>Understand What's Next.</span></h2></div><div><p>Development becomes more meaningful when players understand what they're working toward.</p><p>ItaBEES Player Assessments help identify strengths, developmental priorities and areas of opportunity.</p><p>Our goal isn't simply to tell a player how they're performing. It's to give players and families a clearer picture of what to work on next.</p><strong>Assess. Develop. Reassess. Progress.</strong><div className="section-actions"><a className="button button-yellow" href={bookUrl}>Find Your Program <span><ArrowUpRight /></span></a><a className="text-link light-link" href={contactUrl}>Register Today <span><ArrowUpRight /></span></a></div></div></section>
 
         <section className="impact-section reveal" id="impact"><p className="eyebrow">COMMUNITY IMPACT</p><div className="stats-grid">{[["1,200+", "Players Reached"], ["1,500+", "Training Hours"], ["150+", "Community Clinics"], ["25+", "Scholarships"]].map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div></section>
 
@@ -382,11 +383,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="international-section reveal"><div className="editorial-copy"><p className="eyebrow">INTERNATIONAL EXPERIENCES</p><h2>The Game Is Global.<br /><span>Your Perspective Should Be Too.</span></h2><p>Soccer can introduce young players to people, cultures and opportunities far beyond their local community.</p><p>Through strategic relationships and international experiences, ItaBEES aims to expose players to different training environments, coaching philosophies and levels of competition.</p><p>These experiences aren't shortcuts or guarantees. They are opportunities to learn, compete, be evaluated and better understand what higher levels of the game demand.</p><a className="text-link dark-link" href={contactUrl}>Explore International Opportunities <span>↗</span></a></div><div className="editorial-photo"><img src={images.team} alt="ItaBEES coaching team" /></div></section>
+        <section className="international-section reveal"><div className="editorial-copy"><p className="eyebrow">INTERNATIONAL EXPERIENCES</p><h2>The Game Is Global.<br /><span>Your Perspective Should Be Too.</span></h2><p>Soccer can introduce young players to people, cultures and opportunities far beyond their local community.</p><p>Through strategic relationships and international experiences, ItaBEES aims to expose players to different training environments, coaching philosophies and levels of competition.</p><p>These experiences aren't shortcuts or guarantees. They are opportunities to learn, compete, be evaluated and better understand what higher levels of the game demand.</p><a className="text-link dark-link" href={contactUrl}>Explore International Opportunities <span><ArrowUpRight /></span></a></div><div className="editorial-photo"><img src={images.team} alt="ItaBEES coaching team" /></div></section>
 
-        <section className="college-section reveal"><div className="editorial-photo"><img src={images.academy} alt="Soccer and education" /></div><div className="editorial-copy"><p className="eyebrow">COLLEGE PATHWAY</p><h2>Preparing Student-Athletes for<br /><span>More Than the Next Game.</span></h2><p>Playing college soccer requires more than talent.</p><p>Student-athletes must understand academics, recruiting, communication, eligibility, exposure and how to identify programs that fit both their athletic and educational goals.</p><p>ItaBEES helps families navigate that journey with greater clarity while preparing players to confidently present themselves as both students and athletes.</p><a className="text-link dark-link" href={contactUrl}>Explore the College Pathway <span>↗</span></a></div></section>
+        <section className="college-section reveal"><div className="editorial-photo"><img src={images.academy} alt="Soccer and education" /></div><div className="editorial-copy"><p className="eyebrow">COLLEGE PATHWAY</p><h2>Preparing Student-Athletes for<br /><span>More Than the Next Game.</span></h2><p>Playing college soccer requires more than talent.</p><p>Student-athletes must understand academics, recruiting, communication, eligibility, exposure and how to identify programs that fit both their athletic and educational goals.</p><p>ItaBEES helps families navigate that journey with greater clarity while preparing players to confidently present themselves as both students and athletes.</p><a className="text-link dark-link" href={contactUrl}>Explore the College Pathway <span><ArrowUpRight /></span></a></div></section>
 
-        <section className="events-section reveal" id="events"><div><p className="eyebrow">UPCOMING EVENTS</p><h2>What's <span>Next.</span></h2></div><a className="text-link dark-link" href="/events">VIEW ALL EVENTS <span>↗</span></a><p className="events-empty">No events at the moment</p></section>
+        <section className="events-section reveal" id="events"><div><p className="eyebrow">UPCOMING EVENTS</p><h2>What's <span>Next.</span></h2></div><a className="text-link dark-link" href="/events">VIEW ALL EVENTS <span><ArrowUpRight /></span></a><p className="events-empty">No events at the moment</p></section>
 
         <section className="opportunities-section reveal" id="opportunities">
           <div className="opportunities-photo"><img src={images.team} alt="ItaBEES coaches and academy banner" /></div>
@@ -407,16 +408,16 @@ export default function Home() {
 
           <div className="opportunity-links">
             <a href="/camps-and-clinics">
-              <span>01</span> Camps & Clinics <span>↗</span>
+              <span>01</span> Camps & Clinics <span><ArrowUpRight /></span>
             </a>
             <a href="/international-experiences">
-              <span>02</span> International Experiences <span>↗</span>
+              <span>02</span> International Experiences <span><ArrowUpRight /></span>
             </a>
             <a href="/college-pathway">
-              <span>03</span> College Pathway <span>↗</span>
+              <span>03</span> College Pathway <span><ArrowUpRight /></span>
             </a>
             <a href="/assessments">
-              <span>04</span> Player Assessments <span>↗</span>
+              <span>04</span> Player Assessments <span><ArrowUpRight /></span>
             </a>
           </div>
         </section>
@@ -434,7 +435,7 @@ export default function Home() {
             possible together.
           </p>
           <a className="button button-black" href={bookUrl}>
-            Connect with ItaBEES <span>↗</span>
+            Connect with ItaBEES <span><ArrowUpRight /></span>
           </a>
         </section>
       </main>

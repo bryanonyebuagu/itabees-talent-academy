@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import ArrowUpRight from "../components/ArrowUpRight";
 import { verifyDonation } from "../services/paystack";
 
 export default function DonationReturn() {
@@ -17,5 +18,5 @@ export default function DonationReturn() {
     }).catch(error => { if (active) { setStatus("failed"); setMessage(error.message || "Payment verification is unavailable."); } });
     return () => { active = false; };
   }, [reference]);
-  return <main className="checkout-return"><p className="eyebrow">DONATION STATUS</p><h1>{status === "checking" ? "Verifying your gift." : status === "success" ? "Thank you for giving." : "We couldn't confirm the payment."}</h1><p role="status">{message}</p><Link className="button button-yellow" to={status === "success" ? "/" : "/donate"}>{status === "success" ? "Return home" : "Back to donation"} <span>↗</span></Link></main>;
+  return <main className="checkout-return"><p className="eyebrow">DONATION STATUS</p><h1>{status === "checking" ? "Verifying your gift." : status === "success" ? "Thank you for giving." : "We couldn't confirm the payment."}</h1><p role="status">{message}</p><Link className="button button-yellow" to={status === "success" ? "/" : "/donate"}>{status === "success" ? "Return home" : "Back to donation"} <span><ArrowUpRight /></span></Link></main>;
 }

@@ -1364,6 +1364,7 @@ h1,h2,h3 { font-family:'Barlow Condensed',Impact,sans-serif; }
 
 /* Reference content and final visual system */
 body,button { font-family:'Inter',Arial,sans-serif; }
+.arrow-up-right-icon { display:inline-block; width:1em; height:1em; flex-shrink:0; vertical-align:-.125em; }
 h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial,sans-serif; font-weight:700; }
 .site-header { background:#090909; color:#fff; border-bottom:1px solid #242424; }
 .brand-logo { width:68px; height:68px; padding:3px; border-radius:50%; background:#000; overflow:hidden; flex:none; box-shadow:0 0 0 1px #252525; }

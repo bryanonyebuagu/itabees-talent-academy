@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ArrowUpRight from "./ArrowUpRight";
 
 export function PageHero({ eyebrow, title, description, image, mobileImage, imageAlt = "", dark = false }) {
   return <section className={`page-hero ${dark ? "page-hero-dark" : ""}`}>
@@ -15,7 +16,7 @@ export function ContentSection({ eyebrow, title, children, tone = "white", image
 }
 
 export function ActionLink({ to, children, black = false }) {
-  return <Link className={`button ${black ? "button-black" : "button-yellow"}`} to={to}>{children}<span aria-hidden="true">↗</span></Link>;
+  return <Link className={`button ${black ? "button-black" : "button-yellow"}`} to={to}>{children}<span aria-hidden="true"><ArrowUpRight /></span></Link>;
 }
 
 export function CardGrid({ items }) {
