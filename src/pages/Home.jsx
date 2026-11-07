@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../App.css";
 
 const assets = import.meta.glob("../assets/*", {
@@ -79,6 +79,38 @@ const bookUrl = "/programs";
 const contactUrl = "/contact";
 
 export default function Home() {
+  const developmentSectionRef = useRef(null);
+  const [developmentVisible, setDevelopmentVisible] = useState(false);
+  const [activeDevelopmentIndex, setActiveDevelopmentIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotionPreference = (event) => setReducedMotion(event.matches);
+    mediaQuery.addEventListener("change", updateMotionPreference);
+    return () => mediaQuery.removeEventListener("change", updateMotionPreference);
+  }, []);
+
+  useEffect(() => {
+    const section = developmentSectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setDevelopmentVisible(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!developmentVisible || reducedMotion) return;
+    const timer = window.setInterval(() => {
+      setActiveDevelopmentIndex((index) => (index + 1) % developmentAreas.length);
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [developmentVisible, reducedMotion]);
 
   useEffect(() => {
     if (!window.location.hash) return;
@@ -207,16 +239,18 @@ export default function Home() {
           <div className="values-strip">
             {["Character", "Excellence", "Education", "Soccer"].map(
               (value, index) => (
-                <div className="value-item" key={value}>
-                  <span>0{index + 1}</span>
-                  <strong>{value}</strong>
+                <div className="value-float" key={value}>
+                  <div className="value-item">
+                    <span>0{index + 1}</span>
+                    <strong>{value}</strong>
+                  </div>
                 </div>
               ),
             )}
           </div>
         </section>
 
-        <section className="development-section reveal" id="development">
+        <section className="development-section reveal" id="development" ref={developmentSectionRef}>
           <div className="section-label section-label-light">
             <span>02</span> / PLAYER DEVELOPMENT
           </div>
@@ -238,8 +272,11 @@ export default function Home() {
           </div>
 
           <div className="development-grid">
-            {developmentAreas.map((item) => (
-              <article className="development-card" key={item.number}>
+            {developmentAreas.map((item, index) => (
+              <article
+                className={`development-card${developmentVisible && !reducedMotion && activeDevelopmentIndex === index ? " is-active" : ""}`}
+                key={item.number}
+              >
                 <div className="development-card-top">
                   <span>{item.number}</span>
                   <span className="development-icon">{item.icon}</span>
