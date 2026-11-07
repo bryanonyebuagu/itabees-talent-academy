@@ -1579,8 +1579,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 @media (max-width:700px) {
   .site-header { gap:8px; padding:0 4%; }
   .header-actions { gap:8px; }
-  .header-actions .nav-cta { min-width:0; min-height:40px; padding:11px 12px; font-size:11px; }
-  .header-actions .nav-cta span { margin-left:4px; }
+  .header-actions .nav-cta { display:inline-flex; align-items:center; justify-content:center; gap:4px; min-width:0; width:auto; height:40px; min-height:40px; margin-top:0; padding:0 12px; font-size:11px; line-height:1; }
+  .header-actions .nav-cta span { display:inline-flex; align-items:center; margin-left:0; }
   .menu-toggle { width:40px; height:40px; }
   .navigation { padding-left:6%; padding-right:6%; max-height:calc(100vh - 72px); }
 }
