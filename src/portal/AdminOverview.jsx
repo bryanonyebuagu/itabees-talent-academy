@@ -8,7 +8,7 @@ import useDemo from './useDemo';
 
 const registrationBars = [28, 38, 34, 55, 48, 66, 59, 77, 67, 84, 75, 91];
 const enquiryBars = [22, 35, 29, 47, 38, 53, 45, 66, 58, 70, 62, 80];
-const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function BarChart({ values, alt = false }) {
   return <div className={`portal-bar-chart ${alt ? 'alt' : ''}`} aria-label="Illustrative activity chart">{values.map((value, index) => <div key={index}><span style={{ height: `${value}%` }}/><small>{months[index]}</small></div>)}</div>;

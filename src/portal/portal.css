@@ -152,6 +152,7 @@
 .portal-bar-chart span { display:block; width:min(100%,28px); border-radius:5px 5px 0 0; background:linear-gradient(#ffe600,#ab9a00); min-height:6px; }
 .portal-bar-chart small { color:var(--p-muted); font-size:9px; }
 .portal-bar-chart.alt span { background:linear-gradient(#8fe8dd,#337d83); }
+@media(max-width:650px) { .portal-bar-chart { gap:3px; }.portal-bar-chart small { font-size:8px; letter-spacing:-.03em; } }
 .portal-donut { width:150px; height:150px; border-radius:50%; background:conic-gradient(#ffe600 0 48%,#7ed9ce 48% 78%,#746cf2 78% 100%); display:grid; place-items:center; flex:none; }
 .portal-donut::after { content:''; width:98px; height:98px; border-radius:50%; background:var(--p-card); }
 .portal-chart-row { display:flex; gap:25px; align-items:center; }
