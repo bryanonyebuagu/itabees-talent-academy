@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.jpeg';
 import PortalIcon from './PortalIcon';
 import useDemo from './useDemo';
@@ -25,16 +25,32 @@ const memberItems = [
 export default function PortalLayout({ mode }) {
   const isAdmin = mode === 'admin';
   const items = isAdmin ? adminItems : memberItems;
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { players, selectedPlayerId, setSelectedPlayerId, notifications } = useDemo();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem(`itabees-${mode}-theme`) || (isAdmin ? 'dark' : 'light'); }
+    catch { return isAdmin ? 'dark' : 'light'; }
+  });
+  const root = isAdmin ? '/admin' : '/dashboard';
   const selectedPlayer = players.find((player) => player.id === selectedPlayerId) || players[0];
   const current = [...items].reverse().find(([, path]) => pathname === path || pathname.startsWith(`${path}/`));
   const unreadCount = notifications.filter((notice) => notice.playerId === selectedPlayerId && !notice.read).length;
 
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  const goBack = () => {
+    setMenuOpen(false);
+    if (window.history.state?.idx > 0) navigate(-1);
+    else navigate(pathname !== current?.[1] ? current?.[1] || root : root);
+  };
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    try { localStorage.setItem(`itabees-${mode}-theme`, next); } catch { /* Theme still changes for this visit. */ }
+  };
 
-  return <div className={`portal portal-${mode}`}>
+  return <div className={`portal portal-${mode} portal-theme-${theme}`}>
     <aside className={`portal-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label={`${mode} navigation`}>
       <Link to="/" className="portal-brand" onClick={() => setMenuOpen(false)}><span className="portal-brand-mark"><img src={logo} alt="" /></span><span><strong>ITABEES</strong><small>TALENT ACADEMY</small></span></Link>
       <div className="portal-sidebar-label">{isAdmin ? 'COMMAND CENTRE' : 'PLAYER PORTAL'} <span>DEMO</span></div>
@@ -46,8 +62,9 @@ export default function PortalLayout({ mode }) {
     {menuOpen && <button className="portal-scrim" type="button" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />}
     <div className="portal-workspace">
       <header className="portal-topbar">
-        <div className="portal-topbar-left"><button type="button" className="portal-menu-button" aria-label="Open navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><PortalIcon name={menuOpen ? 'close' : 'menu'} size={22}/></button><span className="portal-breadcrumb">{isAdmin ? 'Administration' : 'Member space'} <PortalIcon name="chevron" size={14}/> <strong>{current?.[0] || 'Overview'}</strong></span></div>
+        <div className="portal-topbar-left"><button type="button" className="portal-menu-button" aria-label="Open navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><PortalIcon name={menuOpen ? 'close' : 'menu'} size={22}/></button><button type="button" className="portal-back-button" aria-label="Go back to previous page" title="Go back" onClick={goBack}><PortalIcon name="back" size={18}/></button><nav className="portal-breadcrumb" aria-label="Breadcrumb"><Link to={root}>{isAdmin ? 'Administration' : 'Member space'}</Link><PortalIcon name="chevron" size={14}/>{pathname !== current?.[1] ? <Link className="portal-breadcrumb-current" to={current?.[1] || root}>{current?.[0] || 'Overview'}</Link> : <strong>{current?.[0] || 'Overview'}</strong>}</nav></div>
         <div className="portal-topbar-right">
+          <button type="button" className="portal-theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}><PortalIcon name={theme === 'dark' ? 'sun' : 'moon'} size={19}/><span className="portal-theme-tooltip" aria-hidden="true">{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span></button>
           {!isAdmin && <label className="portal-player-switch"><span>Preview player</span><select value={selectedPlayerId} onChange={(event) => setSelectedPlayerId(event.target.value)}>{players.map((player) => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>}
           {!isAdmin && <Link to="/dashboard/notifications" className="portal-top-icon" aria-label={`${unreadCount} unread notifications`}><PortalIcon name="bell" size={20}/>{unreadCount > 0 && <i />}</Link>}
           <div className="portal-user"><span className="portal-avatar">{isAdmin ? 'AJ' : selectedPlayer.initials}</span><span><strong>{isAdmin ? 'Amina Johnson' : selectedPlayer.name}</strong><small>{isAdmin ? 'Super Admin · demo' : `${selectedPlayer.ageGroup} player · demo`}</small></span></div>
