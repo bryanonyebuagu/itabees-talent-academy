@@ -10,7 +10,6 @@ const links = [
   ["About Us", "/about"],
   ["Coaches", "/coaches"],
   ["Events", "/events"],
-  ["Register", "/register"],
 ];
 
 export default function Header() {
@@ -19,6 +18,15 @@ export default function Header() {
     <Link className="brand" to="/" onClick={() => setOpen(false)} aria-label="ItaBEES Talent Academy home"><span className="brand-logo"><img src={logo} alt="" /></span><span className="brand-wordmark">ITABEES<small>TALENT ACADEMY</small></span></Link>
     <nav className={`navigation ${open ? "is-open" : ""}`} id="main-navigation" aria-label="Main navigation">
       {links.map(([label, to]) => <NavLink key={to} to={to} end={to === "/"} onClick={() => setOpen(false)}>{label}</NavLink>)}
+      <div className="nav-register">
+        <NavLink to="/dashboard" className="nav-register-link" onClick={() => setOpen(false)}>Register</NavLink>
+        <div className="nav-register-popover" aria-label="Account options">
+          <span className="nav-register-kicker">YOUR ITABEES SPACE</span>
+          <Link to="/login" onClick={() => setOpen(false)}>Login <ArrowUpRight /></Link>
+          <Link to="/signup" onClick={() => setOpen(false)}>Sign up <ArrowUpRight /></Link>
+          <Link to="/admin" onClick={() => setOpen(false)}>Login as admin <ArrowUpRight /></Link>
+        </div>
+      </div>
     </nav>
     <div className="header-actions">
       <Link className="nav-cta" to="/donate" onClick={() => setOpen(false)}>DONATE <span aria-hidden="true"><ArrowUpRight /></span></Link>
