@@ -19,9 +19,49 @@ import Donate from "./pages/Donate";
 import DonationCheckout from "./pages/DonationCheckout";
 import DonationReturn from "./pages/DonationReturn";
 import ThankYou from "./pages/ThankYou";
+import DemoProvider from "./portal/DemoProvider";
+import PortalLayout from "./portal/PortalLayout";
+import AccessPage from "./portal/AccessPage";
+import AdminOverview from "./portal/AdminOverview";
+import { AdminEnquiries, AdminPlayers, AdminPlayerDetail, AdminParents } from "./portal/AdminPeople";
+import { AdminProgrammes, AdminProgrammeDetail, AdminTraining, AdminTimetable, AdminEvents, AdminCoaches } from "./portal/AdminOperations";
+import { AdminDonations, AdminMessages, AdminStaff, AdminSettings } from "./portal/AdminBackOffice";
+import { MemberOverview, MemberProgrammes, MemberProgrammeDetail, MemberSchedule, MemberEvents, MemberProfile, MemberAttendance, MemberNotifications } from "./portal/MemberPages";
 
 export default function App() {
-  return <BrowserRouter><Routes><Route element={<SiteLayout />}>
+  return <BrowserRouter><DemoProvider><Routes>
+    <Route path="admin/login" element={<AccessPage kind="admin" />} />
+    <Route path="login" element={<AccessPage kind="member" />} />
+    <Route path="signup" element={<AccessPage kind="signup" />} />
+    <Route path="forgot-password" element={<AccessPage kind="forgot" />} />
+    <Route path="admin" element={<PortalLayout mode="admin" />}>
+      <Route index element={<AdminOverview />} />
+      <Route path="enquiries" element={<AdminEnquiries />} />
+      <Route path="players" element={<AdminPlayers />} />
+      <Route path="players/:playerId" element={<AdminPlayerDetail />} />
+      <Route path="parents" element={<AdminParents />} />
+      <Route path="programmes" element={<AdminProgrammes />} />
+      <Route path="programmes/:programmeId" element={<AdminProgrammeDetail />} />
+      <Route path="training" element={<AdminTraining />} />
+      <Route path="timetable" element={<AdminTimetable />} />
+      <Route path="events" element={<AdminEvents />} />
+      <Route path="coaches" element={<AdminCoaches />} />
+      <Route path="donations" element={<AdminDonations />} />
+      <Route path="messages" element={<AdminMessages />} />
+      <Route path="staff" element={<AdminStaff />} />
+      <Route path="settings" element={<AdminSettings />} />
+    </Route>
+    <Route path="dashboard" element={<PortalLayout mode="member" />}>
+      <Route index element={<MemberOverview />} />
+      <Route path="my-programmes" element={<MemberProgrammes />} />
+      <Route path="my-programmes/:programmeId" element={<MemberProgrammeDetail />} />
+      <Route path="schedule" element={<MemberSchedule />} />
+      <Route path="events" element={<MemberEvents />} />
+      <Route path="attendance" element={<MemberAttendance />} />
+      <Route path="profile" element={<MemberProfile />} />
+      <Route path="notifications" element={<MemberNotifications />} />
+    </Route>
+    <Route element={<SiteLayout />}>
     <Route index element={<Home />} />
     <Route path="about" element={<About />} />
     <Route path="player-development" element={<PlayerDevelopment />} />
@@ -48,5 +88,5 @@ export default function App() {
     <Route path="thank-you-page" element={<Navigate to="/thank-you" replace />} />
     <Route path="thank-you-page-2" element={<Navigate to="/thank-you" replace />} />
     <Route path="*" element={<Navigate to="/" replace />} />
-  </Route></Routes></BrowserRouter>;
+  </Route></Routes></DemoProvider></BrowserRouter>;
 }

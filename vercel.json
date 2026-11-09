@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/admin/players/:playerId", "destination": "/index.html" },
+    { "source": "/admin/programmes/:programmeId", "destination": "/index.html" },
+    { "source": "/dashboard/my-programmes/:programmeId", "destination": "/index.html" }
+  ]
+}
