@@ -20,6 +20,7 @@ import DonationCheckout from "./pages/DonationCheckout";
 import DonationReturn from "./pages/DonationReturn";
 import ThankYou from "./pages/ThankYou";
 import DemoProvider from "./portal/DemoProvider";
+import { ToastProvider } from "./portal/ToastProvider";
 import PortalLayout from "./portal/PortalLayout";
 import AccessPage from "./portal/AccessPage";
 import AdminOverview from "./portal/AdminOverview";
@@ -29,7 +30,7 @@ import { AdminDonations, AdminMessages, AdminStaff, AdminSettings } from "./port
 import { MemberOverview, MemberProgrammes, MemberProgrammeDetail, MemberSchedule, MemberEvents, MemberProfile, MemberAttendance, MemberNotifications } from "./portal/MemberPages";
 
 export default function App() {
-  return <BrowserRouter><DemoProvider><Routes>
+  return <BrowserRouter><ToastProvider><DemoProvider><Routes>
     <Route path="admin/login" element={<AccessPage kind="admin" />} />
     <Route path="login" element={<AccessPage kind="member" />} />
     <Route path="signup" element={<AccessPage kind="signup" />} />
@@ -88,5 +89,5 @@ export default function App() {
     <Route path="thank-you-page" element={<Navigate to="/thank-you" replace />} />
     <Route path="thank-you-page-2" element={<Navigate to="/thank-you" replace />} />
     <Route path="*" element={<Navigate to="/" replace />} />
-  </Route></Routes></DemoProvider></BrowserRouter>;
+  </Route></Routes></DemoProvider></ToastProvider></BrowserRouter>;
 }

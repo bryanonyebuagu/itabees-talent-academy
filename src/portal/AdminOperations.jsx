@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { media } from '../data/media';
-import { byDate, coaches, demoPeople, formatDate, formatTime, groups, locations } from './demoData';
+import { byDate, coaches, formatDate, formatTime, groups, locations } from './demoData';
 import { coachName, groupName, locationName, programmeName } from './selectors';
 import PortalIcon from './PortalIcon';
 import { Avatar, Button, EmptyState, Field, Modal, PageHeading, Panel, Segmented, Status } from './PortalUI';
@@ -30,12 +30,12 @@ export function AdminProgrammes() {
 
 export function AdminProgrammeDetail() {
   const { programmeId } = useParams();
-  const { programmes, sessions, events, saveProgramme } = useDemo();
+  const { players, programmes, sessions, events, saveProgramme } = useDemo();
   const [editing, setEditing] = useState(false);
   const programme = programmes.find((item) => item.id === programmeId);
   if (!programme) return <EmptyState title="Programme not found" body="Return to the programmes list to explore a demo pathway."/>;
   const relatedSessions = sessions.filter((item) => item.programmeId === programme.id).sort(byDate);
-  const relatedPlayers = demoPeople.players.filter((item) => item.programmeIds.includes(programme.id));
+  const relatedPlayers = players.filter((item) => item.programmeIds.includes(programme.id));
   const relatedEvents = events.filter((item) => item.programmeIds.includes(programme.id));
   return <><Link className="portal-inline-link portal-small" to="/admin/programmes">← All programmes</Link><PageHeading eyebrow={`PROGRAMMES / ${programme.category.toUpperCase()}`} title={programme.name} description={programme.description} action={<Button icon="edit" onClick={() => setEditing(true)}>Edit programme</Button>}/><div className="portal-metrics"><div className="portal-card"><span className="portal-muted portal-small">Enrolment</span><h2>{programme.enrolled}/{programme.capacity}</h2></div><div className="portal-card"><span className="portal-muted portal-small">Age group</span><h2>{programme.ageGroup}</h2></div><div className="portal-card"><span className="portal-muted portal-small">Training block</span><h2>{programme.duration}</h2></div></div><div className="portal-grid portal-grid-2"><Panel title="Programme details"><dl className="portal-detail-list"><div><dt>Category</dt><dd>{programme.category}</dd></div><div><dt>Location</dt><dd>{locationName(programme.locationId)}</dd></div><div><dt>Training days</dt><dd>{programme.days}</dd></div><div><dt>Assigned coaches</dt><dd>{programme.coachIds.map(coachName).join(', ')}</dd></div><div><dt>Status</dt><dd><Status value={programme.status}/></dd></div></dl></Panel><Panel title="Related people & events"><p className="portal-small portal-muted">{relatedPlayers.length} demo player profiles enrolled</p><ul className="portal-list">{relatedPlayers.map((player) => <li key={player.id}><Avatar initials={player.initials}/><div><h3>{player.name}</h3><p>{player.ageGroup}</p></div><Link to={`/admin/players/${player.id}`} className="portal-inline-link">View</Link></li>)}</ul><p className="portal-small portal-muted">{relatedEvents.length} related events</p></Panel></div><Panel title="Training sessions" className="portal-section-gap"><SessionList sessions={relatedSessions} programmes={programmes}/></Panel>{editing && <ProgrammeForm initial={programme} onSave={saveProgramme} onClose={() => setEditing(false)}/>}</>;
 }

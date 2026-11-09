@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { media } from '../data/media';
-import { attendance, demoPeople, eventRegistrations, formatDate, formatTime, memberEvents, memberSessions } from './demoData';
+import { attendance, eventRegistrations, formatDate, formatTime, memberEvents, memberSessions } from './demoData';
 import { coachName, groupName, locationName, programmeName } from './selectors';
 import PortalIcon from './PortalIcon';
 import { Avatar, EmptyState, Metric, PageHeading, Panel, Status } from './PortalUI';
 import PortalSchedule, { SessionList } from './PortalSchedule';
 import useDemo from './useDemo';
+import ProfileSettings from './ProfileSettings';
 
 const useCurrentPlayer = () => {
-  const { selectedPlayerId } = useDemo();
-  return demoPeople.players.find((item) => item.id === selectedPlayerId) || demoPeople.players[0];
+  const { players, selectedPlayerId } = useDemo();
+  return players.find((item) => item.id === selectedPlayerId) || players[0];
 };
 
 export function MemberOverview() {
@@ -61,9 +62,13 @@ export function MemberEvents() {
 
 export function MemberProfile() {
   const player = useCurrentPlayer();
-  const { programmes } = useDemo();
-  const guardian = demoPeople.guardians.find((item) => item.id === player.guardianId);
-  return <><PageHeading eyebrow="MY ACCOUNT / PROFILE" title="Player profile" description="A future-ready view of player information, development focus and guardian contact details."/><div className="portal-grid portal-grid-wide"><Panel title="Player information"><div className="portal-profile-head"><Avatar initials={player.initials} size="large"/><div><h2>{player.name}</h2><p>{player.ageGroup} · {groupName(player.groupId)}</p><Status value={player.status}/></div></div><dl className="portal-detail-list"><div><dt>Date of birth</dt><dd>{formatDate(player.dateOfBirth)}</dd></div><div><dt>Assigned coach</dt><dd>{coachName(player.coachId)}</dd></div><div><dt>Enrolled programmes</dt><dd>{player.programmeIds.map((id) => programmeName(id, programmes)).join(', ')}</dd></div><div><dt>Training group</dt><dd>{groupName(player.groupId)}</dd></div></dl></Panel><Panel title="Parent / guardian contact"><dl className="portal-detail-list"><div><dt>Name</dt><dd>{guardian?.name}</dd></div><div><dt>Email</dt><dd>{guardian?.email}</dd></div><div><dt>Phone</dt><dd>{guardian?.phone}</dd></div></dl><p className="portal-hint">Contact details are fictional and cannot be edited in this preview.</p></Panel></div><div className="portal-grid portal-grid-2 portal-section-gap"><Panel title="Development overview"><p className="portal-small portal-muted">Current coach focus</p><p className="portal-detail-message">{player.note}</p><p className="portal-hint">A detailed development plan can be connected when real records are available.</p></Panel><Panel title="Attendance snapshot"><p className="portal-small portal-muted">Illustrative attendance history is available in its own section.</p><Link className="portal-inline-link portal-small" to="/dashboard/attendance">View attendance →</Link></Panel></div></>;
+  const { guardians, programmes } = useDemo();
+  const guardian = guardians.find((item) => item.id === player.guardianId);
+  return <><PageHeading eyebrow="MY ACCOUNT / PROFILE" title="Player profile" description="Player information, development focus and parent or guardian contact details."/>
+    <div className="portal-grid portal-profile-grid"><Panel title="Player Information"><div className="portal-profile-head"><Avatar initials={player.initials} size="large"/><div><h2>{player.name}</h2><p>{player.ageGroup} · {groupName(player.groupId)}</p><Status value={player.status}/></div></div><dl className="portal-detail-list"><div><dt>Date of birth</dt><dd>{formatDate(player.dateOfBirth)}</dd></div><div><dt>Assigned coach</dt><dd>{coachName(player.coachId)}</dd></div><div><dt>Enrolled programmes</dt><dd>{player.programmeIds.map((id) => programmeName(id, programmes)).join(', ')}</dd></div><div><dt>Training group</dt><dd>{groupName(player.groupId)}</dd></div></dl></Panel>
+      <Panel title="Parent / Guardian Contact"><dl className="portal-detail-list"><div><dt>Name</dt><dd>{guardian?.name}</dd></div><div><dt>Email</dt><dd>{guardian?.email}</dd></div><div><dt>Phone</dt><dd>{guardian?.phone}</dd></div></dl><p className="portal-hint">Fictional demo contact details. Email and phone can be updated below for this session.</p></Panel></div>
+    <Panel title="Profile Settings" eyebrow="MANAGE YOUR DETAILS" className="portal-section-gap"><p className="portal-small portal-muted">Update each detail independently. Changes are temporary and reset when the page reloads.</p><ProfileSettings key={player.id} player={player} guardian={guardian}/></Panel>
+    <div className="portal-grid portal-grid-2 portal-section-gap"><Panel title="Development overview"><p className="portal-small portal-muted">Current coach focus</p><p className="portal-detail-message">{player.note}</p><p className="portal-hint">A detailed development plan can be connected when real records are available.</p></Panel><Panel title="Attendance snapshot"><p className="portal-small portal-muted">Illustrative attendance history is available in its own section.</p><Link className="portal-inline-link portal-small" to="/dashboard/attendance">View attendance →</Link></Panel></div></>;
 }
 
 export function MemberAttendance() {

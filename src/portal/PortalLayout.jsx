@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.jpeg';
-import { demoPeople } from './demoData';
 import PortalIcon from './PortalIcon';
 import useDemo from './useDemo';
 import './portal.css';
@@ -27,9 +26,9 @@ export default function PortalLayout({ mode }) {
   const isAdmin = mode === 'admin';
   const items = isAdmin ? adminItems : memberItems;
   const { pathname } = useLocation();
-  const { selectedPlayerId, setSelectedPlayerId, notifications } = useDemo();
+  const { players, selectedPlayerId, setSelectedPlayerId, notifications } = useDemo();
   const [menuOpen, setMenuOpen] = useState(false);
-  const selectedPlayer = demoPeople.players.find((player) => player.id === selectedPlayerId) || demoPeople.players[0];
+  const selectedPlayer = players.find((player) => player.id === selectedPlayerId) || players[0];
   const current = [...items].reverse().find(([, path]) => pathname === path || pathname.startsWith(`${path}/`));
   const unreadCount = notifications.filter((notice) => notice.playerId === selectedPlayerId && !notice.read).length;
 
@@ -49,7 +48,7 @@ export default function PortalLayout({ mode }) {
       <header className="portal-topbar">
         <div className="portal-topbar-left"><button type="button" className="portal-menu-button" aria-label="Open navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><PortalIcon name={menuOpen ? 'close' : 'menu'} size={22}/></button><span className="portal-breadcrumb">{isAdmin ? 'Administration' : 'Member space'} <PortalIcon name="chevron" size={14}/> <strong>{current?.[0] || 'Overview'}</strong></span></div>
         <div className="portal-topbar-right">
-          {!isAdmin && <label className="portal-player-switch"><span>Preview player</span><select value={selectedPlayerId} onChange={(event) => setSelectedPlayerId(event.target.value)}>{demoPeople.players.map((player) => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>}
+          {!isAdmin && <label className="portal-player-switch"><span>Preview player</span><select value={selectedPlayerId} onChange={(event) => setSelectedPlayerId(event.target.value)}>{players.map((player) => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>}
           {!isAdmin && <Link to="/dashboard/notifications" className="portal-top-icon" aria-label={`${unreadCount} unread notifications`}><PortalIcon name="bell" size={20}/>{unreadCount > 0 && <i />}</Link>}
           <div className="portal-user"><span className="portal-avatar">{isAdmin ? 'AJ' : selectedPlayer.initials}</span><span><strong>{isAdmin ? 'Amina Johnson' : selectedPlayer.name}</strong><small>{isAdmin ? 'Super Admin · demo' : `${selectedPlayer.ageGroup} player · demo`}</small></span></div>
         </div>

@@ -5,7 +5,7 @@ export const programmeAccent = (id, programmes) => programmes.find((item) => ite
 export const coachName = (id) => coaches.find((item) => item.id === id)?.name || 'Unassigned coach';
 export const groupName = (id) => groups.find((item) => item.id === id)?.name || 'All groups';
 export const locationName = (id) => locations.find((item) => item.id === id)?.name || 'Location to confirm';
-export const guardianName = (id) => demoPeople.guardians.find((item) => item.id === id)?.name || 'Guardian to confirm';
+export const guardianName = (id, guardians = demoPeople.guardians) => guardians.find((item) => item.id === id)?.name || 'Guardian to confirm';
 export const playerName = (id) => demoPeople.players.find((item) => item.id === id)?.name || 'Player';
 
 export const weekStart = (value) => {
