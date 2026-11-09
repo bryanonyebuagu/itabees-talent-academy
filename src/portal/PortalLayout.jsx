@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.jpeg';
 import PortalIcon from './PortalIcon';
@@ -29,6 +29,7 @@ export default function PortalLayout({ mode }) {
   const { pathname } = useLocation();
   const { players, selectedPlayerId, setSelectedPlayerId, notifications } = useDemo();
   const [menuOpen, setMenuOpen] = useState(false);
+  const workspaceRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem(`itabees-${mode}-theme`) || (isAdmin ? 'dark' : 'light'); }
     catch { return isAdmin ? 'dark' : 'light'; }
@@ -38,7 +39,7 @@ export default function PortalLayout({ mode }) {
   const current = [...items].reverse().find(([, path]) => pathname === path || pathname.startsWith(`${path}/`));
   const unreadCount = notifications.filter((notice) => notice.playerId === selectedPlayerId && !notice.read).length;
 
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => { workspaceRef.current?.scrollTo(0, 0); }, [pathname]);
   const goBack = () => {
     setMenuOpen(false);
     if (window.history.state?.idx > 0) navigate(-1);
@@ -52,15 +53,15 @@ export default function PortalLayout({ mode }) {
 
   return <div className={`portal portal-${mode} portal-theme-${theme}`}>
     <aside className={`portal-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label={`${mode} navigation`}>
-      <Link to="/" className="portal-brand" onClick={() => setMenuOpen(false)}><span className="portal-brand-mark"><img src={logo} alt="" /></span><span><strong>ITABEES</strong><small>TALENT ACADEMY</small></span></Link>
+      <Link to={root} className="portal-brand" onClick={() => { setMenuOpen(false); workspaceRef.current?.scrollTo(0, 0); }} aria-label={`${isAdmin ? 'Admin' : 'Member'} dashboard home`}><span className="portal-brand-mark"><img src={logo} alt="" /></span><span><strong>ITABEES</strong><small>TALENT ACADEMY</small></span></Link>
       <div className="portal-sidebar-label">{isAdmin ? 'COMMAND CENTRE' : 'PLAYER PORTAL'} <span>DEMO</span></div>
       <nav className="portal-nav" aria-label={isAdmin ? 'Admin sections' : 'Member sections'}>
         {items.map(([label, path, icon]) => <NavLink key={path} to={path} end={path === '/admin' || path === '/dashboard'} onClick={() => setMenuOpen(false)}><PortalIcon name={icon} size={19}/><span>{label}</span>{label === 'Notifications' && unreadCount > 0 && <b>{unreadCount}</b>}</NavLink>)}
       </nav>
-      <div className="portal-sidebar-foot"><span>FRONTEND PREVIEW</span><p>Fictional records · changes stay in this browser session</p><Link to="/" className="portal-back"><PortalIcon name="arrow" size={17}/> Public website</Link></div>
+      <div className="portal-sidebar-foot"><span>FRONTEND PREVIEW</span><p>Fictional records · changes stay in this browser session</p><Link to="/" className="portal-public-link" onClick={() => setMenuOpen(false)}><span className="portal-public-icon"><PortalIcon name="arrow" size={17}/></span><span><strong>Public website</strong><small>Explore ItaBEES</small></span><PortalIcon name="chevron" size={16}/></Link><Link to={isAdmin ? '/admin/login' : '/login'} className="portal-logout-link" onClick={() => setMenuOpen(false)}><PortalIcon name="logout" size={18}/><span>Log out</span></Link></div>
     </aside>
     {menuOpen && <button className="portal-scrim" type="button" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />}
-    <div className="portal-workspace">
+    <div className="portal-workspace" ref={workspaceRef}>
       <header className="portal-topbar">
         <div className="portal-topbar-left"><button type="button" className="portal-menu-button" aria-label="Open navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><PortalIcon name={menuOpen ? 'close' : 'menu'} size={22}/></button><button type="button" className="portal-back-button" aria-label="Go back to previous page" title="Go back" onClick={goBack}><PortalIcon name="back" size={18}/></button><nav className="portal-breadcrumb" aria-label="Breadcrumb"><Link to={root}>{isAdmin ? 'Administration' : 'Member space'}</Link><PortalIcon name="chevron" size={14}/>{pathname !== current?.[1] ? <Link className="portal-breadcrumb-current" to={current?.[1] || root}>{current?.[0] || 'Overview'}</Link> : <strong>{current?.[0] || 'Overview'}</strong>}</nav></div>
         <div className="portal-topbar-right">
