@@ -65,6 +65,7 @@
 .portal-button { display:inline-flex; justify-content:center; align-items:center; gap:8px; min-height:39px; padding:9px 14px; border:1px solid transparent; border-radius:8px; font-size:11px!important; font-weight:800!important; line-height:1.15; transition:transform .2s,background .2s,border-color .2s; white-space:nowrap; }
 .portal-button:hover { transform:translateY(-2px); }
 .portal-button-primary { background:#ffe600; color:#0a0a0a; }
+.portal a.portal-button-primary,.portal .portal-button-primary span,.portal .portal-button-primary svg { color:#0a0a0a; }
 .portal-button-primary:hover { background:#fff066; }
 .portal-button-secondary { background:var(--p-card); color:var(--p-text); border-color:var(--p-border); }
 .portal-button-secondary:hover { border-color:#c8b400; }

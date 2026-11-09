@@ -1304,6 +1304,7 @@ h1,h2,h3 { font-family:'Barlow Condensed',Impact,sans-serif; }
 .development-card h3 { font-size:26px; margin:58px 0 11px; }
 .development-card p { font-size:13px; line-height:1.65; color:#c4c4c0; padding-right:10px; }
 .development-card.is-active { background:var(--lemon); border-color:var(--lemon); box-shadow:0 18px 35px #0005; }
+.development-card.is-active h3,.development-card.is-active p,.development-card.is-active .development-card-top > span:first-child,.development-card.is-active .development-icon,.development-card.is-active .card-arrow { color:#000; }
 .development-image-wrap { height:480px; margin-top:55px; border-radius:16px; }
 .development-image-wrap::after { content:''; position:absolute; inset:40% 0 0; background:linear-gradient(transparent,#0008); pointer-events:none; }
 .image-caption { z-index:1; left:40px; bottom:38px; }
@@ -1428,6 +1429,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .assessments-section p { font-size:15px; line-height:1.75; color:#d2d2d2; }
 .assessments-section strong { color:#ffe600; }
 .impact-section { background:#ffe600; color:#050505; }
+.impact-section .eyebrow,.impact-section .stats-grid strong,.impact-section .stats-grid span { color:#000; }
 .impact-section .eyebrow { color:#050505; }
 .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-top:25px; }
 .stats-grid > div { padding:30px 12px; border-top:2px solid #090909; }
@@ -1524,6 +1526,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .value-item span,.pillar-card > span,.pathway-number { color:#111; }
 .pathway-arrow { color:#ffe600; -webkit-text-stroke:.5px #111; }
 .footer-identity > strong,.footer-connect h3,.site-footer h3 { color:#ffe600; }
+.final-cta { color:#000; }
+.final-cta h2 span,.final-cta .eyebrow,.final-cta > p:not(.eyebrow) { color:#000; }
 .navigation > a:not(.nav-cta) { display:inline-block; transition:color .28s ease,transform .28s ease,text-shadow .28s ease; }
 .navigation > a:not(.nav-cta):hover { transform:scale(1.075); text-shadow:0 3px 14px #ffe60099; }
 
