@@ -368,7 +368,7 @@ export default function Home() {
               Learn more about ItaBEES <span>→</span>
             </a>
             <h3 className="coach-section-heading">MEET OUR ESTEEMED COACHES.</h3>
-            <div className="coach-names">{coachingTeam.map(({ name, role, image, praise }) => <article className="home-coach-card" key={name}><div className="home-coach-photo"><img src={image} alt={`${name}, ${role}`} loading="lazy" /><div className="home-coach-label"><strong>{name}</strong><span>{role}</span></div></div><p className="home-coach-praise"><CoachPraise text={praise} /></p></article>)}</div>
+            <div className="coach-names">{coachingTeam.map(({ name, role, image, praise }) => <article className="home-coach-card" key={name}><div className="home-coach-photo"><img src={image} alt={`${name}, ${role}`} loading="lazy" /><div className="home-coach-label"><strong>{name}</strong><span>{role}</span></div><p className="home-coach-praise"><CoachPraise text={praise} /></p></div></article>)}</div>
           </div>
         </section>
 

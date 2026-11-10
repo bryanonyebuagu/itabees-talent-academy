@@ -345,3 +345,16 @@
 @media (max-width:650px) { .portal-topbar { height:65px; padding:0 15px; }.portal-main { padding:20px 15px 35px; }.portal-demo-ribbon { padding:8px 15px; font-size:9px; line-height:1.4; }.portal-breadcrumb { font-size:11px; }.portal-topbar-right { gap:7px; }.portal-user > span:last-child { display:none; }.portal-player-switch span { display:none; }.portal-player-switch select { max-width:125px; padding:6px; font-size:10px; }.portal-page-heading { align-items:start; flex-direction:column; gap:15px; }.portal-heading-action { width:100%; }.portal-heading-action .portal-button { width:100%; }.portal-metrics,.portal-grid-2,.portal-grid-3,.portal-quick-actions { grid-template-columns:1fr; }.portal-metric { min-height:125px; }.portal-field-grid { grid-template-columns:1fr; }.portal-detail-list { grid-template-columns:1fr; }.portal-session-row { grid-template-columns:74px minmax(0,1fr); }.portal-session-row .portal-row-actions { grid-column:2; }.portal-inbox { grid-template-columns:1fr; }.portal-inbox-list { max-height:260px; overflow:auto; border-right:0; border-bottom:1px solid var(--p-border); }.portal-member-hero { grid-template-columns:1fr; }.portal-member-hero img { height:150px; min-height:150px; }.portal-access-art { min-height:300px; padding:25px; }.portal-access-art h1 { font-size:43px; }.portal-access-form h2 { font-size:30px; }.portal-chart-row { flex-direction:column; align-items:flex-start; } }
 @media (max-width:650px) { .portal-topbar-left { gap:5px; }.portal-topbar-right { gap:5px; }.portal-breadcrumb svg,.portal-breadcrumb strong,.portal-breadcrumb-current { display:none; }.portal-back-button,.portal-theme-toggle { width:31px; height:31px; }.portal-player-switch select { max-width:90px; }.portal-top-icon { width:31px; height:31px; }.portal-member .portal-user { display:none; } }
 @media (prefers-reduced-motion:reduce) { .portal,.portal *,.portal-access * { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+
+.portal-brand .brand-bees,
+.portal-sidebar-label span,
+.portal-sidebar-foot > span,
+.portal-panel-heading > a,
+.portal-member-hero-copy .portal-eyebrow,
+.portal-access-art h1 span,
+.portal-access .portal-eyebrow,
+.portal-theme-tooltip,
+.portal-person-avatar {
+  text-shadow:0 2px 4px #000,0 4px 10px #0009;
+}
+.portal-brand .brand-ita { text-shadow:none; }

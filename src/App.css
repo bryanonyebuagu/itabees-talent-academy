@@ -1972,7 +1972,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   position:absolute;
   inset:0;
   z-index:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.58),rgba(0,0,0,.34) 36%,transparent 72%);
+  background:linear-gradient(180deg,rgba(0,0,0,.48),rgba(0,0,0,.25) 36%,transparent 72%);
   pointer-events:none;
 }
 .mentorship-intro {
@@ -2126,4 +2126,90 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   -webkit-text-stroke:.5px #181818;
   paint-order:stroke fill;
   text-shadow:0 1px 2px #0009;
+}
+
+/* Lemon lettering uses black depth throughout, especially on display headlines. */
+.hero-content h1 span,
+.reference-intro h2 span,
+.intro-heading h2 span,
+.development-section h2 span,
+.editorial-copy h2 span,
+.pillars-section h2 span,
+.pathway-intro h2 span,
+.assessments-section h2 span,
+.mentorship-intro h2 span,
+.international-section h2 span,
+.college-section h2 span,
+.events-section h2 span,
+.opportunities-section h2 span,
+.page-hero-copy h1 span,
+.content-section-copy h2 span,
+.donation-intro-copy h1 span,
+.donation-purpose h2 span,
+.donate-social-section h2 span {
+  text-shadow:0 3px 2px #000,0 7px 16px #000d;
+}
+.hero-eyebrow,
+.image-caption span,
+.camps-photo-label,
+.reference-intro .eyebrow,
+.intro-heading .eyebrow,
+.development-section .eyebrow,
+.editorial-copy .eyebrow,
+.pillars-section .eyebrow,
+.pathway-intro .eyebrow,
+.assessments-section .eyebrow,
+.mentorship-intro .eyebrow,
+.events-section .eyebrow,
+.opportunities-section .eyebrow,
+.page-hero-copy .eyebrow,
+.content-section-copy .eyebrow,
+.donation-intro-copy .eyebrow,
+.donation-purpose .eyebrow,
+.donate-social-section .eyebrow,
+.checkout-heading .eyebrow,
+.site-footer h3,
+.site-footer .brand-bees,
+.brand-wordmark .brand-bees,
+.portal-brand .brand-bees,
+.pillars-section .pillar-card .text-link,
+.assessments-section strong,
+.navigation > a.active,
+.navigation > a:not(.nav-cta):hover,
+.nav-register-link:hover,
+.nav-register-kicker {
+  text-shadow:0 2px 4px #000,0 4px 10px #0009;
+}
+.brand-wordmark .brand-ita,.portal-brand .brand-ita,.footer-identity .brand-ita { text-shadow:none; }
+.button-yellow:hover,.button-black,.nav-cta,.text-link.light-link:hover { text-shadow:0 2px 4px #0009; }
+.footer-links a:hover,.footer-connect a:hover,.footer-connect > div:hover,
+.opportunity-links a:hover,.text-link:hover,.donate-nav > a:not(.nav-cta):hover {
+  text-shadow:0 2px 4px #000,0 4px 10px #0009;
+}
+
+/* Coaching photo and transparent captions. */
+.mentorship-image { width:100%; margin:0; border-radius:0; }
+.mentorship-image img { filter:brightness(.85); }
+.coach-names .home-coach-praise,
+.coach-card .coach-card-praise {
+  position:absolute;
+  z-index:1;
+  left:15px;
+  right:15px;
+  bottom:15px;
+  margin:0;
+  border:1px solid #ffffff80;
+  border-radius:11px;
+  background:rgba(10,15,13,.38);
+  color:#fff;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  text-shadow:0 2px 7px #000;
+  box-shadow:0 12px 28px #0007;
+}
+.coach-names .home-coach-praise { padding:18px 19px 21px; }
+.coach-card .coach-card-praise { padding:21px 23px 25px; }
+@media(max-width:700px) {
+  .mentorship-image { width:100%; margin:0; }
+  .mentorship-image img { filter:brightness(.90); }
 }
