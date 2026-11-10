@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import ArrowUpRight from "./ArrowUpRight";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo-brand.png";
+import BrandText from "./BrandText";
 
 const links = [
   ["Home", "/"],
@@ -21,7 +22,7 @@ export default function Header() {
       <div className="nav-register">
         <NavLink to="/dashboard" className="nav-register-link" onClick={() => setOpen(false)}>Register</NavLink>
         <div className="nav-register-popover" aria-label="Account options">
-          <span className="nav-register-kicker">YOUR ITABEES SPACE</span>
+          <span className="nav-register-kicker">YOUR <BrandText>ITABEES</BrandText> SPACE</span>
           <Link to="/login" onClick={() => setOpen(false)}>Login <ArrowUpRight /></Link>
           <Link to="/signup" onClick={() => setOpen(false)}>Sign up <ArrowUpRight /></Link>
           <Link to="/admin" onClick={() => setOpen(false)}>Login as admin <ArrowUpRight /></Link>

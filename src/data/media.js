@@ -2,7 +2,7 @@ const assets = import.meta.glob("../assets/*", { eager: true, query: "?url", imp
 const find = (term) => Object.entries(assets).find(([path]) => path.toLowerCase().includes(term.toLowerCase()))?.[1] || "";
 
 export const media = {
-  logo: find("logo.jpeg"),
+  logo: find("logo-brand.png"),
   hero: find("Boy_running_with_football_adf"),
   training: find("Boy_running_with_football_training"),
   coaching: find("58ff75a0"),

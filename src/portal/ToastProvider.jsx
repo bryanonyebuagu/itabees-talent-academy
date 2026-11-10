@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import PortalIcon from './PortalIcon';
+import BrandText from '../components/BrandText';
 import { ToastContext } from './ToastContext';
 import './toast.css';
 
@@ -26,6 +27,6 @@ export function ToastProvider({ children }) {
     const current = timers.current;
     return () => { current.forEach(({ hide, remove }) => { clearTimeout(hide); clearTimeout(remove); }); current.clear(); };
   }, []);
-  return <ToastContext.Provider value={notify}>{children}<div className="itabees-toast-stack" aria-live="polite" aria-atomic="false">{toasts.map((item) => <div key={item.id} className={`itabees-toast toast-${item.type} ${item.leaving ? 'is-leaving' : ''}`} role={item.type === 'error' ? 'alert' : 'status'}><div className="itabees-toast-icon"><PortalIcon name={item.type === 'success' ? 'check' : item.type === 'error' ? 'close' : item.type === 'warning' ? 'bell' : 'spark'} size={19}/></div><div className="itabees-toast-copy"><strong>{item.title}</strong><p>{item.description}</p></div><button type="button" onClick={() => dismiss(item.id)} aria-label="Dismiss notification"><PortalIcon name="close" size={16}/></button><span className="itabees-toast-progress" aria-hidden="true"/></div>)}</div></ToastContext.Provider>;
+  return <ToastContext.Provider value={notify}>{children}<div className="itabees-toast-stack" aria-live="polite" aria-atomic="false">{toasts.map((item) => <div key={item.id} className={`itabees-toast toast-${item.type} ${item.leaving ? 'is-leaving' : ''}`} role={item.type === 'error' ? 'alert' : 'status'}><div className="itabees-toast-icon"><PortalIcon name={item.type === 'success' ? 'check' : item.type === 'error' ? 'close' : item.type === 'warning' ? 'bell' : 'spark'} size={19}/></div><div className="itabees-toast-copy"><strong><BrandText>{item.title}</BrandText></strong><p><BrandText>{item.description}</BrandText></p></div><button type="button" onClick={() => dismiss(item.id)} aria-label="Dismiss notification"><PortalIcon name="close" size={16}/></button><span className="itabees-toast-progress" aria-hidden="true"/></div>)}</div></ToastContext.Provider>;
 }
 

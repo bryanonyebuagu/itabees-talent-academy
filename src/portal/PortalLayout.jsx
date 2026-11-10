@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/logo-brand.png';
 import PortalIcon from './PortalIcon';
+import BrandText from '../components/BrandText';
 import useDemo from './useDemo';
 import './portal.css';
 
@@ -53,12 +54,12 @@ export default function PortalLayout({ mode }) {
 
   return <div className={`portal portal-${mode} portal-theme-${theme}`}>
     <aside className={`portal-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label={`${mode} navigation`}>
-      <Link to={root} className="portal-brand" onClick={() => { setMenuOpen(false); workspaceRef.current?.scrollTo(0, 0); }} aria-label={`${isAdmin ? 'Admin' : 'Member'} dashboard home`}><span className="portal-brand-mark"><img src={logo} alt="" /></span><span><strong>ITABEES</strong><small>TALENT ACADEMY</small></span></Link>
+      <Link to={root} className="portal-brand" onClick={() => { setMenuOpen(false); workspaceRef.current?.scrollTo(0, 0); }} aria-label={`${isAdmin ? 'Admin' : 'Member'} dashboard home`}><span className="portal-brand-mark"><img src={logo} alt="" /></span><span><strong><BrandText>ITABEES</BrandText></strong><small>TALENT ACADEMY</small></span></Link>
       <div className="portal-sidebar-label">{isAdmin ? 'COMMAND CENTRE' : 'PLAYER PORTAL'} <span>DEMO</span></div>
       <nav className="portal-nav" aria-label={isAdmin ? 'Admin sections' : 'Member sections'}>
         {items.map(([label, path, icon]) => <NavLink key={path} to={path} end={path === '/admin' || path === '/dashboard'} onClick={() => setMenuOpen(false)}><PortalIcon name={icon} size={19}/><span>{label}</span>{label === 'Notifications' && unreadCount > 0 && <b>{unreadCount}</b>}</NavLink>)}
       </nav>
-      <div className="portal-sidebar-foot"><span>FRONTEND PREVIEW</span><p>Fictional records · changes stay in this browser session</p><Link to="/" className="portal-public-link" onClick={() => setMenuOpen(false)}><span className="portal-public-icon"><PortalIcon name="arrow" size={17}/></span><span><strong>Public website</strong><small>Explore ItaBEES</small></span><PortalIcon name="chevron" size={16}/></Link><Link to={isAdmin ? '/admin/login' : '/login'} className="portal-logout-link" onClick={() => setMenuOpen(false)}><PortalIcon name="logout" size={18}/><span>Log out</span></Link></div>
+      <div className="portal-sidebar-foot"><span>FRONTEND PREVIEW</span><p>Fictional records · changes stay in this browser session</p><Link to="/" className="portal-public-link" onClick={() => setMenuOpen(false)}><span className="portal-public-icon"><PortalIcon name="arrow" size={17}/></span><span><strong>Public website</strong><small>Explore <BrandText>ItaBEES</BrandText></small></span><PortalIcon name="chevron" size={16}/></Link><Link to={isAdmin ? '/admin/login' : '/login'} className="portal-logout-link" onClick={() => setMenuOpen(false)}><PortalIcon name="logout" size={18}/><span>Log out</span></Link></div>
     </aside>
     {menuOpen && <button className="portal-scrim" type="button" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />}
     <div className="portal-workspace" ref={workspaceRef}>

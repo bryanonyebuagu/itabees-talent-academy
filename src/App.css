@@ -7,6 +7,34 @@
   --light: #f5f5f2;
 }
 
+.brand-text { display:inline; white-space:nowrap; font:inherit; letter-spacing:inherit; }
+.brand-ita { color:#fff; -webkit-text-stroke:.35px #111; text-shadow:0 1px 3px #000,0 0 4px #000; }
+.brand-bees { color:#ffe600; text-shadow:0 1px 3px #000,0 0 4px #000; }
+
+/* Brand yellow remains readable against white and pale sections. */
+.intro-section .eyebrow,
+.pathway-section .eyebrow,
+.camps-section .eyebrow,
+.international-section .eyebrow,
+.college-section .eyebrow,
+.events-section .eyebrow,
+.page-hero:not(.page-hero-dark) .eyebrow,
+.content-white .eyebrow,
+.content-light .eyebrow,
+.donation-main .eyebrow,
+.intro-heading h2 span,
+.pathway-intro h2 span,
+.camps-section h2 span,
+.international-section h2 span,
+.college-section h2 span,
+.events-section h2 span,
+.page-hero:not(.page-hero-dark) h1 span,
+.content-white h2 span,
+.content-light h2 span,
+.donation-main h2 span {
+  text-shadow:0 2px 5px #000b,0 1px 2px #000b;
+}
+
 * {
   box-sizing: border-box;
 }

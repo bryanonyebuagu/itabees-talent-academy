@@ -3,6 +3,7 @@ import ArrowUpRight from "../components/ArrowUpRight";
 import { media } from "../data/media";
 import { coachingTeam } from "../data/coachingTeam";
 import CoachPraise from "../components/CoachPraise";
+import BrandText from "../components/BrandText";
 import "../App.css";
 
 const assets = import.meta.glob("../assets/*", {
@@ -20,7 +21,7 @@ function findImage(searchTerm, fallback = "") {
 }
 
 const images = {
-  logo: findImage("logo.jpeg"),
+  logo: findImage("logo-brand.png"),
   hero: findImage("Boy_running_with_football_adf") || findImage("hero.png"),
   action: findImage("Boy_running_with_football_training"),
   approachGif: findImage("itabees-approach-dribble"),
@@ -144,7 +145,7 @@ export default function Home() {
     <>
 
 
-      <main>
+      <BrandText><main>
         <section className="hero-section" id="home">
           <div
             className="hero-image"
@@ -177,7 +178,7 @@ export default function Home() {
                 Explore our academy <span><ArrowUpRight /></span>
               </a>
               <a className="text-link light-link" href="/about">
-                Discover ItaBEES <span>→</span>
+                Discover <BrandText>ItaBEES</BrandText> <span>→</span>
               </a>
             </div>
           </div>
@@ -194,7 +195,7 @@ export default function Home() {
         <section className="reference-intro reveal" style={{ backgroundImage: `linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.43)), url("${images.introCoaching}")` }}>
           <p className="eyebrow">MORE THAN TRAINING.</p>
           <h2>A PATHWAY FOR <span>EVERY PLAYER.</span></h2>
-          <p>At ItaBEES Talent Academy, we believe every player deserves the opportunity to grow, compete and discover how far the game can take them.</p>
+          <p>At <BrandText>ItaBEES</BrandText> Talent Academy, we believe every player deserves the opportunity to grow, compete and discover how far the game can take them.</p>
           <p>Our supplemental soccer development programs are designed to work alongside your player’s current club, recreational, school or academy team. Through intentional training, mentorship and meaningful opportunities, we help players develop the technical ability, confidence, game intelligence and character needed for their next level.</p>
           <div className="section-actions"><a className="button button-black" href={bookUrl}>FIND YOUR PROGRAM <span><ArrowUpRight /></span></a><a className="text-link dark-link" href={bookUrl}>REGISTER FOR TRAINING <span><ArrowUpRight /></span></a></div>
         </section>
@@ -202,7 +203,7 @@ export default function Home() {
         <section className="intro-section reveal" id="about">
           <div className="intro-grid">
             <div className="intro-heading">
-              <p className="eyebrow">THE ITABEES PHILOSOPHY</p>
+              <p className="eyebrow">THE <BrandText>ITABEES</BrandText> PHILOSOPHY</p>
               <h2>
                 Every player has
                 <br />
@@ -219,7 +220,7 @@ export default function Home() {
                 see what is possible.
               </p>
               <p>
-                ItaBEES Talent Academy was created around that simple belief. We
+                <BrandText>ItaBEES</BrandText> Talent Academy was created around that simple belief. We
                 provide supplemental soccer development while helping players
                 build the technical, tactical, mental and personal qualities
                 needed to pursue their individual goals.
@@ -286,7 +287,7 @@ export default function Home() {
           <div className="development-image-wrap">
             {images.approachGif && <picture><source media="(prefers-reduced-motion: reduce)" srcSet={images.action} /><img src={images.approachGif} alt="Young ItaBEES player advancing with the ball on the pitch" loading="lazy" /></picture>}
             <div className="image-caption">
-              <span>THE ITABEES APPROACH</span>
+              <span>THE <BrandText>ITABEES</BrandText> APPROACH</span>
               <strong>Progress is built, one session at a time.</strong>
             </div>
           </div>
@@ -298,7 +299,7 @@ export default function Home() {
         </section>
 
         <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.37), rgba(0,0,0,.48)), url("${images.extra}")` }}>
-          <div className="section-heading-row"><div><p className="eyebrow">THE ITABEES WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The ItaBEES Way is built around four pillars that guide everything we do:</p></div>
+          <div className="section-heading-row"><div><p className="eyebrow">THE <BrandText>ITABEES</BrandText> WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The <BrandText>ItaBEES</BrandText> Way is built around four pillars that guide everything we do:</p></div>
           <div className="pillar-grid">{pillars.map(([title, copy]) => <article className="pillar-card" key={title}><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
         </section>
 
@@ -422,7 +423,7 @@ export default function Home() {
             Connect with ItaBEES <span><ArrowUpRight /></span>
           </a>
         </section>
-      </main>
+      </main></BrandText>
 
 
     </>
