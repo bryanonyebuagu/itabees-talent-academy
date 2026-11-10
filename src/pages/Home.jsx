@@ -189,22 +189,17 @@ export default function Home() {
             </span>
           </div>
 
-          <div className="hero-index">01 / 05</div>
         </section>
 
-        <section className="reference-intro reveal" style={{ backgroundImage: `linear-gradient(90deg, rgba(255,255,255,.9), rgba(255,255,255,.84)), url("${images.introCoaching}")` }}>
+        <section className="reference-intro reveal" style={{ backgroundImage: `linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.43)), url("${images.introCoaching}")` }}>
           <p className="eyebrow">MORE THAN TRAINING.</p>
-          <h2>A PATHWAY FOR EVERY PLAYER.</h2>
+          <h2>A PATHWAY FOR <span>EVERY PLAYER.</span></h2>
           <p>At ItaBEES Talent Academy, we believe every player deserves the opportunity to grow, compete and discover how far the game can take them.</p>
           <p>Our supplemental soccer development programs are designed to work alongside your player’s current club, recreational, school or academy team. Through intentional training, mentorship and meaningful opportunities, we help players develop the technical ability, confidence, game intelligence and character needed for their next level.</p>
           <div className="section-actions"><a className="button button-black" href={bookUrl}>FIND YOUR PROGRAM <span><ArrowUpRight /></span></a><a className="text-link dark-link" href={bookUrl}>REGISTER FOR TRAINING <span><ArrowUpRight /></span></a></div>
         </section>
 
         <section className="intro-section reveal" id="about">
-          <div className="section-label">
-            <span>01</span> / WHO WE ARE
-          </div>
-
           <div className="intro-grid">
             <div className="intro-heading">
               <p className="eyebrow">THE ITABEES PHILOSOPHY</p>
@@ -255,10 +250,6 @@ export default function Home() {
         </section>
 
         <section className="development-section reveal" id="development" ref={developmentSectionRef}>
-          <div className="section-label section-label-light">
-            <span>02</span> / PLAYER DEVELOPMENT
-          </div>
-
           <div className="section-heading-row">
             <div>
               <p className="eyebrow">GROW WITH PURPOSE</p>
@@ -306,16 +297,12 @@ export default function Home() {
           <div className="editorial-copy"><p className="eyebrow">CAMPS &amp; CLINICS</p><h2>MORE TOUCHES.<br /><span>MORE GROWTH.</span></h2><p>ItaBEES camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment.</p><p>From school-break and summer camps to position-specific clinics and special guest coaching events, each experience is designed with a clear developmental purpose.</p><p>Players leave with more than memories, taking with them new skills, greater confidence and a better understanding of the game.</p><a className="text-link dark-link" href={bookUrl}>View Upcoming Camps &amp; Clinics <span><ArrowUpRight /></span></a></div>
         </section>
 
-        <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.52), rgba(0,0,0,.68)), url("${images.extra}")` }}>
+        <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.37), rgba(0,0,0,.48)), url("${images.extra}")` }}>
           <div className="section-heading-row"><div><p className="eyebrow">THE ITABEES WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The ItaBEES Way is built around four pillars that guide everything we do:</p></div>
-          <div className="pillar-grid">{pillars.map(([title, copy], index) => <article className="pillar-card" key={title}><span>0{index + 1} / 04</span><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
+          <div className="pillar-grid">{pillars.map(([title, copy]) => <article className="pillar-card" key={title}><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
         </section>
 
         <section className="pathway-section reveal" id="pathway">
-          <div className="section-label">
-            <span>03</span> / THE PLAYER PATHWAY
-          </div>
-
           <div className="pathway-intro">
             <p className="eyebrow">EVERY JOURNEY IS DIFFERENT</p>
             <h2>
@@ -342,7 +329,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="why-section reveal" style={{ backgroundImage: `linear-gradient(90deg, rgba(0,0,0,.05), rgba(0,0,0,.15)), url("${images.hero}")` }}>
+        <section className="why-section reveal" style={{ backgroundImage: `linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.35)), url("${images.hero}")` }}>
           <div className="editorial-copy"><p className="eyebrow">WHY ITABEES?</p><h2>Your Team Develops the Team.<br /><span>We Help Develop the Individual.</span></h2><p>ItaBEES is designed to complement, not replace, a player's existing soccer environment.</p><p>Players from recreational leagues, competitive clubs, school teams and other academies are welcome.</p><p>Our supplemental model allows us to focus on something team environments don't always have enough time to provide: the individual player.</p><p>More touches. More feedback. More repetition. More confidence.</p><p>And most importantly, a development plan centered around the player rather than the roster.</p><strong>Club-Neutral · Player-Centered · Development-Focused</strong></div>
         </section>
 
@@ -362,9 +349,6 @@ export default function Home() {
           </div>
 
           <div className="mentorship-content">
-            <div className="section-label">
-              <span>04</span> / MENTORSHIP
-            </div>
             <p className="eyebrow">GUIDANCE THAT MAKES A DIFFERENCE</p>
             <h2>
               Great players
@@ -394,14 +378,11 @@ export default function Home() {
 
         <section className="opportunities-section reveal" id="opportunities">
           <div className="opportunities-photo"><img src={images.team} alt="ItaBEES coaches and academy banner" /></div>
-          <div className="section-label section-label-light">
-            <span>05</span> / OPPORTUNITIES
-          </div>
           <p className="eyebrow">OPEN UP THE POSSIBILITIES</p>
           <h2>
             The journey doesn't
             <br />
-            stop at the pitch.
+            <span>stop at the pitch.</span>
           </h2>
           <p className="opportunities-copy">
             From camps and clinics to international experiences and college

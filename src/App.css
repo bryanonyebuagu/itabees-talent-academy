@@ -1818,6 +1818,164 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .community-impact-hero .page-hero-copy h1 span { color:#ffe600; }
 .community-impact-hero .page-hero-copy > p:not(.eyebrow) { color:#f2f2ed; }
 
+/* One display language for the public site, from the opening hero through the footer CTA. */
+.hero-content h1,
+.reference-intro h2,
+.intro-heading h2,
+.development-section .section-heading-row h2,
+.camps-section .editorial-copy h2,
+.pillars-section .section-heading-row h2,
+.pathway-intro h2,
+.why-section .editorial-copy h2,
+.assessments-section h2,
+.mentorship-content h2,
+.international-section .editorial-copy h2,
+.college-section .editorial-copy h2,
+.events-section h2,
+.opportunities-section h2,
+.final-cta h2,
+.page-hero-copy h1,
+.content-section-copy h2,
+.donation-intro-copy h1,
+.donation-purpose h2,
+.donation-panel-heading h2,
+.checkout-heading h1,
+.donate-social-section h2,
+.contact-page-grid h2,
+.thank-you-page h1,
+.coach-section-heading {
+  font-family:'Barlow Condensed',Impact,sans-serif;
+  font-weight:900;
+  font-style:normal;
+  letter-spacing:-.015em;
+  line-height:.92;
+  text-transform:uppercase;
+  -webkit-text-stroke:0;
+}
+.hero-content h1,
+.reference-intro h2,
+.intro-heading h2,
+.development-section .section-heading-row h2,
+.pathway-intro h2,
+.mentorship-content h2,
+.opportunities-section h2,
+.final-cta h2 { font-size:clamp(62px,6.5vw,100px); }
+.editorial-copy h2,
+.assessments-section h2,
+.events-section h2,
+.content-section-copy h2 { font-size:clamp(56px,5.5vw,84px); }
+.reference-intro h2 span,
+.intro-heading h2 span,
+.development-section h2 span,
+.editorial-copy h2 span,
+.pillars-section h2 span,
+.pathway-intro h2 span,
+.assessments-section h2 span,
+.mentorship-content h2 span,
+.events-section h2 span,
+.opportunities-section h2 span,
+.page-hero-copy h1 span { color:#ffe600; -webkit-text-stroke:0; }
+.reference-intro .eyebrow,
+.intro-heading .eyebrow,
+.development-section .eyebrow,
+.camps-section .eyebrow,
+.pillars-section .eyebrow,
+.pathway-intro .eyebrow,
+.why-section .eyebrow,
+.assessments-section .eyebrow,
+.mentorship-content .eyebrow,
+.international-section .eyebrow,
+.college-section .eyebrow,
+.events-section .eyebrow,
+.opportunities-section .eyebrow,
+.page-hero-copy .eyebrow,
+.content-section-copy .eyebrow {
+  display:block;
+  width:auto;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#ffe600;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+.donation-intro-copy .eyebrow,
+.donation-purpose .eyebrow,
+.donate-social-section .eyebrow,
+.contact-page-grid .eyebrow,
+.checkout-heading .eyebrow,
+.thank-you-page .eyebrow {
+  display:block;
+  width:auto;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#ffe600;
+}
+.section-label,.hero-index { display:none; }
+
+/* Photograph first: a restrained black veil and black type shadows. */
+.reference-intro { color:#fff; }
+.reference-intro h2,
+.reference-intro > p,
+.why-section .editorial-copy h2,
+.why-section .editorial-copy p,
+.why-section .editorial-copy strong,
+.pillars-section .section-heading-row h2,
+.pillars-section .section-heading-row > p,
+.assessments-section h2,
+.assessments-section p,
+.events-section h2 {
+  text-shadow:0 3px 12px #000,0 1px 4px #000;
+}
+.reference-intro .eyebrow,
+.why-section .eyebrow,
+.assessments-section .eyebrow,
+.events-section .eyebrow { text-shadow:0 2px 8px #000; }
+.reference-intro .text-link { color:#fff; }
+.reference-intro .text-link:hover { color:#ffe600; }
+.events-section h2 { text-shadow:0 2px 5px #0007; }
+.why-section .editorial-copy {
+  width:min(720px,58%);
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  box-shadow:none;
+  color:#fff;
+}
+.why-section .editorial-copy h2 { font-size:clamp(56px,5vw,82px); }
+.why-section .editorial-copy p:not(.eyebrow) { color:#fff; }
+.why-section .editorial-copy strong { color:#ffe600; }
+
+/* Let the ItaBEES Way photograph read through every glass card. */
+.pillars-section .pillar-card {
+  background:rgba(8,14,10,.14);
+  border:1px solid #ffffff78;
+  backdrop-filter:blur(1.5px) saturate(1.05);
+  -webkit-backdrop-filter:blur(1.5px) saturate(1.05);
+}
+.pillars-section .pillar-card h3 { margin-top:6px; }
+.pillars-section .pillar-card .text-link,
+.pillars-section .pillar-card .text-link svg { color:#ffe600; }
+.pillars-section .pillar-card .text-link:hover,
+.pillars-section .pillar-card .text-link:hover svg { color:#fff; }
+
+@media(max-width:700px) {
+  .hero-content h1,.reference-intro h2,.intro-heading h2,
+  .development-section .section-heading-row h2,.pathway-intro h2,
+  .mentorship-content h2,.opportunities-section h2,.final-cta h2 { font-size:clamp(54px,12vw,76px); }
+  .editorial-copy h2,.assessments-section h2,.events-section h2,
+  .content-section-copy h2 { font-size:clamp(48px,11vw,68px); }
+  .why-section { min-height:660px; padding:80px 6%; background-size:cover; background-position:center; }
+  .why-section .editorial-copy { width:100%; padding:0; background:transparent; }
+  .pillars-section .pillar-card { background:rgba(8,14,10,.10); }
+}
+
 @media(max-width:768px) {
   .community-impact-hero {
     position:relative;
