@@ -65,8 +65,8 @@ const developmentAreas = [
 ];
 
 const pillars = [
-  ["CHARACTER", "We develop integrity, discipline, resilience, respect, responsibility and leadership—qualities that matter long after the final whistle."],
-  ["EXCELLENCE", "Excellence isn't perfection. It is the commitment to continually learn, improve and give your best—in training, competition, school and life."],
+  ["CHARACTER", "We develop integrity, discipline, resilience, respect, responsibility and leadership, qualities that matter long after the final whistle."],
+  ["EXCELLENCE", "Excellence isn't perfection. It is the commitment to continually learn, improve and give your best in training, competition, school and life."],
   ["EDUCATION", "We encourage our players to value academic achievement alongside athletic development. Soccer can create opportunities, but education helps prepare players to make the most of them."],
   ["SOCCER", "We develop intelligent, confident and technically capable players through purposeful training, game understanding and a lifelong love for the sport."],
 ];
@@ -306,7 +306,7 @@ export default function Home() {
           <div className="editorial-copy"><p className="eyebrow">CAMPS &amp; CLINICS</p><h2>MORE TOUCHES.<br /><span>MORE GROWTH.</span></h2><p>ItaBEES camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment.</p><p>From school-break and summer camps to position-specific clinics and special guest coaching events, each experience is designed with a clear developmental purpose.</p><p>Players leave with more than memories, taking with them new skills, greater confidence and a better understanding of the game.</p><a className="text-link dark-link" href={bookUrl}>View Upcoming Camps &amp; Clinics <span><ArrowUpRight /></span></a></div>
         </section>
 
-        <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,.68), rgba(255,255,255,.75)), url("${images.extra}")` }}>
+        <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,.45), rgba(255,255,255,.55)), url("${images.extra}")` }}>
           <div className="section-label"><span>03</span> / THE ITABEES WAY</div>
           <div className="section-heading-row"><div><p className="eyebrow">THE ITABEES WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The ItaBEES Way is built around four pillars that guide everything we do:</p></div>
           <div className="pillar-grid">{pillars.map(([title, copy], index) => <article className="pillar-card" key={title}><span>0{index + 1} / 04</span><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
