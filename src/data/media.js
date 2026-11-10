@@ -15,6 +15,7 @@ export const media = {
   team: find("Enhance_photograph"),
   education: find("ai-generated-IMAGE"),
   camp: find("itabees-camp-clinic"),
+  eventsHero: find("Enhancing_phone_photograph_quality_bcda055d_2K"),
   programs: find("itabees-programs-training"),
   pathway: find("itabees-player-pathway"),
   donation: find("22e53e"),
