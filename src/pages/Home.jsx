@@ -307,7 +307,6 @@ export default function Home() {
         </section>
 
         <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.52), rgba(0,0,0,.68)), url("${images.extra}")` }}>
-          <div className="section-label"><span>03</span> / THE ITABEES WAY</div>
           <div className="section-heading-row"><div><p className="eyebrow">THE ITABEES WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The ItaBEES Way is built around four pillars that guide everything we do:</p></div>
           <div className="pillar-grid">{pillars.map(([title, copy], index) => <article className="pillar-card" key={title}><span>0{index + 1} / 04</span><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
         </section>
