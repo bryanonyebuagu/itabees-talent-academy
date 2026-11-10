@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import ArrowUpRight from "./ArrowUpRight";
 
-export function PageHero({ eyebrow, title, description, image, mobileImage, imageAlt = "", dark = false }) {
-  return <section className={`page-hero ${dark ? "page-hero-dark" : ""}`}>
+export function PageHero({ eyebrow, title, description, image, mobileImage, imageAlt = "", dark = false, className = "" }) {
+  return <section className={`page-hero ${dark ? "page-hero-dark" : ""} ${className}`}>
     <div className="page-hero-copy"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1>{description && <p>{description}</p>}</div>
     {image && <div className="page-hero-image"><picture>{mobileImage && <source media="(min-width: 769px)" srcSet={image} />}<img src={mobileImage || image} alt={imageAlt} /></picture></div>}
   </section>;

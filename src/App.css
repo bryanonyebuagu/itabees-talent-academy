@@ -1798,3 +1798,70 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   .content-dark { background-position:center,68% center; }
   .events-section { background-image:linear-gradient(90deg,#f9f9f6ec,#f9f9f6ba),url('./assets/daylight-training-field.png'); background-position:center,70% center; }
 }
+
+/* Community Impact shares the ItaBEES Way display treatment. */
+.community-impact-hero { background:#111; }
+.community-impact-hero .page-hero-copy { color:#fff; }
+.community-impact-hero .page-hero-copy .eyebrow {
+  color:#ffe600;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+.community-impact-hero .page-hero-copy h1 {
+  font-family:'Barlow Condensed',Impact,sans-serif;
+  font-size:clamp(62px,6.5vw,100px);
+  font-weight:900;
+  line-height:.92;
+  letter-spacing:-.015em;
+  text-transform:uppercase;
+}
+.community-impact-hero .page-hero-copy h1 span { color:#ffe600; }
+.community-impact-hero .page-hero-copy > p:not(.eyebrow) { color:#f2f2ed; }
+
+@media(max-width:768px) {
+  .community-impact-hero {
+    position:relative;
+    display:flex;
+    align-items:center;
+    min-height:640px;
+    isolation:isolate;
+    background:#111;
+  }
+  .community-impact-hero .page-hero-image,
+  .community-impact-hero .page-hero-image picture,
+  .community-impact-hero .page-hero-image img {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    max-height:none;
+  }
+  .community-impact-hero .page-hero-image { z-index:-2; max-height:none; }
+  .community-impact-hero .page-hero-image img { object-fit:cover; object-position:center; }
+  .community-impact-hero::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:linear-gradient(180deg,rgba(0,0,0,.43),rgba(0,0,0,.49));
+    pointer-events:none;
+  }
+  .community-impact-hero .page-hero-copy { position:relative; padding:82px 6%; }
+  .community-impact-hero .page-hero-copy .eyebrow,
+  .community-impact-hero .page-hero-copy h1 span { color:#ffe600; }
+  .community-impact-hero .page-hero-copy h1 {
+    color:#fff;
+    font-size:clamp(54px,12vw,76px);
+    overflow-wrap:normal;
+  }
+  .community-impact-hero .page-hero-copy > p:not(.eyebrow) {
+    color:#fff;
+    font-size:clamp(17px,4vw,21px);
+    line-height:1.5;
+  }
+  .community-impact-hero .page-hero-copy .eyebrow,
+  .community-impact-hero .page-hero-copy h1,
+  .community-impact-hero .page-hero-copy > p:not(.eyebrow) {
+    text-shadow:0 3px 12px #000,0 1px 4px #000;
+  }
+}
