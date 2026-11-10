@@ -8,8 +8,8 @@ export function PageHero({ eyebrow, title, description, image, mobileImage, imag
   </section>;
 }
 
-export function ContentSection({ eyebrow, title, children, tone = "white", image, imageAlt = "", reverse = false, className = "" }) {
-  return <section className={`content-section content-${tone} ${image ? "content-with-image" : ""} ${reverse ? "content-reverse" : ""} ${className}`}>
+export function ContentSection({ eyebrow, title, children, tone = "white", image, imageAlt = "", reverse = false }) {
+  return <section className={`content-section content-${tone} ${image ? "content-with-image" : ""} ${reverse ? "content-reverse" : ""}`}>
     <div className="content-section-copy"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{children}</div>
     {image && <div className="content-section-image"><img src={image} alt={imageAlt} /></div>}
   </section>;
