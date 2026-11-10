@@ -1759,6 +1759,10 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .events-section { background-color:#f4f5f0; background-image:linear-gradient(90deg,#f9f9f6f2 0%,#f9f9f6df 48%,#f9f9f640 100%),url('./assets/daylight-training-field.png'); background-position:center,right center; background-size:cover; background-repeat:no-repeat; }
 .events-empty { width:min(100%,720px); box-shadow:0 18px 38px #00000014; }
 .site-footer { background:radial-gradient(ellipse at 88% 0%,#292613 0%,transparent 38%),linear-gradient(135deg,#111311,#070807); }
+.camps-section .editorial-photo { position:relative; }
+.camps-section .editorial-photo picture { display:block; width:100%; height:100%; }
+.camps-section .editorial-photo img { display:block; width:100%; height:100%; object-fit:cover; }
+.camps-photo-label { display:none; }
 .training-values { gap:22px; }
 .training-value-float { height:100%; animation:training-value-float 6s ease-in-out infinite; }
 .training-value-float:nth-child(2) { animation-duration:7.2s; animation-delay:-1.7s; }
@@ -1768,6 +1772,13 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 @keyframes training-value-float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
 @media(prefers-reduced-motion:reduce) { .training-value-float { animation:none; } }
 @media(max-width:700px) {
+  .camps-section .editorial-photo { max-height:none; }
+  .camps-section .editorial-photo picture { height:auto; }
+  .camps-section .editorial-photo img { height:auto; max-height:none; }
+  .camps-section .editorial-photo::after { content:""; position:absolute; inset:auto 0 0; height:42%; background:linear-gradient(transparent,#0009); pointer-events:none; }
+  .camps-photo-label { position:absolute; z-index:1; display:block; left:6%; bottom:18px; color:#ffe600; font-size:clamp(20px,6vw,28px); font-weight:900; letter-spacing:.08em; text-shadow:0 2px 12px #000; }
+  .camps-section .editorial-copy { padding-top:34px; }
+  .camps-section .editorial-copy > .eyebrow { display:none; }
   .content-dark { background-position:center,68% center; }
   .events-section { background-image:linear-gradient(90deg,#f9f9f6ec,#f9f9f6ba),url('./assets/daylight-training-field.png'); background-position:center,70% center; }
 }

@@ -302,11 +302,11 @@ export default function Home() {
         </section>
 
         <section className="camps-section reveal" id="camps">
-          <div className="editorial-photo"><img src={images.extra} alt="Soccer training on the pitch" /></div>
+          <div className="editorial-photo"><picture><source media="(max-width: 700px)" srcSet={media.campMobile} /><img src={media.campDesktop} alt="ItaBEES players training with coaches at camp" /></picture><span className="camps-photo-label">CAMPS &amp; CLINICS</span></div>
           <div className="editorial-copy"><p className="eyebrow">CAMPS &amp; CLINICS</p><h2>MORE TOUCHES.<br /><span>MORE GROWTH.</span></h2><p>ItaBEES camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment.</p><p>From school-break and summer camps to position-specific clinics and special guest coaching events, each experience is designed with a clear developmental purpose.</p><p>Players leave with more than memories, taking with them new skills, greater confidence and a better understanding of the game.</p><a className="text-link dark-link" href={bookUrl}>View Upcoming Camps &amp; Clinics <span><ArrowUpRight /></span></a></div>
         </section>
 
-        <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,.93), rgba(255,255,255,.95)), url("${images.extra}")` }}>
+        <section className="pillars-section reveal" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,.68), rgba(255,255,255,.75)), url("${images.extra}")` }}>
           <div className="section-label"><span>03</span> / THE ITABEES WAY</div>
           <div className="section-heading-row"><div><p className="eyebrow">THE ITABEES WAY</p><h2>Developing Better Players<br /><span>and Better People.</span></h2></div><p>Soccer is the vehicle. Developing young people is the purpose. The ItaBEES Way is built around four pillars that guide everything we do:</p></div>
           <div className="pillar-grid">{pillars.map(([title, copy], index) => <article className="pillar-card" key={title}><span>0{index + 1} / 04</span><h3>{title}</h3><p>{copy}</p><a className="text-link dark-link" href="/mentorship">LEARN MORE <span><ArrowUpRight /></span></a></article>)}</div>
