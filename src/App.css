@@ -1763,7 +1763,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .camps-section .editorial-photo picture { display:block; width:100%; height:100%; }
 .camps-section .editorial-photo img { display:block; width:100%; height:100%; object-fit:cover; }
 .camps-photo-label { display:none; }
-.intro-section .value-item { border-left:2px solid #ffe600 !important; }
+.intro-section .value-item { border-left:3px solid #ffe600 !important; }
 .pillars-section { color:#fff; }
 .pillars-section .section-label { text-align:center; color:#e9e9e4; }
 .pillars-section .section-heading-row { flex-direction:column; align-items:center; gap:17px; margin-top:35px; text-align:center; }
