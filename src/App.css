@@ -1748,3 +1748,18 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
  .checkout-page { padding:70px 6%; }.checkout-form,.checkout-summary { padding:23px; }.checkout-summary { position:static; }.checkout-grid { display:flex; flex-direction:column-reverse; }.checkout-summary,.checkout-form { width:100%; }
 }
 @media(max-width:420px) { .frequency-options { grid-template-columns:1fr; }.donation-panel { padding:18px; }.page-hero-copy h1 { font-size:40px; } }
+
+/* Restrained section depth: keep photographic and lemon sections distinct. */
+.intro-section { background:radial-gradient(ellipse at 90% 8%,#fffce7 0%,transparent 38%),linear-gradient(145deg,#fff 22%,#f8f8f5 100%); }
+.development-section { background:radial-gradient(ellipse at 82% 10%,#292817 0%,transparent 43%),linear-gradient(135deg,#121412,#090a09); }
+.pathway-section { background:radial-gradient(ellipse at 4% 0%,#fffdf0 0%,transparent 42%),linear-gradient(145deg,#f7f7f3,#eeeeea); }
+.page-hero-dark,.donate-hero,.donation-intro { background:radial-gradient(ellipse at 10% 12%,#262516 0%,transparent 48%),linear-gradient(130deg,#151615,#080908); }
+.content-white { background:linear-gradient(145deg,#fff 35%,#f8f8f5); }
+.content-dark { background-color:#0b0e0c; background-image:linear-gradient(90deg,#080b09d9 0%,#080b09a6 58%,#080b0966 100%),url('./assets/floodlit-training-ground.png'); background-position:center; background-size:cover; background-repeat:no-repeat; }
+.events-section { background-color:#f4f5f0; background-image:linear-gradient(90deg,#f9f9f6f2 0%,#f9f9f6df 48%,#f9f9f640 100%),url('./assets/daylight-training-field.png'); background-position:center,right center; background-size:cover; background-repeat:no-repeat; }
+.events-empty { width:min(100%,720px); box-shadow:0 18px 38px #00000014; }
+.site-footer { background:radial-gradient(ellipse at 88% 0%,#292613 0%,transparent 38%),linear-gradient(135deg,#111311,#070807); }
+@media(max-width:700px) {
+  .content-dark { background-position:center,68% center; }
+  .events-section { background-image:linear-gradient(90deg,#f9f9f6ec,#f9f9f6ba),url('./assets/daylight-training-field.png'); background-position:center,70% center; }
+}
