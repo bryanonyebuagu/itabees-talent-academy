@@ -2210,9 +2210,12 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .training-register-band p:not(.eyebrow) { max-width:650px; line-height:1.65; color:#4b4b49; }
 .training-register-band .button { flex-shrink:0; }
 .training-overview { display:grid; grid-template-columns:.9fr 1.1fr; gap:7%; padding:105px 7%; background:#fff; }
-.training-overview-images { display:grid; grid-template-columns:1fr .7fr; gap:12px; min-height:630px; max-height:760px; }
-.training-overview-images img { width:100%; height:100%; min-height:0; object-fit:cover; border-radius:13px; box-shadow:0 25px 50px #0002; }
-.training-overview-images img:nth-child(2) { height:75%; align-self:end; }
+.training-overview-images { position:relative; min-height:650px; align-self:center; }
+.training-overview-photo { position:absolute; margin:0; overflow:hidden; border:2px solid #fff; border-radius:16px; background:#111; box-shadow:0 26px 48px #0004,0 8px 18px #0003; }
+.training-overview-photo img { display:block; width:100%; height:100%; object-fit:cover; }
+.training-overview-photo-primary { z-index:1; top:3%; left:8%; width:84%; height:58%; }
+.training-overview-photo-left { z-index:3; top:49%; left:1%; width:55%; height:45%; transform:rotate(-2deg); box-shadow:0 30px 50px #0005,0 9px 20px #0004; }
+.training-overview-photo-right { z-index:2; top:53%; right:3%; width:54%; height:43%; transform:rotate(2deg); box-shadow:0 26px 46px #0005,0 8px 19px #0004; }
 .training-overview-copy h2 { max-width:600px; margin:17px 0 25px; font-size:clamp(56px,5.5vw,86px); }
 .training-overview-copy h2 em { color:#111; text-shadow:none; }
 .training-overview-copy > p:not(.eyebrow) { max-width:660px; color:#4f4f4f; line-height:1.7; }
@@ -2302,6 +2305,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 @media(max-width:900px) { .training-collage { min-height:580px; max-width:740px; margin:auto; } }
 @media(max-width:700px) { .training-collage { min-height:440px; width:100%; margin:0 auto 32px; }.camp-collage-primary { top:4%; left:7%; width:86%; height:59%; }.camp-collage-left { top:54%; left:4%; width:55%; height:38%; }.camp-collage-right { top:57%; right:4%; width:52%; height:36%; }.camp-collage-photo { border-radius:16px; box-shadow:0 18px 32px #0005,0 6px 12px #0004; } }
 @media(max-width:420px) { .training-collage { min-height:380px; }.camp-collage-primary { height:57%; }.camp-collage-left { top:52%; }.camp-collage-right { top:55%; } }
+@media(max-width:700px) { .training-overview-images { min-height:410px; max-height:none; width:100%; }.training-overview-photo-primary { top:3%; left:7%; width:86%; height:58%; }.training-overview-photo-left { top:52%; left:3%; width:56%; height:39%; }.training-overview-photo-right { top:55%; right:3%; width:54%; height:37%; } }
+@media(max-width:390px) { .training-overview-images { min-height:370px; } }
 .footer-links a:hover,.footer-connect a:hover,.footer-connect > div:hover,
 .opportunity-links a:hover,.text-link:hover,.donate-nav > a:not(.nav-cta):hover {
   text-shadow:0 2px 4px #000,0 4px 10px #0009;
