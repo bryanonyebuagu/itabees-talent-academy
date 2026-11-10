@@ -1446,11 +1446,14 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .coach-names { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-top:35px; border-top:1px solid #ddd; }
 .coach-names div { display:flex; flex-direction:column; gap:5px; padding-top:20px; }
 .coach-names strong { font-size:15px; }.coach-names span { color:#666; font-size:12px; }
-.coach-names .home-coach-card { position:relative; display:block; padding:0; aspect-ratio:4 / 5; overflow:hidden; border-radius:12px; background:#e8e8e3; box-shadow:0 16px 30px #00000018; }
+.coach-section-heading { margin:54px 0 0; font-size:clamp(22px,2.2vw,32px); line-height:1.15; letter-spacing:-.04em; }
+.coach-names .home-coach-card { display:flex; flex-direction:column; min-width:0; overflow:hidden; border-radius:12px; background:#f7f7f4; box-shadow:0 16px 30px #00000018; }
+.coach-names .home-coach-photo { position:relative; display:block; padding:0; aspect-ratio:4 / 5; overflow:hidden; background:#e8e8e3; }
 .home-coach-card img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 28%; transition:transform .45s ease; }
 .home-coach-card:hover img { transform:scale(1.035); }
 .coach-names .home-coach-label { position:absolute; inset:auto 0 0; display:flex; flex-direction:column; gap:2px; padding:32px 17px 16px; background:linear-gradient(transparent,#080808ed 56%); color:#fff; }
 .home-coach-label strong { color:#fff; }.coach-names .home-coach-label span { color:#e7e7e7; }
+.coach-names .home-coach-praise { margin:0; padding:16px 17px 20px; color:#333; font-size:13px; line-height:1.6; }
 .opportunities-section { display:grid; grid-template-columns:1.1fr .9fr; gap:5%; }
 .opportunities-photo { position:relative; grid-column:2; grid-row:1 / span 5; width:100%; height:auto; min-height:0; opacity:1; align-self:center; border-radius:16px; overflow:hidden; background:#252525; }
 .opportunities-photo img { display:block; width:100%; height:auto; object-fit:contain; transition:transform .7s ease; }
@@ -1664,6 +1667,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .coach-card:hover img { transform:scale(1.035); }
 .coach-card-label { position:absolute; inset:auto 0 0; padding:56px 23px 23px; background:linear-gradient(transparent,#080808ef 60%); }
 .coach-card-label h3 { margin:0 0 3px; color:#fff; }.coach-card-label p { margin:0; color:#e7e7e7; }
+.coach-card .coach-card-praise { margin:0; padding:21px 23px 25px; color:#333; font-size:14px; line-height:1.65; }
 @media(max-width:700px) { .coach-names .home-coach-card { width:min(100%,420px); margin-inline:auto; }.coach-card-grid .coach-card { width:min(100%,460px); margin-inline:auto; } }
 .page-stage-list { max-width:1000px; margin:45px 0; border-top:1px solid #d7d7d0; }
 .page-stage-list article { display:grid; grid-template-columns:70px 1fr; gap:20px; border-bottom:1px solid #d7d7d0; padding:24px 0; }
