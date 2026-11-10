@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import ArrowUpRight from "./ArrowUpRight";
-import logo from "../assets/logo-brand.png";
-import BrandText from "./BrandText";
+import logo from "../assets/logo.jpeg";
 
 const links = [
   ["Home", "/"],
@@ -16,13 +15,13 @@ const links = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   return <header className="site-header">
-    <Link className="brand" to="/" onClick={() => setOpen(false)} aria-label="ItaBEES Talent Academy home"><span className="brand-logo"><img src={logo} alt="" /></span></Link>
+    <Link className="brand" to="/" onClick={() => setOpen(false)} aria-label="ItaBEES Talent Academy home"><span className="brand-logo"><img src={logo} alt="" /></span><span className="brand-wordmark"><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><small>TALENT ACADEMY</small></span></Link>
     <nav className={`navigation ${open ? "is-open" : ""}`} id="main-navigation" aria-label="Main navigation">
       {links.map(([label, to]) => <NavLink key={to} to={to} end={to === "/"} onClick={() => setOpen(false)}>{label}</NavLink>)}
       <div className="nav-register">
         <NavLink to="/dashboard" className="nav-register-link" onClick={() => setOpen(false)}>Register</NavLink>
         <div className="nav-register-popover" aria-label="Account options">
-          <span className="nav-register-kicker">YOUR <BrandText>ITABEES</BrandText> SPACE</span>
+          <span className="nav-register-kicker">YOUR ITABEES SPACE</span>
           <Link to="/login" onClick={() => setOpen(false)}>Login <ArrowUpRight /></Link>
           <Link to="/signup" onClick={() => setOpen(false)}>Sign up <ArrowUpRight /></Link>
           <Link to="/admin" onClick={() => setOpen(false)}>Login as admin <ArrowUpRight /></Link>
