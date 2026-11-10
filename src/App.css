@@ -1993,6 +1993,70 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .pillars-section .pillar-card .text-link:hover,
 .pillars-section .pillar-card .text-link:hover svg { color:#fff; }
 
+/* The mentorship heading uses the same photographic display treatment. */
+.mentorship-image { isolation:isolate; }
+.mentorship-image::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.58),rgba(0,0,0,.34) 36%,transparent 72%);
+  pointer-events:none;
+}
+.mentorship-intro {
+  position:absolute;
+  z-index:1;
+  top:clamp(55px,7vw,100px);
+  left:50%;
+  width:min(92%,1050px);
+  transform:translateX(-50%);
+  text-align:center;
+  color:#fff;
+}
+.mentorship-intro .eyebrow {
+  display:block;
+  width:auto;
+  margin:0 0 18px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#ffe600;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+.mentorship-intro h2 {
+  margin:0;
+  font-family:'Barlow Condensed',Impact,sans-serif;
+  font-size:clamp(62px,6.5vw,100px);
+  font-weight:900;
+  line-height:.92;
+  letter-spacing:-.015em;
+  text-transform:uppercase;
+}
+.mentorship-intro h2 span { color:#ffe600; -webkit-text-stroke:0; }
+.mentorship-intro .eyebrow,.mentorship-intro h2 { text-shadow:0 3px 12px #000,0 1px 4px #000; }
+.mentorship-image .image-tag { z-index:1; }
+.mentorship-content { padding-top:42px; }
+
+@media(max-width:700px) {
+  .mentorship-image { display:flex; flex-direction:column; }
+  .mentorship-image::after { display:none; }
+  .mentorship-intro {
+    position:relative;
+    top:auto;
+    left:auto;
+    order:0;
+    width:100%;
+    padding:50px 22px 45px;
+    transform:none;
+    background:#111;
+  }
+  .mentorship-intro h2 { font-size:clamp(50px,12vw,68px); }
+  .mentorship-image picture { order:1; }
+  .mentorship-image .image-tag { bottom:14px; left:14px; }
+}
+
 @media(max-width:700px) {
   .hero-content h1,.reference-intro h2,.intro-heading h2,
   .development-section .section-heading-row h2,.pathway-intro h2,

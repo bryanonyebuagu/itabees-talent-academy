@@ -340,6 +340,16 @@ export default function Home() {
 
         <section className="mentorship-section reveal" id="coaches">
           <div className="mentorship-image">
+            <div className="mentorship-intro">
+              <p className="eyebrow">GUIDANCE THAT MAKES A DIFFERENCE</p>
+              <h2>
+                Great players
+                <br />
+                need great
+                <br />
+                <span>people around them.</span>
+              </h2>
+            </div>
             {images.coaching && (
               <picture>
                 <source media="(min-width: 769px)" srcSet={images.coaching} />
@@ -350,14 +360,6 @@ export default function Home() {
           </div>
 
           <div className="mentorship-content">
-            <p className="eyebrow">GUIDANCE THAT MAKES A DIFFERENCE</p>
-            <h2>
-              Great players
-              <br />
-              need great
-              <br />
-              <span>people around them.</span>
-            </h2>
             <p>
               The right guidance can change a player's journey. We believe in
               creating an environment where young athletes are challenged,
