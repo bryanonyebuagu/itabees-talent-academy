@@ -2246,14 +2246,14 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .donation-impact-card { overflow:hidden; border-radius:17px; background:#fff; box-shadow:0 24px 55px #00000016; }
 .donation-impact-card > img { display:block; width:100%; height:290px; object-fit:cover; object-position:center 35%; }
 .donation-impact-card > div { padding:36px; }
-.donation-impact-card .eyebrow,.donation-partners .eyebrow,.donation-area-label { color:#7b6b00; }
+.donation-impact-card .eyebrow,.donation-partners .eyebrow,.donation-area-label { color:#ffe600; text-shadow:0 2px 5px #000; }
 .donation-impact-card h2 { margin:12px 0 15px; font-size:clamp(48px,4.6vw,72px); }
-.donation-impact-card h2 em,.donation-partners h2 em { color:#9d8800; text-shadow:0 2px 5px #0007; }
+.donation-impact-card h2 em,.donation-partners h2 em { color:#ffe600; text-shadow:0 3px 8px #000; }
 .donation-impact-card p:not(.eyebrow) { line-height:1.65; color:#444; }
 .donation-area-label { margin:28px 0 12px; font-size:11px; font-weight:900; letter-spacing:.14em; }
 .donation-area-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
 .donation-area-grid span { min-height:83px; display:flex; flex-direction:column; justify-content:space-between; padding:12px; border:1px solid #deded6; border-radius:8px; font-size:12px; font-weight:800; }
-.donation-area-grid b { color:#8b7800; }
+.donation-area-grid b { color:#ffe600; text-shadow:0 2px 5px #000; }
 .donation-refresh .donation-panel { box-shadow:0 24px 55px #00000018; }
 .donation-partners { padding:105px 7%; background:#eaeae3; }
 .donation-partner-heading { display:flex; align-items:end; justify-content:space-between; gap:40px; margin-bottom:50px; }
@@ -2266,12 +2266,12 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .donation-partner-aside h3 { margin:15px 0; font-size:clamp(31px,3vw,48px); }
 .donation-partner-aside p:not(.eyebrow) { color:#d5d5d1; line-height:1.65; }
 .donation-partner-aside article + article p:not(.eyebrow) { color:#444; }
-.donation-partner-aside a { display:inline-flex; gap:7px; align-items:center; color:#8e7a00; font-size:13px; font-weight:800; overflow-wrap:anywhere; }
-.donation-partner-aside a:hover { color:#111; }
+.donation-partner-aside a { display:inline-flex; gap:7px; align-items:center; color:#ffe600; font-size:13px; font-weight:800; text-shadow:0 2px 5px #000; overflow-wrap:anywhere; }
+.donation-partner-aside a:hover { color:#ffe600; text-shadow:0 3px 9px #000; }
 .donation-partner-aside a svg { width:15px; height:15px; flex-shrink:0; }
 .donation-partner-options { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
 .donation-partner-options > div { display:grid; grid-template-columns:1fr auto; min-height:95px; padding:15px; border:1px solid #d6d6cd; border-radius:9px; background:#fff; }
-.donation-partner-options span { grid-column:1/-1; color:#8a7800; font-size:11px; font-weight:900; }
+.donation-partner-options span { grid-column:1/-1; color:#ffe600; text-shadow:0 2px 5px #000; font-size:11px; font-weight:900; }
 .donation-partner-options strong { align-self:end; font-size:15px; }
 .donation-partner-options svg { align-self:end; width:16px; height:16px; }
 .donation-inquiry { margin-top:24px; padding:28px; border-radius:13px; background:#fff; }
@@ -2338,3 +2338,18 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   .mentorship-image { width:100%; margin:0; }
   .mentorship-image img { filter:brightness(.90); }
 }
+
+/* Consistent lemon accents on public editorial and donation pages. */
+.page-hero-copy .editorial-accent,
+.content-section-copy .editorial-accent { color:#ffe600; text-shadow:0 3px 8px #000,0 1px 3px #000; }
+.donation-refresh .donation-panel-heading > span,
+.donation-refresh .donation-impact-card .eyebrow,
+.donation-refresh .donation-partners .eyebrow,
+.donation-refresh .donation-area-label,
+.donation-refresh .donation-area-grid b,
+.donation-refresh .donation-partner-options span,
+.donation-refresh .donation-partner-aside a { color:#ffe600; text-shadow:0 2px 6px #000; }
+.donation-refresh .donation-impact-card h2 em,
+.donation-refresh .donation-partners h2 em { color:#ffe600; text-shadow:0 3px 9px #000; }
+.donation-refresh .donation-partner-aside a:hover { color:#ffe600; text-shadow:0 3px 10px #000; }
+.donation-refresh .required-mark { color:#f00; font-weight:900; text-shadow:none; }
