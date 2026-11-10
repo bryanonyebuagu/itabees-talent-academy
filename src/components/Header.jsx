@@ -15,7 +15,7 @@ const links = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   return <header className="site-header">
-    <Link className="brand" to="/" onClick={() => setOpen(false)} aria-label="ItaBEES Talent Academy home"><span className="brand-logo"><img src={logo} alt="" /></span><span className="brand-wordmark">ITABEES<small>TALENT ACADEMY</small></span></Link>
+    <Link className="brand" to="/" onClick={() => setOpen(false)} aria-label="ItaBEES Talent Academy home"><span className="brand-logo"><img src={logo} alt="" /></span></Link>
     <nav className={`navigation ${open ? "is-open" : ""}`} id="main-navigation" aria-label="Main navigation">
       {links.map(([label, to]) => <NavLink key={to} to={to} end={to === "/"} onClick={() => setOpen(false)}>{label}</NavLink>)}
       <div className="nav-register">

@@ -1369,8 +1369,8 @@ body,button { font-family:'Inter',Arial,sans-serif; }
 .arrow-up-right-icon { display:inline-block; width:1em; height:1em; flex-shrink:0; vertical-align:-.125em; }
 h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial,sans-serif; font-weight:700; }
 .site-header { background:#090909; color:#fff; border-bottom:1px solid #242424; }
-.brand-logo { width:68px; height:68px; padding:3px; border-radius:50%; background:#000; overflow:hidden; flex:none; box-shadow:0 0 0 1px #252525; }
-.brand-logo img { width:100%; height:100%; object-fit:contain; border-radius:50%; background:#000; }
+.brand-logo { width:68px; height:68px; padding:0; border-radius:0; background:transparent; overflow:visible; flex:none; box-shadow:none; }
+.brand-logo img { width:100%; height:100%; object-fit:contain; border-radius:0; background:transparent; mix-blend-mode:screen; }
 .brand-wordmark { display:flex; flex-direction:column; color:#ffe600; font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:700; line-height:1; letter-spacing:-.05em; }
 .brand-wordmark small { margin-top:4px; color:#ffe600; font-family:'Inter',sans-serif; font-size:8px; font-weight:700; letter-spacing:.09em; }
 .navigation > a:not(.nav-cta) { color:#fff; }
