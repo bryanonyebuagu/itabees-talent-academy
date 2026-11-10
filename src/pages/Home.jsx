@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ArrowUpRight from "../components/ArrowUpRight";
+import { media } from "../data/media";
 import "../App.css";
 
 const assets = import.meta.glob("../assets/*", {
@@ -344,7 +345,7 @@ export default function Home() {
           <div className="editorial-copy"><p className="eyebrow">WHY ITABEES?</p><h2>Your Team Develops the Team.<br /><span>We Help Develop the Individual.</span></h2><p>ItaBEES is designed to complement, not replace, a player's existing soccer environment.</p><p>Players from recreational leagues, competitive clubs, school teams and other academies are welcome.</p><p>Our supplemental model allows us to focus on something team environments don't always have enough time to provide: the individual player.</p><p>More touches. More feedback. More repetition. More confidence.</p><p>And most importantly, a development plan centered around the player rather than the roster.</p><strong>Club-Neutral · Player-Centered · Development-Focused</strong></div>
         </section>
 
-        <section className="assessments-section reveal"><div><p className="eyebrow">PLAYER ASSESSMENTS</p><h2>Know Where You Are.<br /><span>Understand What's Next.</span></h2></div><div><p>Development becomes more meaningful when players understand what they're working toward.</p><p>ItaBEES Player Assessments help identify strengths, developmental priorities and areas of opportunity.</p><p>Our goal isn't simply to tell a player how they're performing. It's to give players and families a clearer picture of what to work on next.</p><strong>Assess. Develop. Reassess. Progress.</strong><div className="section-actions"><a className="button button-yellow" href={bookUrl}>Find Your Program <span><ArrowUpRight /></span></a><a className="text-link light-link" href={contactUrl}>Register Today <span><ArrowUpRight /></span></a></div></div></section>
+        <section className="assessments-section reveal" style={{ "--assessment-desktop": `url("${media.assessmentDesktop}")`, "--assessment-mobile": `url("${media.assessmentMobile}")` }}><div><p className="eyebrow">PLAYER ASSESSMENTS</p><h2>Know Where You Are.<br /><span>Understand What's Next.</span></h2></div><div><p>Development becomes more meaningful when players understand what they're working toward.</p><p>ItaBEES Player Assessments help identify strengths, developmental priorities and areas of opportunity.</p><p>Our goal isn't simply to tell a player how they're performing. It's to give players and families a clearer picture of what to work on next.</p><strong>Assess. Develop. Reassess. Progress.</strong><div className="section-actions"><a className="button button-yellow" href={bookUrl}>Find Your Program <span><ArrowUpRight /></span></a><a className="text-link light-link" href={contactUrl}>Register Today <span><ArrowUpRight /></span></a></div></div></section>
 
         <section className="impact-section reveal" id="impact"><p className="eyebrow">COMMUNITY IMPACT</p><div className="stats-grid">{[["1,200+", "Players Reached"], ["1,500+", "Training Hours"], ["150+", "Community Clinics"], ["25+", "Scholarships"]].map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div></section>
 
@@ -379,7 +380,7 @@ export default function Home() {
             <a className="text-link dark-link" href="/coaches">
               Learn more about ItaBEES <span>→</span>
             </a>
-            <div className="coach-names"><div><strong>Marcus Thorne</strong><span>Head Coach</span></div><div><strong>Elena Rodriguez</strong><span>Assistant Coach</span></div><div><strong>David Chen</strong><span>Coach</span></div></div>
+            <div className="coach-names">{[["Marcus Thorne", "Head Coach", media.coachMarcus], ["Elena Rodriguez", "Assistant Coach", media.coachElena], ["David Chen", "Coach", media.coachDavid]].map(([name, role, image]) => <div className="home-coach-card" key={name}><img src={image} alt={`${name}, ${role}`} loading="lazy" /><div className="home-coach-label"><strong>{name}</strong><span>{role}</span></div></div>)}</div>
           </div>
         </section>
 

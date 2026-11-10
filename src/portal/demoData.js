@@ -25,9 +25,9 @@ export const initialProgrammes = [
 ];
 
 export const coaches = [
-  { id: 'coach-1', name: 'Marcus Thorne', initials: 'MT', specialty: 'Technical development', email: 'marcus.thorne@example.com', programmeIds: ['programme-1', 'programme-3'], groupIds: ['group-1'], image: 'coach' },
-  { id: 'coach-2', name: 'Elena Rodriguez', initials: 'ER', specialty: 'Foundation coaching', email: 'elena.rodriguez@example.com', programmeIds: ['programme-2'], groupIds: ['group-2'], image: 'coach' },
-  { id: 'coach-3', name: 'David Chen', initials: 'DC', specialty: 'Performance pathway', email: 'david.chen@example.com', programmeIds: ['programme-3'], groupIds: ['group-3'], image: 'coach' },
+  { id: 'coach-1', name: 'Marcus Thorne', initials: 'MT', specialty: 'Technical development', email: 'marcus.thorne@example.com', programmeIds: ['programme-1', 'programme-3'], groupIds: ['group-1'], image: 'coachMarcus' },
+  { id: 'coach-2', name: 'Elena Rodriguez', initials: 'ER', specialty: 'Foundation coaching', email: 'elena.rodriguez@example.com', programmeIds: ['programme-2'], groupIds: ['group-2'], image: 'coachElena' },
+  { id: 'coach-3', name: 'David Chen', initials: 'DC', specialty: 'Performance pathway', email: 'david.chen@example.com', programmeIds: ['programme-3'], groupIds: ['group-3'], image: 'coachDavid' },
 ];
 
 export const groups = [

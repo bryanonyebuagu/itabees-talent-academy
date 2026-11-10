@@ -1424,6 +1424,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .pathway-step { min-height:320px; }
 .pathway-step h3 { font-size:22px; }
 .assessments-section { display:grid; grid-template-columns:1fr 1fr; gap:8%; background:#111; color:#fff; }
+.assessments-section { background-image:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.68)),var(--assessment-desktop); background-size:cover; background-position:center; }
 .assessments-section .eyebrow { color:#ffe600; }
 .assessments-section h2 span { -webkit-text-stroke:0; }
 .assessments-section p { font-size:15px; line-height:1.75; color:#d2d2d2; }
@@ -1445,6 +1446,11 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .coach-names { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-top:35px; border-top:1px solid #ddd; }
 .coach-names div { display:flex; flex-direction:column; gap:5px; padding-top:20px; }
 .coach-names strong { font-size:15px; }.coach-names span { color:#666; font-size:12px; }
+.coach-names .home-coach-card { position:relative; display:block; padding:0; aspect-ratio:4 / 5; overflow:hidden; border-radius:12px; background:#e8e8e3; box-shadow:0 16px 30px #00000018; }
+.home-coach-card img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 28%; transition:transform .45s ease; }
+.home-coach-card:hover img { transform:scale(1.035); }
+.coach-names .home-coach-label { position:absolute; inset:auto 0 0; display:flex; flex-direction:column; gap:2px; padding:32px 17px 16px; background:linear-gradient(transparent,#080808ed 56%); color:#fff; }
+.home-coach-label strong { color:#fff; }.coach-names .home-coach-label span { color:#e7e7e7; }
 .opportunities-section { display:grid; grid-template-columns:1.1fr .9fr; gap:5%; }
 .opportunities-photo { position:relative; grid-column:2; grid-row:1 / span 5; width:100%; height:auto; min-height:0; opacity:1; align-self:center; border-radius:16px; overflow:hidden; background:#252525; }
 .opportunities-photo img { display:block; width:100%; height:auto; object-fit:contain; transition:transform .7s ease; }
@@ -1509,7 +1515,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
  .editorial-photo img { height:auto; max-height:420px; object-fit:contain; }.editorial-copy { padding:65px 6%; }.editorial-copy h2 { font-size:clamp(40px,10vw,58px); }
  .pillar-grid { grid-template-columns:1fr; gap:12px; }.pillar-card { min-height:260px; }.pillars-section .section-heading-row { margin-top:45px; }
  .pathway-list { grid-template-columns:1fr; }.pathway-step { min-height:190px; }
- .assessments-section { grid-template-columns:1fr; gap:20px; }.assessments-section h2 { font-size:45px; }
+ .assessments-section { grid-template-columns:1fr; gap:20px; background-image:linear-gradient(rgba(0,0,0,.86),rgba(0,0,0,.72)),var(--assessment-mobile); background-position:center; }.assessments-section h2 { font-size:45px; }
  .stats-grid { grid-template-columns:repeat(2,1fr); }.stats-grid strong { font-size:38px; }
  .mentorship-image,.mentorship-content { width:88%; }.mentorship-image { margin-top:50px; }.mentorship-content { padding:45px 0 70px; }.coach-names { grid-template-columns:1fr; gap:0; }
  .opportunities-section { display:block; }.opportunities-photo { width:100%; margin:30px 0; opacity:1; }.opportunities-section > .eyebrow { margin-top:45px; }
@@ -1651,6 +1657,14 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .page-card { background:#fff; color:#111; border:1px solid #e7e7e1; border-radius:14px; padding:27px; box-shadow:0 14px 28px #0000000b; transition:transform .28s ease,box-shadow .28s ease; }
 .page-card:hover { transform:translateY(-6px); box-shadow:0 22px 36px #00000018; }
 .page-card h3 { font-size:21px; margin:0 0 13px; }.page-card p { font-size:13px; line-height:1.7; color:#555; }
+.coach-card-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.coach-card { padding:0; overflow:hidden; }
+.coach-card-photo { position:relative; aspect-ratio:4 / 5; overflow:hidden; background:#e8e8e3; }
+.coach-card-photo img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 28%; transition:transform .45s ease; }
+.coach-card:hover img { transform:scale(1.035); }
+.coach-card-label { position:absolute; inset:auto 0 0; padding:56px 23px 23px; background:linear-gradient(transparent,#080808ef 60%); }
+.coach-card-label h3 { margin:0 0 3px; color:#fff; }.coach-card-label p { margin:0; color:#e7e7e7; }
+@media(max-width:700px) { .coach-names .home-coach-card { width:min(100%,420px); margin-inline:auto; }.coach-card-grid .coach-card { width:min(100%,460px); margin-inline:auto; } }
 .page-stage-list { max-width:1000px; margin:45px 0; border-top:1px solid #d7d7d0; }
 .page-stage-list article { display:grid; grid-template-columns:70px 1fr; gap:20px; border-bottom:1px solid #d7d7d0; padding:24px 0; }
 .page-stage-list article > span { color:#8a7800; font-weight:800; }.page-stage-list h3 { margin:0 0 8px; font-size:22px; }.page-stage-list p { max-width:740px; line-height:1.65; color:#555; margin:0; }

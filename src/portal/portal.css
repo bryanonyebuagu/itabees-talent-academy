@@ -320,6 +320,13 @@
 .portal-checkbox-row input { accent-color:#ffe600; }
 .portal-form-error { color:#ff8f83; font-size:11px; }
 .portal-coach-hero { width:100%; max-height:220px; object-fit:cover; border-radius:10px; margin-bottom:18px; }
+.portal-coach-card { overflow:hidden; padding:0; }
+.portal-coach-photo { position:relative; aspect-ratio:4 / 5; overflow:hidden; background:var(--p-card-2); }
+.portal-coach-photo img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 28%; transition:transform .3s ease; }
+.portal-coach-card:hover .portal-coach-photo img { transform:scale(1.03); }
+.portal-coach-photo-label { position:absolute; inset:auto 0 0; padding:38px 17px 17px; background:linear-gradient(transparent,#080808ed 60%); color:#fff; }
+.portal-coach-photo-label h2 { margin:0 0 4px; color:#fff; font-size:18px; }.portal-coach-photo-label p { margin:0; color:#ececec; font-size:11px; }
+.portal-coach-card .portal-detail-list { padding:0 17px 17px; }
 .portal-notice-inline { display:flex; align-items:center; gap:9px; padding:12px 14px; border:1px solid var(--p-border); border-radius:8px; background:var(--p-card-2); font-size:11px; line-height:1.5; }
 .portal-rule { border:0; border-top:1px solid var(--p-border); margin:20px 0; }
 .portal-settings-list { display:grid; gap:10px; }
