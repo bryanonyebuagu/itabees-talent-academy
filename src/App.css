@@ -2353,3 +2353,38 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .donation-refresh .donation-partners h2 em { color:#ffe600; text-shadow:0 3px 9px #000; }
 .donation-refresh .donation-partner-aside a:hover { color:#ffe600; text-shadow:0 3px 10px #000; }
 .donation-refresh .required-mark { color:#f00; font-weight:900; text-shadow:none; }
+
+/* Requested heading splits and page-specific mobile photography. */
+.training-register-band .eyebrow,
+.training-register-band .editorial-accent,
+.training-overview-copy .eyebrow,
+.training-overview-copy h2 em,
+.player-pathway-page .page-stage-list article > span { color:#ffe600; text-shadow:0 3px 8px #000,0 1px 3px #000; }
+.training-overview-copy h2 em { font-style:italic; }
+.player-pathway-page .page-stage-list article > span { font-weight:900; }
+.college-photo-title { display:none; }
+@media(max-width:700px) {
+  .about-page .page-hero-image,
+  .events-page .page-hero-image,
+  .international-page .page-hero-image { width:100%; max-height:none; min-height:0; border-radius:0; }
+  .about-page .page-hero-image picture,
+  .events-page .page-hero-image picture,
+  .international-page .page-hero-image picture { width:100%; height:100%; }
+  .about-page .page-hero-image img,
+  .events-page .page-hero-image img,
+  .international-page .page-hero-image img { display:block; width:100%; height:360px; max-height:none; object-fit:cover; }
+  .about-page .content-section-image { width:calc(100% + 12vw); margin-left:-6vw; border-radius:0; }
+  .about-page .content-section-image img { width:100%; max-height:none; object-fit:cover; }
+  .international-section .editorial-photo { width:100vw; max-height:none; margin-left:calc(50% - 50vw); }
+  .international-section .editorial-photo img { display:block; width:100%; height:auto; max-height:none; object-fit:cover; }
+  .college-section .editorial-photo { position:relative; width:100vw; height:480px; max-height:none; margin-left:calc(50% - 50vw); overflow:hidden; }
+  .college-section .editorial-photo img { display:block; width:100%; height:100%; max-height:none; object-fit:cover; object-position:center; }
+  .college-section .editorial-photo::after { content:""; position:absolute; inset:25% 0 0; background:linear-gradient(transparent,#000c); pointer-events:none; }
+  .college-photo-title { position:absolute; z-index:1; display:block; left:6%; right:6%; bottom:26px; color:#fff; text-shadow:0 3px 10px #000,0 1px 3px #000; }
+  .college-photo-title .eyebrow { color:#ffe600; text-shadow:0 2px 7px #000; }
+  .college-photo-title h2 { margin:12px 0 0; font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(43px,10vw,65px); line-height:.98; text-transform:uppercase; letter-spacing:-.025em; }
+  .college-photo-title h2 span { color:#ffe600; }
+  .college-section .editorial-copy { padding-top:10px; }
+  .college-section .editorial-copy > .eyebrow,
+  .college-section .editorial-copy > h2 { display:none; }
+}
