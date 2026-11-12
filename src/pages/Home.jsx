@@ -156,20 +156,20 @@ export default function Home() {
 
           <div className="hero-content">
             <p className="eyebrow hero-eyebrow">
-              <span /> CHARACTER. EXCELLENCE. EDUCATION. SOCCER.
+              <span /> WELCOME TO ITABEES TALENT ACADEMY
             </p>
 
             <h1>
-              DEVELOP THE
+              SUPPLEMENTAL
               <br />
-              PLAYER.
-              <br />
-              <span>BUILD THE PERSON.</span>
+              SOCCER TRAINING
             </h1>
 
+            <p className="hero-tagline">Developing Players. Building Character. Inspiring Excellence.</p>
+            <p className="hero-lead">More than Soccer Training. A Pathway to Greater Opportunities.</p>
+
             <p className="hero-description">
-              More than soccer training. A place for young players to grow,
-              discover their potential and build a future they can be proud of.
+              Specialized training, professional mentorship, and pathways to college and professional soccer opportunities for players U8–U19.
             </p>
 
             <div className="hero-actions">

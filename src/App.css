@@ -2567,3 +2567,9 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .footer-nonprofit p { max-width:760px; margin:0 0 9px; color:#d8d8d0; font-size:13px; line-height:1.65; }
 .footer-nonprofit strong { color:#ffe600; font-size:13px; }
 @media(max-width:700px) { .footer-newsletter { grid-template-columns:1fr; gap:25px; padding:28px 22px; }.footer-newsletter h2 { font-size:clamp(43px,11vw,62px); } }
+
+.hero-section { height:auto; min-height:clamp(650px,calc(100svh - 84px),900px); }
+.hero-tagline { max-width:680px; margin:24px 0 13px; color:#ffe600; font-size:17px; font-weight:800; line-height:1.35; text-shadow:0 3px 10px #000; }
+.hero-lead { max-width:580px; margin:0; color:#fff; font-size:17px; font-weight:600; line-height:1.5; text-shadow:0 2px 8px #000; }
+.hero-content .hero-description { margin:18px 0 30px; }
+@media(max-width:700px) { .hero-tagline,.hero-lead { font-size:15px; }.hero-content h1 { overflow-wrap:normal; } }
