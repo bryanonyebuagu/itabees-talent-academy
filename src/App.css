@@ -2424,6 +2424,29 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .explore-hero-photo { position:relative; min-height:580px; overflow:hidden; }
 .explore-hero-photo::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,#0005,transparent 42%); pointer-events:none; }
 .explore-hero-photo img { width:100%; height:100%; object-fit:cover; }
+.eligibility-page .explore-hero-photo picture { display:block; width:100%; height:100%; }
+.eligibility-page .explore-hero-photo::after { background:linear-gradient(90deg,rgba(7,8,7,.94) 0%,rgba(7,8,7,.73) 18%,rgba(7,8,7,.35) 38%,transparent 58%),linear-gradient(#0003,#0003); }
+@media(min-width:769px) {
+  .community-impact-hero .page-hero-image,
+  .player-pathway-page .page-hero-image,
+  .gallery-page .explore-hero-photo,
+  .get-involved-page .explore-hero-photo,
+  .gallery-page .explore-gallery-grid figure:first-child { position:relative; }
+  .community-impact-hero .page-hero-image::after,
+  .player-pathway-page .page-hero-image::after,
+  .gallery-page .explore-hero-photo::after,
+  .get-involved-page .explore-hero-photo::after,
+  .gallery-page .explore-gallery-grid figure:first-child::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,rgba(17,17,17,.94),rgba(17,17,17,.68) 19%,rgba(17,17,17,.29) 40%,transparent 58%);
+    pointer-events:none;
+  }
+  .gallery-page .explore-hero-photo::after,
+  .get-involved-page .explore-hero-photo::after { background:linear-gradient(90deg,rgba(7,8,7,.94),rgba(7,8,7,.68) 19%,rgba(7,8,7,.29) 40%,transparent 58%); }
+  .gallery-page .explore-gallery-grid figure:first-child figcaption { z-index:1; }
+}
 @media(max-width:700px) { .eligibility-page .explore-hero-photo { min-height:0; max-height:none; aspect-ratio:16/9; } }
 .explore-section-heading { max-width:900px; margin-bottom:36px; }
 .explore-section-heading .eyebrow { color:#ffe600; text-shadow:0 2px 7px #000; }
