@@ -165,7 +165,7 @@ export default function Home() {
             <h1>
               SUPPLEMENTAL
               <br />
-              SOCCER TRAINING
+              <span>SOCCER <span className="hero-training-word">TRAINING</span></span>
             </h1>
 
             <p className="hero-tagline">Developing Players. Building Character. Inspiring Excellence.</p>
@@ -188,7 +188,7 @@ export default function Home() {
           <div className="hero-bottom">
             <span>SUPPLEMENTAL SOCCER DEVELOPMENT</span>
             <span className="hero-scroll">
-              SCROLL TO EXPLORE <span>↓</span>
+              SCROLL TO EXPLORE <span aria-hidden="true">↓</span>
             </span>
           </div>
 
