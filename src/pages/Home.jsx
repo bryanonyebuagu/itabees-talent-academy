@@ -23,7 +23,7 @@ const images = {
   logo: findImage("logo.jpeg"),
   hero: findImage("Boy_running_with_football_adf") || findImage("hero.png"),
   heroDesktop: findImage("Erem action2.jpg"),
-  heroMobile: findImage("Erem action.jpg"),
+  heroMobile: findImage("User_forgetting_image_prompt_7b6430d5_2K.jpg"),
   action: findImage("Boy_running_with_football_training"),
   approachGif: findImage("itabees-approach-dribble"),
   coaching: findImage("58ff75a0"),
