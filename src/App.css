@@ -2455,6 +2455,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .explore-faq-section { padding:90px 7%; background:#f6f6f2; }
 .explore-faq-group { display:grid; grid-template-columns:.4fr 1fr; gap:50px; padding:30px 0 55px; border-top:1px solid #ccc; }
 .explore-faq-group h2 { margin:8px 0; font-size:clamp(38px,4vw,62px); }
+.explore-faq-group h2 .editorial-accent { color:#ffe600; text-shadow:0 3px 8px #000,0 1px 3px #000; }
 .explore-faq-group details { border-bottom:1px solid #c9c9c2; }
 .explore-faq-group summary { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:20px 0; list-style:none; cursor:pointer; font-size:17px; font-weight:800; }
 .explore-faq-group summary::-webkit-details-marker { display:none; }
