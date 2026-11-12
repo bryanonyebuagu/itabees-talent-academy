@@ -2211,6 +2211,13 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .training-hero-gallery img:first-child { grid-row:span 2; object-position:60% center; }
 .training-quickfacts,.donation-commitments { display:grid; grid-template-columns:repeat(4,1fr); background:#ffe600; color:#080808; }
 .training-quickfacts span,.donation-commitments span { padding:19px 14px; text-align:center; border-right:1px solid #0003; font-size:12px; font-weight:900; letter-spacing:.1em; }
+.donation-commitments { gap:0; padding:18px max(4vw,22px); background:#090909; color:#fff; border-top:1px solid #ffe60070; border-bottom:1px solid #ffe60070; }
+.donation-commitments > div { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:5px 9px; min-height:78px; padding:14px 18px; border-right:1px solid #ffe60054; text-align:center; font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(18px,1.65vw,25px); font-weight:800; letter-spacing:.015em; text-transform:uppercase; }
+.donation-commitments > div:last-child { border-right:0; }
+.donation-commitments strong { color:#ffe600; font:inherit; text-shadow:0 3px 9px #000; }
+.donation-commitments span { padding:0; border:0; color:#fff; font:inherit; letter-spacing:inherit; }
+.donation-commitments > div span { font-size:inherit; }
+@media(max-width:700px) { .donation-commitments { padding:10px 4%; }.donation-commitments > div { min-height:74px; padding:12px 8px; border-bottom:1px solid #ffe60054; font-size:clamp(15px,4vw,20px); }.donation-commitments > div:nth-child(even) { border-right:0; }.donation-commitments > div:nth-last-child(-n+2) { border-bottom:0; } }
 .training-register-band { display:flex; justify-content:space-between; align-items:center; gap:50px; padding:72px 7%; background:#f5f5ef; }
 .training-register-band .eyebrow { color:#8a7800; }
 .training-register-band h2 { margin:12px 0; font-size:clamp(46px,4.5vw,74px); }

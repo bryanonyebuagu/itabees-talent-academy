@@ -4,7 +4,7 @@ import ArrowUpRight from "./ArrowUpRight";
 import logo from "../assets/logo.jpeg";
 
 const groups = [
-  { label: "Programs", links: [["Training Sessions", "/player-development"], ["Player Pathway", "/player-pathway"], ["Camps & Clinics", "/camps-and-clinics"], ["All Programs", "/programs"]] },
+  { label: "Programs", links: [["Training Sessions", "/player-development"], ["Camps & Clinics", "/camps-and-clinics"], ["All Programs", "/programs"]] },
   { label: "About", links: [["About Us", "/about"], ["Our Team", "/coaches"], ["Our Impact", "/community-impact"], ["Gallery", "/gallery"]] },
   { label: "Resources", links: [["FAQ", "/faq"], ["News & Events", "/events"], ["Eligibility", "/eligibility"]] },
 ];
@@ -18,7 +18,9 @@ export default function Header() {
   return <header className="site-header">
     <Link className="brand" to="/" onClick={closeMenu} aria-label="ItaBEES Talent Academy home"><span className="brand-logo"><img src={logo} alt="" /></span><span className="brand-wordmark"><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><small>TALENT ACADEMY</small></span></Link>
     <nav className={`navigation ${open ? "is-open" : ""}`} id="main-navigation" aria-label="Main navigation">
+      <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
       {groups.map(({ label, links }) => <div className={`nav-group ${activeGroup === label ? "is-active" : ""}`} key={label} onMouseEnter={() => { if (isDesktop()) setActiveGroup(label); }} onMouseLeave={() => { if (isDesktop()) setActiveGroup(null); }} onFocus={() => { if (isDesktop()) setActiveGroup(label); }} onBlur={event => { if (isDesktop() && !event.currentTarget.contains(event.relatedTarget)) setActiveGroup(null); }}><button className="nav-group-trigger" type="button" aria-expanded={activeGroup === label} aria-controls={`nav-panel-${label.toLowerCase()}`} onClick={() => { setRegisterOpen(false); setActiveGroup(current => isDesktop() ? label : current === label ? null : label); }}>{label}<span className="nav-group-chevron" aria-hidden="true" /></button><div className="nav-group-panel" id={`nav-panel-${label.toLowerCase()}`}><span className="nav-group-kicker">EXPLORE {label.toUpperCase()}</span>{links.map(([name, to]) => <NavLink key={to} to={to} onClick={closeMenu}>{name}<ArrowUpRight /></NavLink>)}</div></div>)}
+      <NavLink to="/player-pathway" onClick={closeMenu}>Player Pathway</NavLink>
       <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
       <NavLink to="/get-involved" onClick={closeMenu}>Get Involved</NavLink>
       <NavLink to="/register" onClick={closeMenu}>Apply Now</NavLink>
