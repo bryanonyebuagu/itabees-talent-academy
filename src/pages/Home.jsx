@@ -197,8 +197,7 @@ export default function Home() {
         <section className="reference-intro reveal" style={{ backgroundImage: `linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.43)), url("${images.introCoaching}")` }}>
           <p className="eyebrow">MORE THAN TRAINING.</p>
           <h2>A PATHWAY FOR <span>EVERY PLAYER.</span></h2>
-          <p>At ItaBEES Talent Academy, we believe every player deserves the opportunity to grow, compete and discover how far the game can take them.</p>
-          <p>Our supplemental soccer development programs are designed to work alongside your player’s current club, recreational, school or academy team. Through intentional training, mentorship and meaningful opportunities, we help players develop the technical ability, confidence, game intelligence and character needed for their next level.</p>
+          <p>ItaBEES Talent Academy is a <strong>supplemental soccer development academy built on a vision that goes far beyond the game, dedicated to helping young athletes develop their skills, strengthen their understanding of the game, and prepare for opportunities beyond the field. We complement players’ existing club and recreational soccer experiences through focused technical training, tactical development, physical conditioning and professional mentorship. Our approach goes beyond improving performance on the field. We emphasize discipline, confidence, leadership, and the character needed to succeed in soccer and in life. At ItaBEES Talent Academy, every player has a place, every player has a pathway.</strong></p>
           <div className="section-actions"><a className="button button-yellow" href={bookUrl}>FIND YOUR PROGRAM <span><ArrowUpRight /></span></a><a className="text-link dark-link" href={bookUrl}>REGISTER FOR TRAINING <span><ArrowUpRight /></span></a></div>
         </section>
 
