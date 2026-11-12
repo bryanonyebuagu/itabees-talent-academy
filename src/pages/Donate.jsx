@@ -9,7 +9,7 @@ const supportAreas = ["Training access", "Coaching", "Player equipment", "Assess
 const partnershipOptions = ["Player development", "Team support", "Camps and clinics", "Equipment", "Mentorship", "Community events", "Educational support", "In-kind support"];
 
 function DonationCheck() {
-  return <svg className="donation-commitment-check" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="currentColor" /><path d="m9 16 4.5 4.5L23 11" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+  return <svg className="donation-commitment-check" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="2.5" /><path d="m9 16 4.5 4.5L23 11" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
 export default function Donate() {
