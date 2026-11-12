@@ -13,22 +13,34 @@ function ExploreCta({ eyebrow, title, description, primary, secondary }) {
   return <section className="explore-cta"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{description}</p><div><ActionLink to={primary[1]}>{primary[0]}</ActionLink>{secondary && <Link className="explore-secondary-link" to={secondary[1]}>{secondary[0]} <ArrowUpRight /></Link>}</div></section>;
 }
 
-const galleryItems = [
-  { image: media.training, alt: "Young ItaBEES player working with the ball", category: "Training", label: "Purposeful practice" },
-  { image: media.coaching, alt: "Coach mentoring young ItaBEES players", category: "Coaching", label: "Learning together" },
-  { image: media.campDesktop, alt: "ItaBEES players at a training camp", category: "Camps", label: "Camp sessions" },
-  { image: media.programs, alt: "Coach and player in a focused training exercise", category: "Training", label: "Individual development" },
-  { image: media.coachMarcus, alt: "Coach Marcus Thorne", category: "Coaching", label: "Meet the coaches" },
-  { image: media.campMobile, alt: "Players developing skills at camp", category: "Camps", label: "More touches" },
-  { image: media.eventsHero, alt: "Young athletes at an ItaBEES event", category: "Events", label: "Academy moments" },
-  { image: media.team, alt: "ItaBEES coaching team and academy banner", category: "Academy", label: "The ItaBEES community" },
+const galleryAssets = import.meta.glob("../assets/gallery folder/*", { eager: true, query: "?url", import: "default" });
+const galleryDetails = [
+  ["f3bc9003", "Training", "Close control", "ItaBEES player dribbling through cones"],
+  ["5714dc5f", "Training", "The decisive save", "Goalkeeper diving to make a save"],
+  ["66fb557e", "Training", "Passing with purpose", "ItaBEES players practicing a passing drill"],
+  ["3c777759", "Training", "Ready to move", "Teammates warming up on the grass"],
+  ["63621cb7", "Training", "Footwork and focus", "Young players working on footwork drills"],
+  ["4cacf959", "Coaching", "Learning the details", "Coach demonstrating foot placement"],
+  ["e45e11dc", "Coaching", "Seeing the game", "Coach explaining tactical positioning"],
+  ["5f6408a7", "Coaching", "Guidance in action", "Coach giving feedback to a player"],
+  ["518be950", "Coaching", "Leading the warm-up", "Coach leading a dynamic warm-up"],
+  ["cb2f72b8", "Coaching", "A word from the coach", "Coach speaking to young players"],
+  ["7d4abe83", "Camps", "Camp day begins", "Young players arriving at an ItaBEES camp"],
+  ["d697bab2", "Events", "Match-day energy", "Young athletes playing a football match"],
+  ["ec3b19c3", "Academy", "The academy team", "ItaBEES academy team and coaches posing together"],
+  ["e988c6e2", "Academy", "Together as one", "ItaBEES academy team in a square group portrait"],
+  ["2859a1e1", "Academy", "Getting ready", "ItaBEES player tying football boots before training"],
 ];
+const galleryItems = galleryDetails.map(([id, category, label, alt]) => {
+  const asset = Object.entries(galleryAssets).find(([path]) => path.includes(id));
+  return asset && { id, image: asset[1], category, label, alt };
+}).filter(Boolean);
 const galleryFilters = ["All", "Training", "Coaching", "Camps", "Events", "Academy"];
 
 export function Gallery() {
   const [filter, setFilter] = useState("All");
   const visible = filter === "All" ? galleryItems : galleryItems.filter(item => item.category === filter);
-  return <main className="explore-page gallery-page"><ExploreHero eyebrow="INSIDE ITABEES" title={<>The academy <em>in action.</em></>} description="A closer look at the training, coaching, camps and community that shape the ItaBEES experience." image={media.team} imageAlt="ItaBEES coaching team" /><section className="explore-gallery-section"><div className="explore-section-heading"><p className="eyebrow">PHOTO GALLERY</p><h2>Every session tells <em>a story.</em></h2></div><div className="explore-filters" role="group" aria-label="Filter gallery photos">{galleryFilters.map(item => <button key={item} type="button" className={filter === item ? "is-selected" : ""} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>)}</div><div className="explore-gallery-grid">{visible.map(item => <figure key={item.label}><img src={item.image} alt={item.alt} loading="lazy" /><figcaption><span>{item.category}</span><strong>{item.label}</strong></figcaption></figure>)}</div></section><ExploreCta eyebrow="BE PART OF IT" title={<>See where your player <em>can grow.</em></>} description="Explore our programs and find a place to begin." primary={["Explore programs", "/programs"]} secondary={["About ItaBEES", "/about"]} /></main>;
+  return <main className="explore-page gallery-page"><ExploreHero eyebrow="INSIDE ITABEES" title={<>The academy <em>in action.</em></>} description="A closer look at the training, coaching, camps and community that shape the ItaBEES experience." image={media.team} imageAlt="ItaBEES coaching team" /><section className="explore-gallery-section"><div className="explore-section-heading"><p className="eyebrow">PHOTO GALLERY</p><h2>Every session tells <em>a story.</em></h2></div><div className="explore-filters" role="group" aria-label="Filter gallery photos">{galleryFilters.map(item => <button key={item} type="button" className={filter === item ? "is-selected" : ""} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>)}</div><div className="explore-gallery-grid">{visible.map(item => <figure key={item.id}><img src={item.image} alt={item.alt} loading="lazy" /><figcaption><span>{item.category}</span><strong>{item.label}</strong></figcaption></figure>)}</div></section><ExploreCta eyebrow="BE PART OF IT" title={<>See where your player <em>can grow.</em></>} description="Explore our programs and find a place to begin." primary={["Explore programs", "/programs"]} secondary={["About ItaBEES", "/about"]} /></main>;
 }
 
 const faqGroups = [
