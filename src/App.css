@@ -2424,6 +2424,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .explore-hero-photo { position:relative; min-height:580px; overflow:hidden; }
 .explore-hero-photo::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,#0005,transparent 42%); pointer-events:none; }
 .explore-hero-photo img { width:100%; height:100%; object-fit:cover; }
+@media(max-width:700px) { .eligibility-page .explore-hero-photo { min-height:0; max-height:none; aspect-ratio:16/9; } }
 .explore-section-heading { max-width:900px; margin-bottom:36px; }
 .explore-section-heading .eyebrow { color:#ffe600; text-shadow:0 2px 7px #000; }
 .explore-section-heading h2 { margin:12px 0 18px; font-size:clamp(56px,6vw,94px); }

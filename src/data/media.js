@@ -5,6 +5,7 @@ export const media = {
   logo: find("logo.jpeg"),
   hero: find("Boy_running_with_football_adf"),
   training: find("Boy_running_with_football_training"),
+  eligibility: find("itabees-eligibility-lineup"),
   coaching: find("58ff75a0"),
   coachingMobile: find("fb924b01"),
   coachMarcus: find("MARCUS_thorne.jpg"),
