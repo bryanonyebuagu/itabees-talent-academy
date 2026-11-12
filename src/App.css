@@ -2220,8 +2220,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 @media(max-width:700px) {
   .donation-commitments { position:relative; padding:5px 4%; }
   .donation-commitments::before,.donation-commitments::after { content:""; position:absolute; background:#080808; pointer-events:none; }
-  .donation-commitments::before { top:5px; bottom:5px; left:calc(50% - 1px); width:2px; }
-  .donation-commitments::after { top:calc(50% - 1px); left:4%; right:4%; height:2px; }
+  .donation-commitments::before { top:0; bottom:0; left:calc(50% - 1px); width:2px; }
+  .donation-commitments::after { top:calc(50% - 1px); left:0; right:0; height:2px; }
   .donation-commitments > div { min-height:66px; padding:8px 7px; }
   .donation-commitments > div::after,.donation-commitments > div::before { display:none; }
   .donation-commitment-check { width:24px; height:24px; }
