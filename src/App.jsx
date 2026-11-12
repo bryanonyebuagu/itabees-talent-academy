@@ -29,9 +29,10 @@ import { AdminEnquiries, AdminPlayers, AdminPlayerDetail, AdminParents } from ".
 import { AdminProgrammes, AdminProgrammeDetail, AdminTraining, AdminTimetable, AdminEvents, AdminCoaches } from "./portal/AdminOperations";
 import { AdminDonations, AdminMessages, AdminStaff, AdminSettings } from "./portal/AdminBackOffice";
 import { MemberOverview, MemberProgrammes, MemberProgrammeDetail, MemberSchedule, MemberEvents, MemberProfile, MemberAttendance, MemberNotifications } from "./portal/MemberPages";
+import NavigationLoader from "./components/NavigationLoader";
 
 export default function App() {
-  return <BrowserRouter><ToastProvider><DemoProvider><Routes>
+  return <BrowserRouter><NavigationLoader /><ToastProvider><DemoProvider><Routes>
     <Route path="admin/login" element={<AccessPage kind="admin" />} />
     <Route path="login" element={<AccessPage kind="member" />} />
     <Route path="signup" element={<AccessPage kind="signup" />} />

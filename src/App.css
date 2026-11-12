@@ -2518,3 +2518,12 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 @media(max-width:700px) { .explore-hero-with-image { grid-template-columns:1fr; }.explore-hero-copy { padding:70px 6%; }.explore-hero h1 { font-size:clamp(58px,14vw,82px); }.explore-hero-photo { min-height:300px; max-height:350px; }.explore-gallery-section,.explore-eligibility-section,.explore-involved-section,.explore-faq-section,.explore-standards,.explore-contact-section,.explore-cta { padding:70px 6%; }.explore-section-heading h2,.explore-cta h2 { font-size:clamp(54px,12vw,76px); }.explore-gallery-grid,.explore-info-grid,.explore-involved-section .explore-info-grid { grid-template-columns:1fr; }.explore-gallery-grid figure:first-child { grid-column:auto; }.explore-gallery-grid figure { min-height:300px; }.explore-faq-group { grid-template-columns:1fr; gap:8px; }.explore-faq-group summary { font-size:15px; }.explore-standards > div + div { grid-template-columns:1fr 1fr; }.explore-contact-section { gap:30px; } }
 @media(max-width:420px) { .explore-standards > div + div { grid-template-columns:1fr; }.explore-hero h1 { font-size:56px; } }
 @media(prefers-reduced-motion:reduce) { .explore-gallery-grid img,.explore-info-grid article,.explore-filters button,.explore-faq-group summary span { transition:none; } }
+
+.route-loading-screen { position:fixed; inset:0; z-index:10000; display:grid; place-items:center; background:#080808; color:#fff; }
+.route-loading-content { display:grid; justify-items:center; gap:24px; width:min(320px,70vw); }
+.route-loading-name { font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(42px,8vw,62px); font-weight:900; letter-spacing:.04em; line-height:1; text-transform:uppercase; }
+.route-loading-name strong { color:#ffe600; }
+.route-loading-bar { display:block; width:100%; height:14px; overflow:hidden; border-radius:999px; background:#242424; }
+.route-loading-bar::after { content:""; display:block; width:100%; height:100%; border-radius:inherit; background:#ffe600; transform:translateX(-100%); animation:route-loading-progress .65s ease-out forwards; }
+@keyframes route-loading-progress { to { transform:translateX(0); } }
+@media(prefers-reduced-motion:reduce) { .route-loading-bar::after { animation:none; transform:none; } }
