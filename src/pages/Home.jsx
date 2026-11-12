@@ -22,6 +22,8 @@ function findImage(searchTerm, fallback = "") {
 const images = {
   logo: findImage("logo.jpeg"),
   hero: findImage("Boy_running_with_football_adf") || findImage("hero.png"),
+  heroDesktop: findImage("Erem action2.jpg"),
+  heroMobile: findImage("Erem action.jpg"),
   action: findImage("Boy_running_with_football_training"),
   approachGif: findImage("itabees-approach-dribble"),
   coaching: findImage("58ff75a0"),
@@ -149,7 +151,8 @@ export default function Home() {
           <div
             className="hero-image"
             style={{
-              backgroundImage: images.hero ? `url("${images.hero}")` : "none",
+              "--hero-desktop-image": `url("${images.heroDesktop}")`,
+              "--hero-mobile-image": `url("${images.heroMobile}")`,
             }}
           />
           <div className="hero-shade" />

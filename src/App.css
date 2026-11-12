@@ -169,7 +169,7 @@ button {
 }
 
 .hero-image {
-  background-image: url('/src/assets/hero.png');
+  background-image: var(--hero-desktop-image);
   background-size: cover;
   background-position: center 35%;
   animation: heroReveal 1.2s ease both;
@@ -2569,6 +2569,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 @media(max-width:700px) { .footer-newsletter { grid-template-columns:1fr; gap:25px; padding:28px 22px; }.footer-newsletter h2 { font-size:clamp(43px,11vw,62px); } }
 
 .hero-section { height:auto; min-height:clamp(650px,calc(100svh - 84px),900px); }
+@media(max-width:700px) { .hero-image { background-image:var(--hero-mobile-image); background-position:center center; } }
 .hero-tagline { max-width:680px; margin:24px 0 13px; color:#ffe600; font-size:17px; font-weight:800; line-height:1.35; text-shadow:0 3px 10px #000; }
 .hero-lead { max-width:580px; margin:0; color:#fff; font-size:17px; font-weight:600; line-height:1.5; text-shadow:0 2px 8px #000; }
 .hero-content .hero-description { margin:18px 0 30px; }
