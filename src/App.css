@@ -2553,10 +2553,12 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .footer-newsletter > div > p:last-child { max-width:420px; margin:0; color:#d7d7ce; font-size:14px; line-height:1.6; }
 .footer-newsletter form { display:grid; gap:10px; }
 .footer-newsletter label { color:#ffe600; font-size:12px; font-weight:800; }
-.footer-newsletter input { width:100%; min-height:51px; padding:0 17px; border:2px solid #ffffff45; border-radius:9px; background:#f7f7f2; color:#080808; font:600 15px 'Inter',sans-serif; }
+.footer-newsletter input { width:100%; min-height:51px; padding:0 17px; border:2px solid #ffffff75; border-radius:9px; background:rgba(255,255,255,.13); color:#fff; font:600 15px 'Inter',sans-serif; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
+.footer-newsletter input::placeholder { color:#d4d4cb; }
 .footer-newsletter input:focus-visible { outline:3px solid #ffe600; outline-offset:3px; }
 .footer-newsletter button { display:flex; align-items:center; justify-content:center; gap:12px; min-height:49px; border:2px solid #ffe600; border-radius:9px; background:#ffe600; color:#080808; cursor:pointer; font:900 14px 'Inter',sans-serif; transition:background .28s ease,color .28s ease,transform .28s ease; }
 .footer-newsletter button:hover { background:#080808; color:#ffe600; transform:translateY(-2px); }
+.footer-newsletter button:disabled { opacity:.7; cursor:wait; transform:none; }
 .footer-newsletter button:focus-visible { outline:3px solid #fff; outline-offset:3px; }
 .footer-newsletter button svg { width:17px; height:17px; }
 .footer-newsletter small { color:#aead9f; font-size:11px; line-height:1.4; }

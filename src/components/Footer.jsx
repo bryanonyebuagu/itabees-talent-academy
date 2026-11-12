@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpeg";
 import { InstagramIcon, TikTokIcon } from "./SocialIcons";
 import ArrowUpRight from "./ArrowUpRight";
+import useToast from "../portal/useToast";
 
 const quickLinks = [
   ["About Us", "/about"],
@@ -21,14 +22,28 @@ const quickLinks = [
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
-  const requestSubscription = (event) => {
+  const [subscribing, setSubscribing] = useState(false);
+  const notify = useToast();
+  const requestSubscription = async (event) => {
     event.preventDefault();
-    const subject = encodeURIComponent("ItaBEES newsletter subscription request");
-    const body = encodeURIComponent(`Please add ${newsletterEmail.trim()} to the ItaBEES Talent Academy newsletter.`);
-    window.location.href = `mailto:info@itabeestalentacademy.com?subject=${subject}&body=${body}`;
+    if (subscribing) return;
+    setSubscribing(true);
+    try {
+      const response = await fetch("/api/newsletter", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: newsletterEmail.trim() }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Please try again later.");
+      notify(result.status === "pending"
+        ? { title: "Check your inbox", description: "Confirm your email to join the ItaBEES newsletter." }
+        : { title: "Subscribed to our newsletter", description: "You're on the ItaBEES email list." });
+      setNewsletterEmail("");
+    } catch (error) {
+      notify({ title: "Subscription could not be completed", description: error.message, type: "error" });
+    } finally {
+      setSubscribing(false);
+    }
   };
   return <footer className="site-footer">
-    <section className="footer-newsletter" aria-labelledby="footer-newsletter-title"><div><p className="footer-newsletter-kicker">STAY IN THE LOOP</p><h2 id="footer-newsletter-title">Subscribe to our <em>newsletter.</em></h2><p>Get ItaBEES updates on training, events and player opportunities.</p></div><form onSubmit={requestSubscription}><label htmlFor="footer-newsletter-email">Email address</label><input id="footer-newsletter-email" type="email" autoComplete="email" required placeholder="you@example.com" value={newsletterEmail} onChange={event => setNewsletterEmail(event.target.value)} /><button type="submit">Subscribe <ArrowUpRight /></button><small>Opens your email app to send a subscription request.</small></form></section>
+    <section className="footer-newsletter" aria-labelledby="footer-newsletter-title"><div><p className="footer-newsletter-kicker">STAY IN THE LOOP</p><h2 id="footer-newsletter-title">Subscribe to our <em>newsletter.</em></h2><p>Get ItaBEES updates on training, events and player opportunities.</p></div><form onSubmit={requestSubscription}><label htmlFor="footer-newsletter-email">Email address</label><input id="footer-newsletter-email" type="email" autoComplete="email" required placeholder="you@example.com" value={newsletterEmail} onChange={event => setNewsletterEmail(event.target.value)} /><button type="submit" disabled={subscribing}>{subscribing ? "Subscribing…" : "Subscribe"} <ArrowUpRight /></button></form></section>
     <div className="footer-identity"><Link className="brand footer-brand" to="/" aria-label="ItaBEES Talent Academy home"><img src={logo} alt="" /></Link><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><p>Developing Players. Building Character. Inspiring Excellence.</p></div>
     <div className="footer-location"><h3>Location</h3><p>Charlotte, North Carolina<br />Serving athletes in the Charlotte area</p></div>
     <div className="footer-quick"><h3>Quick Links</h3><div className="footer-links">{quickLinks.map(([label,to]) => <Link key={label} to={to}>{label}</Link>)}</div></div>
