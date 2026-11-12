@@ -31,10 +31,21 @@ const galleryDetails = [
   ["e988c6e2", "Academy", "Together as one", "ItaBEES academy team in a square group portrait"],
   ["2859a1e1", "Academy", "Getting ready", "ItaBEES player tying football boots before training"],
 ];
-const galleryItems = galleryDetails.map(([id, category, label, alt]) => {
+const newGalleryItems = galleryDetails.map(([id, category, label, alt]) => {
   const asset = Object.entries(galleryAssets).find(([path]) => path.includes(id));
   return asset && { id, image: asset[1], category, label, alt };
 }).filter(Boolean);
+const galleryItems = [
+  { id: "original-training", image: media.training, alt: "Young ItaBEES player working with the ball", category: "Training", label: "Purposeful practice" },
+  { id: "original-coaching", image: media.coaching, alt: "Coach mentoring young ItaBEES players", category: "Coaching", label: "Learning together" },
+  { id: "original-camp-desktop", image: media.campDesktop, alt: "ItaBEES players at a training camp", category: "Camps", label: "Camp sessions" },
+  { id: "original-programs", image: media.programs, alt: "Coach and player in a focused training exercise", category: "Training", label: "Individual development" },
+  { id: "original-marcus", image: media.coachMarcus, alt: "Coach Marcus Thorne", category: "Coaching", label: "Meet the coaches" },
+  { id: "original-camp-mobile", image: media.campMobile, alt: "Players developing skills at camp", category: "Camps", label: "More touches" },
+  { id: "original-events", image: media.eventsHero, alt: "Young athletes at an ItaBEES event", category: "Events", label: "Academy moments" },
+  { id: "original-team", image: media.team, alt: "ItaBEES coaching team and academy banner", category: "Academy", label: "The ItaBEES community" },
+  ...newGalleryItems,
+];
 const galleryFilters = ["All", "Training", "Coaching", "Camps", "Events", "Academy"];
 
 export function Gallery() {
