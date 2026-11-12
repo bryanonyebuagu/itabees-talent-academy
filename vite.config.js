@@ -6,6 +6,7 @@ const routes = [
   'about', 'player-development', 'camps-and-clinics', 'player-pathway',
   'assessments', 'coaches', 'international-experiences', 'college-pathway',
   'events', 'contact', 'register', 'programs', 'mentorship', 'community-impact',
+  'gallery', 'faq', 'eligibility', 'get-involved',
   'donate', 'donate/checkout', 'donate/return', 'thank-you', 'about-us',
   'book-online', 'event-list', 'donate-page', 'thank-you-page', 'thank-you-page-2',
   'admin/login', 'admin', 'admin/enquiries', 'admin/players', 'admin/parents',

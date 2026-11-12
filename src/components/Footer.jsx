@@ -10,8 +10,11 @@ const quickLinks = [
   ["Coaches", "/coaches"],
   ["Clinics & Events", "/camps-and-clinics"],
   ["Community Impact", "/community-impact"],
-  ["Get Involved", "/donate"],
+  ["Get Involved", "/get-involved"],
   ["Contact", "/contact"],
+  ["Gallery", "/gallery"],
+  ["FAQ", "/faq"],
+  ["Eligibility", "/eligibility"],
 ];
 
 export default function Footer() {

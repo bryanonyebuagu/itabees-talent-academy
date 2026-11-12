@@ -19,6 +19,7 @@ import Donate from "./pages/Donate";
 import DonationCheckout from "./pages/DonationCheckout";
 import DonationReturn from "./pages/DonationReturn";
 import ThankYou from "./pages/ThankYou";
+import { Eligibility, FAQ, Gallery, GetInvolved } from "./pages/ExplorePages";
 import DemoProvider from "./portal/DemoProvider";
 import { ToastProvider } from "./portal/ToastProvider";
 import PortalLayout from "./portal/PortalLayout";
@@ -78,6 +79,10 @@ export default function App() {
     <Route path="programs" element={<Programs />} />
     <Route path="mentorship" element={<Mentorship />} />
     <Route path="community-impact" element={<CommunityImpact />} />
+    <Route path="gallery" element={<Gallery />} />
+    <Route path="faq" element={<FAQ />} />
+    <Route path="eligibility" element={<Eligibility />} />
+    <Route path="get-involved" element={<GetInvolved />} />
     <Route path="donate" element={<Donate />} />
     <Route path="donate/checkout" element={<DonationCheckout />} />
     <Route path="donate/return" element={<DonationReturn />} />
