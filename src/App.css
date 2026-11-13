@@ -2909,3 +2909,11 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 }
 
 .program-feature:last-of-type .program-feature-image img { object-position:center 62%; }
+
+.international-photo-link { display:none; }
+@media(max-width:700px) {
+  .international-section .editorial-copy { padding-bottom:0; }
+  .international-section .editorial-copy > .text-link { display:none; }
+  .international-section .editorial-photo { position:relative; }
+  .international-section .international-photo-link { position:absolute; z-index:2; top:18px; left:6%; display:inline-flex; margin:0; color:#080808; }
+}
