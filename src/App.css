@@ -2828,7 +2828,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 
 /* Unified floating event pill. The details expand within this same surface. */
 .event-countdown { display:block; width:min(295px,calc(100vw - 32px)); padding:11px 14px 10px; border:1px solid #ffffff45; border-radius:15px; background:rgba(13,16,14,.42); color:#fff; box-shadow:0 9px 25px #0005,inset 0 1px #ffffff25; -webkit-backdrop-filter:blur(12px) saturate(125%); backdrop-filter:blur(12px) saturate(125%); transition:background .3s ease,border-color .3s ease,box-shadow .3s ease; }
-.event-countdown:hover,.event-countdown:focus-within,.event-countdown.is-expanded { border-color:#ffe600a8; background:rgba(10,13,11,.96); box-shadow:0 22px 50px #0009,0 0 0 1px #ffe60032,inset 0 1px #ffffff3d; }
+.event-countdown.is-expanded { border-color:#ffe600a8; background:rgba(10,13,11,.96); box-shadow:0 22px 50px #0009,0 0 0 1px #ffe60032,inset 0 1px #ffffff3d; }
+@media(hover:hover) { .event-countdown:hover { border-color:#ffe600a8; background:rgba(10,13,11,.96); box-shadow:0 22px 50px #0009,0 0 0 1px #ffe60032,inset 0 1px #ffffff3d; } }
 .event-countdown-header { display:flex; align-items:center; gap:8px; min-height:20px; }
 .event-countdown-dot { position:relative; width:9px; height:9px; background:#29d762; box-shadow:0 0 11px #29d762c9; animation:event-indicator-pulse 2s ease-in-out infinite; }
 .event-countdown-dot::after { content:""; position:absolute; inset:-5px; border:1px solid #29d7628a; border-radius:50%; animation:event-indicator-glow 2s ease-in-out infinite; }
@@ -2841,7 +2842,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .event-countdown-title { display:block; margin:7px 0 7px; color:#fff; font:900 18px/1 'Barlow Condensed',Impact,sans-serif; letter-spacing:.005em; text-transform:uppercase; }
 .event-countdown-title span { color:#ffe600; text-shadow:0 2px 5px #000; }
 .event-countdown-kicker,.event-countdown-title,.event-countdown-timer { opacity:.65; transition:opacity .3s ease; }
-.event-countdown:hover .event-countdown-kicker,.event-countdown:hover .event-countdown-title,.event-countdown:hover .event-countdown-timer,.event-countdown:focus-within .event-countdown-kicker,.event-countdown:focus-within .event-countdown-title,.event-countdown:focus-within .event-countdown-timer,.event-countdown.is-expanded .event-countdown-kicker,.event-countdown.is-expanded .event-countdown-title,.event-countdown.is-expanded .event-countdown-timer { opacity:1; }
+.event-countdown.is-expanded .event-countdown-kicker,.event-countdown.is-expanded .event-countdown-title,.event-countdown.is-expanded .event-countdown-timer { opacity:1; }
+@media(hover:hover) { .event-countdown:hover .event-countdown-kicker,.event-countdown:hover .event-countdown-title,.event-countdown:hover .event-countdown-timer { opacity:1; } }
 .event-countdown-timer { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; margin:0; }
 .event-countdown-unit { position:relative; display:block; min-width:0; padding:0; border:0; border-radius:0; background:transparent; text-align:center; }
 .event-countdown-unit > span:last-child { display:flex; flex-direction:column; align-items:center; }

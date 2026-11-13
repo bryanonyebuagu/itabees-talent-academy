@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowUpRight from "./ArrowUpRight";
 
@@ -33,6 +33,7 @@ function getCountdown() {
 const twoDigits = value => String(value).padStart(2, "0");
 
 export default function EventCountdown() {
+  const containerRef = useRef(null);
   const [countdown, setCountdown] = useState(getCountdown);
   const [expanded, setExpanded] = useState(false);
 
@@ -51,14 +52,23 @@ export default function EventCountdown() {
     const closeOnEscape = event => {
       if (event.key === "Escape") setExpanded(false);
     };
+    const closeOutside = event => {
+      if (!containerRef.current?.contains(event.target)) setExpanded(false);
+    };
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOutside);
+    document.addEventListener("focusin", closeOutside);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOutside);
+      document.removeEventListener("focusin", closeOutside);
+    };
   }, [expanded]);
 
   if (!countdown) return null;
   const { event, days, hours, minutes, seconds } = countdown;
 
-  return <aside className={`event-countdown${expanded ? " is-expanded" : ""}`} aria-label="Upcoming event countdown">
+  return <aside ref={containerRef} className={`event-countdown${expanded ? " is-expanded" : ""}`} aria-label="Upcoming event countdown" onMouseLeave={() => { if (window.matchMedia("(hover: hover)").matches) setExpanded(false); }}>
     <div className="event-countdown-header">
       <span className="event-countdown-dot" aria-hidden="true" />
       <span className="event-countdown-kicker">Upcoming Event</span>
