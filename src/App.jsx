@@ -14,7 +14,6 @@ import Contact from "./pages/Contact";
 import Register from "./pages/Register";
 import Programs from "./pages/Programs";
 import Mentorship from "./pages/Mentorship";
-import CommunityImpact from "./pages/CommunityImpact";
 import Donate from "./pages/Donate";
 import DonationCheckout from "./pages/DonationCheckout";
 import DonationReturn from "./pages/DonationReturn";
@@ -79,7 +78,6 @@ export default function App() {
     <Route path="register" element={<Register />} />
     <Route path="programs" element={<Programs />} />
     <Route path="mentorship" element={<Mentorship />} />
-    <Route path="community-impact" element={<CommunityImpact />} />
     <Route path="gallery" element={<Gallery />} />
     <Route path="faq" element={<FAQ />} />
     <Route path="eligibility" element={<Eligibility />} />

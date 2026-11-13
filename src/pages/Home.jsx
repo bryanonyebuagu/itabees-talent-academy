@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ArrowUpRight from "../components/ArrowUpRight";
 import { media } from "../data/media";
-import { coachingTeam } from "../data/coachingTeam";
-import CoachPraise from "../components/CoachPraise";
 import "../App.css";
 
 const assets = import.meta.glob("../assets/*", {
@@ -337,8 +335,6 @@ export default function Home() {
 
         <section className="assessments-section reveal" style={{ "--assessment-desktop": `url("${media.assessmentDesktop}")`, "--assessment-mobile": `url("${media.assessmentMobile}")` }}><div><p className="eyebrow">PLAYER ASSESSMENTS</p><h2>Know Where You Are.<br /><span>Understand What's Next.</span></h2></div><div><p>Development becomes more meaningful when players understand what they're working toward.</p><p>ItaBEES Player Assessments help identify strengths, developmental priorities and areas of opportunity.</p><p>Our goal isn't simply to tell a player how they're performing. It's to give players and families a clearer picture of what to work on next.</p><strong>Assess. Develop. Reassess. Progress.</strong><div className="section-actions"><a className="button button-yellow" href={bookUrl}>Find Your Program <span><ArrowUpRight /></span></a><a className="text-link light-link" href={contactUrl}>Register Today <span><ArrowUpRight /></span></a></div></div></section>
 
-        <section className="impact-section reveal" id="impact"><p className="eyebrow">COMMUNITY IMPACT</p><div className="stats-grid">{[["1,200+", "Players Reached"], ["1,500+", "Training Hours"], ["150+", "Community Clinics"], ["25+", "Scholarships"]].map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div></section>
-
         <section className="mentorship-section reveal" id="coaches">
           <div className="mentorship-image">
             <div className="mentorship-intro">
@@ -369,16 +365,12 @@ export default function Home() {
             <a className="text-link dark-link" href="/coaches">
               Learn more about ItaBEES <span>→</span>
             </a>
-            <h3 className="coach-section-heading">MEET OUR ESTEEMED COACHES.</h3>
-            <div className="coach-names">{coachingTeam.map(({ name, role, image, praise }) => <article className="home-coach-card" key={name}><div className="home-coach-photo"><img src={image} alt={`${name}, ${role}`} loading="lazy" /><div className="home-coach-label"><strong>{name}</strong><span>{role}</span></div><p className="home-coach-praise"><CoachPraise text={praise} /></p></div></article>)}</div>
           </div>
         </section>
 
         <section className="international-section reveal"><div className="editorial-copy"><p className="eyebrow">INTERNATIONAL EXPERIENCES</p><h2>The Game Is Global.<br /><span>Your Perspective Should Be Too.</span></h2><p>Soccer can introduce young players to people, cultures and opportunities far beyond their local community.</p><p>Through strategic relationships and international experiences, ItaBEES aims to expose players to different training environments, coaching philosophies and levels of competition.</p><p>These experiences aren't shortcuts or guarantees. They are opportunities to learn, compete, be evaluated and better understand what higher levels of the game demand.</p><a className="text-link dark-link" href={contactUrl}>Explore International Opportunities <span><ArrowUpRight /></span></a></div><div className="editorial-photo"><img src={images.team} alt="ItaBEES coaching team" /></div></section>
 
         <section className="college-section reveal"><div className="editorial-photo"><img src={images.academy} alt="Soccer and education" /><div className="college-photo-title"><p className="eyebrow">COLLEGE PATHWAY</p><h2>Preparing Student-Athletes for<br /><span>More Than the Next Game.</span></h2></div></div><div className="editorial-copy"><p className="eyebrow">COLLEGE PATHWAY</p><h2>Preparing Student-Athletes for<br /><span>More Than the Next Game.</span></h2><p>Playing college soccer requires more than talent.</p><p>Student-athletes must understand academics, recruiting, communication, eligibility, exposure and how to identify programs that fit both their athletic and educational goals.</p><p>ItaBEES helps families navigate that journey with greater clarity while preparing players to confidently present themselves as both students and athletes.</p><a className="text-link dark-link" href={contactUrl}>Explore the College Pathway <span><ArrowUpRight /></span></a></div></section>
-
-        <section className="events-section reveal" id="events"><div><p className="eyebrow">UPCOMING EVENTS</p><h2>What's <span>Next.</span></h2></div><a className="text-link dark-link" href="/events">VIEW ALL EVENTS <span><ArrowUpRight /></span></a><p className="events-empty">No events at the moment</p></section>
 
         <section className="opportunities-section reveal" id="opportunities">
           <div className="opportunities-photo"><img src={images.team} alt="ItaBEES coaches and academy banner" /></div>

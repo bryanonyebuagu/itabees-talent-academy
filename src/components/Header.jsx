@@ -5,7 +5,7 @@ import logo from "../assets/logo.jpeg";
 
 const groups = [
   { label: "Programs", links: [["Training Sessions", "/player-development"], ["Camps & Clinics", "/camps-and-clinics"], ["All Programs", "/programs"], ["Get Involved", "/get-involved"]] },
-  { label: "About", links: [["About Us", "/about"], ["Our Team", "/coaches"], ["Our Impact", "/community-impact"], ["Gallery", "/gallery"], ["Contact", "/contact"]] },
+  { label: "About", links: [["About Us", "/about"], ["Our Team", "/coaches"], ["Gallery", "/gallery"], ["Contact", "/contact"]] },
   { label: "Resources", links: [["FAQ", "/faq"], ["News & Events", "/events"], ["Eligibility", "/eligibility"]] },
 ];
 

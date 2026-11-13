@@ -13,7 +13,6 @@ const quickLinks = [
   ["Education & Mentorship", "/mentorship"],
   ["Coaches", "/coaches"],
   ["Clinics & Events", "/camps-and-clinics"],
-  ["Community Impact", "/community-impact"],
   ["Get Involved", "/get-involved"],
   ["Contact", "/contact"],
   ["Gallery", "/gallery"],
