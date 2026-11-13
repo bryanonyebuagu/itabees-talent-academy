@@ -14,7 +14,6 @@ function ExploreCta({ eyebrow, title, description, primary, secondary }) {
 }
 
 const galleryAssets = import.meta.glob("../assets/gallery folder/*", { eager: true, query: "?url", import: "default" });
-const councilAssets = import.meta.glob("../assets/the team/*", { eager: true, query: "?url", import: "default" });
 const galleryDetails = [
   ["IMG_7396 (1).jpg", "Training", "Learning on the field", "Young players together during a field session"],
   ["IMG_7397.jpg", "Training", "Into the action", "Young players moving through a soccer practice"],
@@ -27,19 +26,10 @@ const galleryDetails = [
   ["IMG_7416.jpg", "Events", "An event to remember", "Young soccer players and coaches posing together at an event"],
   ["IMG_7417.jpg", "Academy", "Sharing the journey", "Coach standing with two young soccer players"],
 ];
-const councilGalleryDetails = [
-  ["Eyong Enoh Tarkang.jpg", "Eyong Enoh"],
-  ["Eric Djemba Djemba.jpg", "Eric Djemba Djemba"],
-  ["Augustine Simo.jpg", "Augustine Simo"],
-  ["Tiyiselani Shipalane.jpg", "Tiyiselani Shipalane"],
-];
-const councilGalleryItems = councilGalleryDetails.map(([file, name]) => ({
-  id: file, image: councilAssets[`../assets/the team/${file}`], category: "Advisory Council", label: name, alt: `${name}, ItaBEES advisory council member`,
-}));
-const galleryItems = [...galleryDetails.map(([id, category, label, alt]) => ({
+const galleryItems = galleryDetails.map(([id, category, label, alt]) => ({
   id, image: galleryAssets[`../assets/gallery folder/${id}`], category, label, alt,
-})), ...councilGalleryItems];
-const galleryFilters = ["All", "Training", "Coaching", "Camps", "Events", "Academy", "Advisory Council"];
+}));
+const galleryFilters = ["All", "Training", "Coaching", "Camps", "Events", "Academy"];
 
 export function Gallery() {
   const [filter, setFilter] = useState("All");
