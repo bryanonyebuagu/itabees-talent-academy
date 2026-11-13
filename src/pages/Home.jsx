@@ -84,6 +84,8 @@ const contactUrl = "/contact";
 
 export default function Home() {
   const developmentSectionRef = useRef(null);
+  const fifthSectionRef = useRef(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [developmentVisible, setDevelopmentVisible] = useState(false);
   const [activeDevelopmentIndex, setActiveDevelopmentIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(
@@ -139,6 +141,19 @@ export default function Home() {
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const update = () => setShowBackToTop(fifthSectionRef.current?.getBoundingClientRect().bottom <= 0);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const returnToTop = () => window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
 
   return (
     <>
@@ -292,7 +307,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="camps-section reveal" id="camps">
+        <section className="camps-section reveal" id="camps" ref={fifthSectionRef}>
           <div className="editorial-photo"><picture><source media="(max-width: 700px)" srcSet={media.campMobile} /><img src={media.campDesktop} alt="ItaBEES players training with coaches at camp" /></picture><span className="camps-photo-label">CAMPS &amp; CLINICS</span></div>
           <div className="editorial-copy"><p className="eyebrow">CAMPS &amp; CLINICS</p><h2>MORE TOUCHES.<br /><span>MORE GROWTH.</span></h2><p>ItaBEES camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment.</p><p>From school-break and summer camps to position-specific clinics and special guest coaching events, each experience is designed with a clear developmental purpose.</p><p>Players leave with more than memories, taking with them new skills, greater confidence and a better understanding of the game.</p><a className="text-link dark-link" href={bookUrl}>View Upcoming Camps &amp; Clinics <span><ArrowUpRight /></span></a></div>
         </section>
@@ -419,6 +434,8 @@ export default function Home() {
           </a>
         </section>
       </main>
+
+      {showBackToTop && <button className="home-back-to-top" type="button" onClick={returnToTop} aria-label="Back to top of homepage" title="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></button>}
 
 
     </>

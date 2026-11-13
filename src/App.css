@@ -2889,3 +2889,11 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   .international-section .editorial-photo picture { height:auto; }
   .international-section .editorial-photo img { height:auto; object-fit:cover; }
 }
+
+/* Homepage-only return control, placed opposite the event countdown. */
+.home-back-to-top { position:fixed; z-index:94; left:clamp(16px,2.5vw,38px); bottom:calc(18px + env(safe-area-inset-bottom,0px)); display:grid; place-items:center; width:48px; height:48px; padding:0; border:1px solid #ffe600; border-radius:50%; background:#080808; color:#ffe600; box-shadow:0 9px 25px #0007; cursor:pointer; transition:background .28s ease,color .28s ease,transform .28s ease,box-shadow .28s ease; }
+.home-back-to-top:hover { transform:translateY(-4px); background:#ffe600; color:#080808; box-shadow:0 15px 30px #0008; }
+.home-back-to-top:focus-visible { outline:3px solid #ffe600; outline-offset:4px; }
+.home-back-to-top svg { width:22px; height:22px; }
+@media(max-width:700px) { .home-back-to-top { left:12px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); width:44px; height:44px; } }
+@media(prefers-reduced-motion:reduce) { .home-back-to-top { transition:none; } }
