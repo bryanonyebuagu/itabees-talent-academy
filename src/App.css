@@ -2841,6 +2841,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .event-countdown.is-expanded .event-countdown-chevron { margin:3px 0 0; transform:rotate(225deg); }
 .event-countdown-title { display:block; margin:7px 0 7px; color:#fff; font:900 18px/1 'Barlow Condensed',Impact,sans-serif; letter-spacing:.005em; text-transform:uppercase; }
 .event-countdown-title span { color:#ffe600; text-shadow:0 2px 5px #000; }
+.event-countdown-live { display:block; color:#ffe600; font-size:12px; font-weight:900; text-transform:uppercase; text-shadow:0 2px 5px #000; }
 .event-countdown-kicker,.event-countdown-title,.event-countdown-timer { opacity:.65; transition:opacity .3s ease; }
 .event-countdown.is-expanded .event-countdown-kicker,.event-countdown.is-expanded .event-countdown-title,.event-countdown.is-expanded .event-countdown-timer { opacity:1; }
 @media(hover:hover) { .event-countdown:hover .event-countdown-kicker,.event-countdown:hover .event-countdown-title,.event-countdown:hover .event-countdown-timer { opacity:1; } }
