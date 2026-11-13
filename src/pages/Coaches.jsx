@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { PageHero } from "../components/PageParts";
 import { media } from "../data/media";
 
@@ -38,5 +39,6 @@ export default function Coaches() {
       <article className="team-feature"><div className="team-feature-photo"><img src={council[0].image} alt={council[0].name} loading="lazy" /></div><div className="team-feature-copy"><p className="eyebrow">TECHNICAL & PLAYER PATHWAYS ADVISORY COUNCIL</p><h3>{council[0].name}</h3><strong>{council[0].role}</strong><p>{council[0].bio}</p></div></article>
       <div className="team-council-grid">{council.slice(1).map((member) => <article className="team-member" key={member.name}><div className="team-member-photo"><img src={member.image} alt={member.name} loading="lazy" /></div><div className="team-member-copy"><p className="eyebrow">ADVISORY COUNCIL</p><h3>{member.name}</h3><strong>{member.role}</strong><p>{member.bio}</p></div></article>)}</div>
     </section>
+    <section className="team-mission-wrap" aria-labelledby="team-mission-title"><div className="team-mission-card"><p className="eyebrow">MOVE THE MISSION FORWARD</p><h2 id="team-mission-title">Help players find <span>their path.</span></h2><p>Join ItaBEES as a mentor, partner, or supporter, or find a program that fits your player. Together, we can open more doors through soccer.</p><div className="team-mission-actions"><Link to="/get-involved">Get Involved</Link><Link to="/programs">Explore Our Programs</Link></div></div></section>
   </main>;
 }

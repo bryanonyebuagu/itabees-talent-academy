@@ -2700,3 +2700,27 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   .team-council-grid { grid-template-columns:1fr; gap:18px; }
   .team-member-photo { height:auto; aspect-ratio:4/4; }
 }
+
+/* Closing mission callout on Our Team. */
+.team-mission-wrap { padding:28px 7% 90px; background:#f6f6f2; }
+.team-mission-card { max-width:1500px; margin:auto; padding:68px 32px; border:1px solid #ffe60055; border-radius:19px; background:radial-gradient(circle at 18% 0%,#373719,transparent 48%),linear-gradient(120deg,#1b1d16,#0b0d0a); color:#fff; text-align:center; box-shadow:0 22px 52px #0002; }
+.team-mission-card .eyebrow { margin-bottom:13px; color:#ffe600; text-shadow:0 2px 7px #000; }
+.team-mission-card h2 { margin:0 auto 18px; font:900 clamp(54px,6vw,89px)/.95 'Barlow Condensed',Impact,sans-serif; text-transform:uppercase; letter-spacing:-.02em; }
+.team-mission-card h2 span { color:#ffe600; text-shadow:0 3px 9px #000; }
+.team-mission-card > p:not(.eyebrow) { max-width:650px; margin:0 auto; color:#e0e0da; font-size:18px; line-height:1.65; }
+.team-mission-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:15px; margin-top:30px; }
+.team-mission-actions a { display:inline-flex; align-items:center; justify-content:center; min-width:205px; min-height:56px; padding:13px 22px; border:2px solid #ffe600; border-radius:8px; font-size:13px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; transition:background .28s ease,color .28s ease,transform .28s ease,box-shadow .28s ease; }
+.team-mission-actions a:first-child { background:#ffe600; color:#080808; }
+.team-mission-actions a:last-child { background:transparent; color:#ffe600; }
+.team-mission-actions a:first-child:hover,.team-mission-actions a:last-child:hover { transform:translateY(-3px); box-shadow:0 12px 24px #0005; }
+.team-mission-actions a:first-child:hover { background:#080808; color:#ffe600; }
+.team-mission-actions a:last-child:hover { background:#ffe600; color:#080808; }
+.team-mission-actions a:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+@media(max-width:700px) {
+  .team-mission-wrap { padding:0 6% 70px; }
+  .team-mission-card { padding:55px 22px; }
+  .team-mission-card > p:not(.eyebrow) { font-size:15px; }
+  .team-mission-actions { flex-direction:column; }
+  .team-mission-actions a { width:100%; }
+}
+@media(prefers-reduced-motion:reduce) { .team-mission-actions a { transition:none; } }
