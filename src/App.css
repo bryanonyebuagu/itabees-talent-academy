@@ -2897,3 +2897,13 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .home-back-to-top svg { width:15px; height:15px; flex:none; }
 @media(max-width:700px) { .home-back-to-top { left:12px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); min-height:40px; padding:8px 11px; font-size:10px; } }
 @media(prefers-reduced-motion:reduce) { .home-back-to-top { transition:none; } }
+
+/* Contact page: retain the full academy poster and lemon heading accents. */
+.contact-story-hero .page-hero-image { background:#080808; }
+.contact-story-hero .page-hero-image picture { display:block; width:100%; height:100%; }
+.contact-story-hero .page-hero-image img { object-fit:contain; }
+.contact-page-grid h2 span { color:#ffe600; text-shadow:0 3px 8px #000,0 1px 3px #000; }
+@media(max-width:700px) {
+  .contact-story-hero .page-hero-image { max-height:none; }
+  .contact-story-hero .page-hero-image img { height:auto; max-height:none; }
+}
