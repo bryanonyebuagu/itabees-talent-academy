@@ -2679,6 +2679,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .team-feature-photo img,.team-member-photo img { display:block; width:100%; height:100%; object-fit:cover; object-position:center top; }
 .team-feature-copy { display:flex; flex-direction:column; justify-content:center; padding:clamp(35px,6vw,90px); }
 .team-feature-copy h3 { margin:8px 0 12px; font:900 clamp(56px,6vw,95px)/.94 'Barlow Condensed',Impact,sans-serif; text-transform:uppercase; }
+.team-feature-copy h3 span,.team-member-copy h3 span { color:#ffe600; text-shadow:0 3px 9px #000,0 1px 3px #000; }
 .team-feature-copy > strong { color:#ffe600; font-size:15px; line-height:1.5; text-shadow:0 2px 6px #000; }
 .team-feature-copy > p:last-child { max-width:670px; margin:27px 0 0; color:#ddd; font-size:16px; line-height:1.8; }
 .team-council-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; margin-top:30px; }

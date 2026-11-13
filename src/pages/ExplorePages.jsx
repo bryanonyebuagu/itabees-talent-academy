@@ -14,6 +14,7 @@ function ExploreCta({ eyebrow, title, description, primary, secondary }) {
 }
 
 const galleryAssets = import.meta.glob("../assets/gallery folder/*", { eager: true, query: "?url", import: "default" });
+const councilAssets = import.meta.glob("../assets/the team/*", { eager: true, query: "?url", import: "default" });
 const galleryDetails = [
   ["IMG_7396 (1).jpg", "Training", "Learning on the field", "Young players together during a field session"],
   ["IMG_7397.jpg", "Training", "Into the action", "Young players moving through a soccer practice"],
@@ -26,10 +27,19 @@ const galleryDetails = [
   ["IMG_7416.jpg", "Events", "An event to remember", "Young soccer players and coaches posing together at an event"],
   ["IMG_7417.jpg", "Academy", "Sharing the journey", "Coach standing with two young soccer players"],
 ];
-const galleryItems = galleryDetails.map(([id, category, label, alt]) => ({
-  id, image: galleryAssets[`../assets/gallery folder/${id}`], category, label, alt,
+const councilGalleryDetails = [
+  ["Eyong Enoh Tarkang.jpg", "Eyong Enoh"],
+  ["Eric Djemba Djemba.jpg", "Eric Djemba Djemba"],
+  ["Augustine Simo.jpg", "Augustine Simo"],
+  ["Tiyiselani Shipalane.jpg", "Tiyiselani Shipalane"],
+];
+const councilGalleryItems = councilGalleryDetails.map(([file, name]) => ({
+  id: file, image: councilAssets[`../assets/the team/${file}`], category: "Advisory Council", label: name, alt: `${name}, ItaBEES advisory council member`,
 }));
-const galleryFilters = ["All", "Training", "Coaching", "Camps", "Events", "Academy"];
+const galleryItems = [...galleryDetails.map(([id, category, label, alt]) => ({
+  id, image: galleryAssets[`../assets/gallery folder/${id}`], category, label, alt,
+})), ...councilGalleryItems];
+const galleryFilters = ["All", "Training", "Coaching", "Camps", "Events", "Academy", "Advisory Council"];
 
 export function Gallery() {
   const [filter, setFilter] = useState("All");
@@ -57,7 +67,7 @@ const faqGroups = [
     ["What happens at camps and clinics?", "Camps and clinics give players additional opportunities to train, compete and learn outside their regular team environment. The site describes school-break and summer camps, position-specific clinics and special guest coaching events as examples. Each experience is designed with a developmental purpose rather than simply adding more playing time."],
     ["How can I find upcoming camps or events?", "Visit the Events page for published opportunities. If no event is listed, use the contact page to ask what is being planned. Dates, places and registration details should be confirmed with the academy before attending."],
     ["What role does mentorship play?", "ItaBEES coaches aim to develop the person behind the player. Mentorship supports qualities such as confidence, responsibility, respect, leadership and resilience, alongside soccer training. The academy also encourages players to value education and prepare for life beyond the pitch."],
-    ["Who are the coaches?", "The Coaches page introduces Marcus Thorne, Elena Rodriguez and David Chen, including their roles and approach to player development. Visit that page to see their profiles and learn more about the people guiding academy sessions."],
+    ["Who guides player development?", "The Our Team page introduces ItaBEES Talent Academy's Technical & Player Pathways Advisory Council: Eyong Enoh, Eric Djemba Djemba, Augustine Simo and Tiyiselani Shipalane. The council supports technical development, mentorship, coaching excellence and player pathways in collaboration with the Academy Director."],
   ] },
   { title: "Support &", accent: "Contact", questions: [
     ["How do I get started with ItaBEES?", "Start with the Player Development, Programs or Eligibility page to understand the options. Then use Apply Now to tell the academy about your player and their goals. Nothing is available to book online right now, so the team can help identify a suitable next step through an inquiry."],
