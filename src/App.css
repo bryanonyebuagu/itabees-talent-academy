@@ -2907,3 +2907,5 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   .contact-story-hero .page-hero-image { max-height:none; }
   .contact-story-hero .page-hero-image img { height:auto; max-height:none; }
 }
+
+.program-feature:last-of-type .program-feature-image img { object-position:center 62%; }

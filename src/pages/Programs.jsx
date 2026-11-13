@@ -37,8 +37,8 @@ const programs = [
     title: "International Development &",
     accent: "Exposure",
     description: "Opportunities to participate in international training camps, tournaments, and development experiences through academy partnerships. Designed to introduce players to different playing environments, coaching philosophies, and potential development pathways.",
-    image: photo("IMG_7416.jpg"),
-    alt: "Young players and coaches together at a soccer event",
+    image: media.internationalHomeDesktop,
+    alt: "Young players and mentors at an international soccer event",
   },
 ];
 
