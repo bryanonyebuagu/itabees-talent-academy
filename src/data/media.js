@@ -18,6 +18,7 @@ export const media = {
   aboutStory: find("3_4_ratio_d5a36cc3_2K"),
   aboutWhy: find("Enhance_photograph_quality_75c10340_2K"),
   internationalHome: find("Enhancing_professional_photograp"),
+  internationalHomeDesktop: find("1_1_ratio_cb8f5486_2K"),
   education: find("ai-generated-IMAGE"),
   camp: find("itabees-camp-clinic"),
   campDesktop: find("training_camp for desktop_8e35f8d2_2K"),
