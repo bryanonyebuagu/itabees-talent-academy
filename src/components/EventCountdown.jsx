@@ -5,7 +5,8 @@ import ArrowUpRight from "./ArrowUpRight";
 // Add future events here using their local start time and UTC offset.
 const upcomingEvents = [
   {
-    title: "Free Soccer Clinic + BBQ",
+    title: "Free Soccer Clinic",
+    accent: "+ BBQ",
     startsAt: "2026-11-21T11:00:00-05:00", // Charlotte, EST
     detailsPath: "/camps-and-clinics",
   },
@@ -63,7 +64,7 @@ export default function EventCountdown() {
       <span className="event-countdown-kicker">Upcoming Event</span>
       <button className="event-countdown-toggle" type="button" aria-label={expanded ? "Collapse event countdown" : "Expand event countdown"} aria-expanded={expanded} aria-controls="event-countdown-extra" onClick={() => setExpanded(value => !value)}><span className="event-countdown-chevron" aria-hidden="true" /></button>
     </div>
-    <strong className="event-countdown-title">{event.title}</strong>
+    <strong className="event-countdown-title">{event.title} {event.accent && <span>{event.accent}</span>}</strong>
     <div className="event-countdown-timer" role="timer" aria-label={`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`}>
       {[[days,"Days"],[hours,"Hours"],[minutes,"Minutes"],[seconds,"Seconds"]].map(([value,label], index) => <span className="event-countdown-unit" key={label}>{index > 0 && <span className="event-countdown-separator" aria-hidden="true">:</span>}<span><strong>{index === 0 ? value : twoDigits(value)}</strong><small>{label}</small></span></span>)}
     </div>
