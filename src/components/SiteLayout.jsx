@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import EventCountdown from "./EventCountdown";
 
 export default function SiteLayout() {
   const { pathname, hash } = useLocation();
@@ -12,5 +13,5 @@ export default function SiteLayout() {
     }
     window.scrollTo(0, 0);
   }, [pathname, hash]);
-  return <><Header /><Outlet /><Footer /></>;
+  return <><Header /><Outlet /><Footer /><EventCountdown /></>;
 }
