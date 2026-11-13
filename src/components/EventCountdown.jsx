@@ -9,21 +9,24 @@ const eventEnd = Date.parse("2026-11-21T14:00:00-05:00");
 function getRemaining() {
   const now = Date.now();
   if (now >= eventEnd) return null;
-  if (now >= eventStart) return "Happening now";
-  const minutes = Math.ceil((eventStart - now) / 60000);
-  const days = Math.floor(minutes / 1440);
-  const hours = Math.floor((minutes % 1440) / 60);
-  if (days > 0) return `${days}d ${hours}h left`;
-  if (hours > 0) return `${hours}h left`;
-  return `${minutes}m left`;
+  if (now >= eventStart) return { live: true };
+  const seconds = Math.max(0, Math.floor((eventStart - now) / 1000));
+  return {
+    days: Math.floor(seconds / 86400),
+    hours: Math.floor((seconds % 86400) / 3600),
+    minutes: Math.floor((seconds % 3600) / 60),
+    seconds: seconds % 60,
+  };
 }
+
+const twoDigits = (value) => String(value).padStart(2, "0");
 
 export default function EventCountdown() {
   const [remaining, setRemaining] = useState(getRemaining);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setRemaining(getRemaining()), 60000);
+    const timer = window.setInterval(() => setRemaining(getRemaining()), 1000);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -46,11 +49,10 @@ export default function EventCountdown() {
       <p className="event-countdown-where">Mallard Creek Park · Charlotte, NC</p>
       <Link to="/camps-and-clinics" onClick={() => setExpanded(false)}>See the clinic details <ArrowUpRight /></Link>
     </div>}
-    <button className="event-countdown-trigger" type="button" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>
-      <span className="event-countdown-dot" aria-hidden="true" />
-      <span className="event-countdown-title">Free Soccer Clinic</span>
-      <strong>{remaining}</strong>
-      <span className={`event-countdown-chevron${expanded ? " is-open" : ""}`} aria-hidden="true" />
+    <button className="event-countdown-trigger" type="button" aria-expanded={expanded} aria-label={`${remaining.live ? "Happening now" : `${remaining.days} days, ${remaining.hours} hours, ${remaining.minutes} minutes and ${remaining.seconds} seconds until`} the ItaBEES Free Soccer Clinic and BBQ. ${expanded ? "Hide" : "Show"} event details.`} onClick={() => setExpanded(value => !value)}>
+      <span className="event-countdown-heading"><span className="event-countdown-dot" aria-hidden="true" /><span className="event-countdown-title">Free Soccer Clinic + BBQ</span><span className={`event-countdown-chevron${expanded ? " is-open" : ""}`} aria-hidden="true" /></span>
+      <span className="event-countdown-description">Guest coaches · Saturday, November 21</span>
+      {remaining.live ? <strong className="event-countdown-live">Happening now</strong> : <span className="event-countdown-timer" aria-hidden="true">{[[remaining.days,"DAYS"],[remaining.hours,"HRS"],[remaining.minutes,"MIN"],[remaining.seconds,"SEC"]].map(([value,label]) => <span className="event-countdown-unit" key={label}><strong>{twoDigits(value)}</strong><small>{label}</small></span>)}</span>}
     </button>
   </aside>;
 }
