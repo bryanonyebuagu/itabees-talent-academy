@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All personal records are accessed through server endpoints after token checks.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

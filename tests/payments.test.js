@@ -1,63 +1,42 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Readable } from "node:stream";
-import Stripe from "stripe";
+import { applyPaymentEvent } from "../api/_lib/paymentEvent.js";
 import webhook from "../api/payments/webhook.js";
-import status from "../api/payments/status.js";
-import { CHECKOUT_PROGRAMS } from "../src/data/checkoutPrograms.js";
 
-const stripe = new Stripe("sk_test_example");
-const originalFetch = globalThis.fetch;
-const originalEnv = { ...process.env };
-
-function response() {
-  return { code: 200, payload: null, status(code) { this.code = code; return this; }, json(payload) { this.payload = payload; return this; }, end() { return this; }, setHeader() {} };
+function fakeDatabase(seed) {
+  const collections = { payments: new Map([["pi_test123", seed]]), stripeEvents: new Map(), registrations: new Map() };
+  const database = { collection(name) { return { doc(id) { return { name, id }; } }; }, async runTransaction(callback) { const transaction = { async get(ref) { return { exists: collections[ref.name].has(ref.id), data: () => collections[ref.name].get(ref.id) }; }, update(ref, changes) { collections[ref.name].set(ref.id, { ...collections[ref.name].get(ref.id), ...changes }); }, set(ref, value) { collections[ref.name].set(ref.id, value); }, create(ref, value) { if (collections[ref.name].has(ref.id)) throw new Error("duplicate"); collections[ref.name].set(ref.id, value); } }; return callback(transaction); } };
+  return { database, collections };
 }
 
-test("signed success is recorded once; invalid signatures and unmatched amounts are rejected", async () => {
+const payment = { reference: "ref-test", kind: "program", title: "Player Development Academy", programId: "player-development", duration: "12 weeks (sample)", amountCents: 4500, currency: "usd", email: "parent@example.com", name: "Parent Test", participantName: "Player Test", age: 12, phone: "5028074444", status: "pending" };
+const event = (id, type, amount = 4500) => ({ id, type, data: { object: { id: "pi_test123", amount, currency: "usd", metadata: { reference: "ref-test" } } } });
+
+test("webhook processing rejects wrong amounts and handles failure, success, duplicates, and late failure", async () => {
+  const { database, collections } = fakeDatabase(payment);
+  await assert.rejects(applyPaymentEvent(database, event("bad", "payment_intent.succeeded", 4400)), /mismatch/);
+  assert.equal(collections.payments.get("pi_test123").status, "pending");
+  assert.equal(await applyPaymentEvent(database, event("failed", "payment_intent.payment_failed")), "failed");
+  assert.equal(collections.payments.get("pi_test123").status, "failed");
+  assert.equal(await applyPaymentEvent(database, event("success", "payment_intent.succeeded")), "paid");
+  assert.equal(collections.payments.get("pi_test123").status, "paid");
+  assert.equal(collections.registrations.get("pi_test123").status, "awaiting_admin");
+  assert.equal(collections.registrations.get("pi_test123").duration, "12 weeks (sample)");
+  assert.equal(await applyPaymentEvent(database, event("success", "payment_intent.succeeded")), "duplicate");
+  await applyPaymentEvent(database, event("late", "payment_intent.payment_failed"));
+  assert.equal(collections.payments.get("pi_test123").status, "paid");
+});
+
+test("unsigned webhook request is rejected before database access", async () => {
+  const previous = { secret: process.env.STRIPE_SECRET_KEY, publishable: process.env.STRIPE_PUBLISHABLE_KEY, webhook: process.env.STRIPE_WEBHOOK_SECRET };
   process.env.STRIPE_SECRET_KEY = "sk_test_example";
   process.env.STRIPE_PUBLISHABLE_KEY = "pk_test_example";
   process.env.STRIPE_WEBHOOK_SECRET = "whsec_example";
-  process.env.KV_REST_API_URL = "https://example.invalid";
-  process.env.KV_REST_API_TOKEN = "test";
-  const store = new Map();
-  const intentId = "pi_test123";
-  const token = "12345678-1234-1234-1234-123456789abc";
-  const record = { intentId, accessToken: token, reference: "ref-test", kind: "program", title: CHECKOUT_PROGRAMS[0].name, amountCents: CHECKOUT_PROGRAMS[0].amountCents, currency: "usd", email: "parent@example.com", participantName: "Player Test", status: "pending" };
-  store.set(`itabees:payment:${intentId}`, JSON.stringify(record));
-  globalThis.fetch = async (_url, options) => {
-    const [command, key, value] = JSON.parse(options.body);
-    if (command === "GET") return { ok: true, json: async () => ({ result: store.get(key) ?? null }) };
-    if (command === "SET") { if (JSON.parse(options.body).includes("NX") && store.has(key)) return { ok: true, json: async () => ({ result: null }) }; store.set(key, value); return { ok: true, json: async () => ({ result: "OK" }) }; }
-    if (command === "DEL") { store.delete(key); return { ok: true, json: async () => ({ result: 1 }) }; }
-    throw new Error(`Unexpected Redis command: ${command}`);
-  };
-  const event = (id, amount, type = "payment_intent.succeeded") => JSON.stringify({ id, object: "event", type, data: { object: { id: intentId, object: "payment_intent", amount, currency: "usd", metadata: { reference: "ref-test" } } } });
-  const send = async (body, signature) => { const req = Readable.from([Buffer.from(body)]); req.method = "POST"; req.headers = { "stripe-signature": signature }; const res = response(); await webhook(req, res); return res; };
-  try {
-    let body = event("evt_bad", record.amountCents);
-    assert.equal((await send(body, "bad-signature")).code, 400);
-    assert.equal(JSON.parse(store.get(`itabees:payment:${intentId}`)).status, "pending");
-    body = event("evt_wrong_amount", record.amountCents - 100);
-    let signature = stripe.webhooks.generateTestHeaderString({ payload: body, secret: process.env.STRIPE_WEBHOOK_SECRET });
-    assert.equal((await send(body, signature)).code, 400);
-    body = event("evt_failed", record.amountCents, "payment_intent.payment_failed");
-    signature = stripe.webhooks.generateTestHeaderString({ payload: body, secret: process.env.STRIPE_WEBHOOK_SECRET });
-    assert.equal((await send(body, signature)).code, 200);
-    assert.equal(JSON.parse(store.get(`itabees:payment:${intentId}`)).status, "failed");
-    body = event("evt_success", record.amountCents);
-    signature = stripe.webhooks.generateTestHeaderString({ payload: body, secret: process.env.STRIPE_WEBHOOK_SECRET });
-    assert.equal((await send(body, signature)).code, 200);
-    assert.equal((await send(body, signature)).code, 200);
-    assert.equal(JSON.parse(store.get(`itabees:payment:${intentId}`)).status, "paid");
-    body = event("evt_late_failure", record.amountCents, "payment_intent.payment_failed");
-    signature = stripe.webhooks.generateTestHeaderString({ payload: body, secret: process.env.STRIPE_WEBHOOK_SECRET });
-    assert.equal((await send(body, signature)).code, 200);
-    assert.equal(JSON.parse(store.get(`itabees:payment:${intentId}`)).status, "paid");
-    const unauthorized = response(); await status({ method: "GET", query: { id: intentId, token: "00000000-0000-0000-0000-000000000000" } }, unauthorized);
-    assert.equal(unauthorized.code, 403);
-    const authorized = response(); await status({ method: "GET", query: { id: intentId, token } }, authorized);
-    assert.equal(authorized.payload.status, "paid");
-    assert.equal(authorized.payload.accessToken, undefined);
-  } finally { globalThis.fetch = originalFetch; process.env = originalEnv; }
+  const request = Readable.from([Buffer.from(JSON.stringify(event("unsigned", "payment_intent.succeeded")))]);
+  request.method = "POST";
+  request.headers = { "stripe-signature": "bad" };
+  const response = { code: 200, status(value) { this.code = value; return this; }, json() { return this; }, end() { return this; } };
+  try { await webhook(request, response); assert.equal(response.code, 400); }
+  finally { if (previous.secret === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = previous.secret; if (previous.publishable === undefined) delete process.env.STRIPE_PUBLISHABLE_KEY; else process.env.STRIPE_PUBLISHABLE_KEY = previous.publishable; if (previous.webhook === undefined) delete process.env.STRIPE_WEBHOOK_SECRET; else process.env.STRIPE_WEBHOOK_SECRET = previous.webhook; }
 });

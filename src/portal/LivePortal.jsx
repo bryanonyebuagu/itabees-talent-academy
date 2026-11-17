@@ -1,0 +1,81 @@
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "@firebase/auth";
+import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import logo from "../assets/logo.jpeg";
+import { authorizedFetch, firebaseReady, memberAuth } from "../services/firebase";
+import { EmptyState, Metric, PageHeading, Panel, Status } from "./PortalUI";
+import PortalIcon from "./PortalIcon";
+import "./portal.css";
+
+const menu = {
+  member: [["Overview", "/dashboard", "dashboard"], ["My programmes", "/dashboard/my-programmes", "programmes"], ["Support", "/dashboard/support", "messages"]],
+  admin: [["Overview", "/admin", "dashboard"], ["Registrations", "/admin/players", "players"], ["Support inbox", "/admin/support", "messages"]],
+};
+
+export function LivePortalLayout({ mode }) {
+  const navigate = useNavigate();
+  const { pathname, search } = useLocation();
+  const preview = import.meta.env.DEV && (new URLSearchParams(search).has("preview") || sessionStorage.getItem("itabees-live-preview") === mode);
+  if (preview) sessionStorage.setItem("itabees-live-preview", mode);
+  const previewEmail = import.meta.env.DEV ? import.meta.env.VITE_PREVIEW_EMAIL || "preview@example.com" : "preview@example.com";
+  const previewRegistration = { id: "preview", participantName: "Sample Player", guardianName: "Sample Guardian", email: previewEmail, phone: "Sample contact", programName: "Player Development Academy", duration: "12 weeks (sample)", status: "awaiting_admin", createdAt: new Date().toISOString() };
+  const [user, setUser] = useState(preview ? { email: previewEmail } : undefined);
+  const [role, setRole] = useState(preview ? "ready" : firebaseReady ? "checking" : "unconfigured");
+  const [adminAccount, setAdminAccount] = useState(preview);
+  const [data, setData] = useState(preview ? { registrations: mode === "admin" ? [previewRegistration] : [{ ...previewRegistration, status: "active" }], tickets: [], pendingApproval: false } : null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [error, setError] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem(`itabees-${mode}-theme`) || (mode === "admin" ? "dark" : "light"));
+  const root = mode === "admin" ? "/admin" : "/dashboard";
+  useEffect(() => {
+    if (preview || !firebaseReady) return;
+    return onAuthStateChanged(memberAuth, async current => {
+      setUser(current);
+      if (!current) { setRole("guest"); return; }
+      const token = await current.getIdTokenResult();
+      setAdminAccount(token.claims.admin === true);
+      setRole(mode === "admin" && token.claims.admin !== true ? "forbidden" : "ready");
+    });
+  }, [mode, preview]);
+  useEffect(() => {
+    if (role !== "ready" || preview) return;
+    let active = true;
+    authorizedFetch(mode === "admin" ? "/api/portal/admin" : "/api/portal/me").then(async response => { const body = await response.json(); if (!response.ok) throw new Error(body.error); if (active) { setData(body); setError(""); } }).catch(caught => { if (active) setError(caught.message); });
+    return () => { active = false; };
+  }, [role, mode, pathname, refreshKey, preview]);
+  const logout = async () => { if (preview) sessionStorage.removeItem("itabees-live-preview"); else await signOut(memberAuth); navigate(mode === "admin" ? "/admin/login" : "/login"); };
+  if (role === "unconfigured") return <div className="portal-gate"><h1>Dashboard setup is pending.</h1><p>The academy needs to connect its Firebase project before accounts can be used.</p><Link to="/">Return to website</Link></div>;
+  if (role === "checking" || user === undefined) return <div className="portal-gate" role="status">Checking your account…</div>;
+  if (role === "guest") return <Navigate to={mode === "admin" ? "/admin/login" : "/login"} replace />;
+  if (role === "forbidden") return <div className="portal-gate"><h1>Administrator access required.</h1><p>Your account does not have permission to open this dashboard.</p><Link to="/dashboard">Go to your dashboard</Link></div>;
+  if (mode === "member" && data && !data.registrations.length && !adminAccount) return <div className="portal-gate"><h1>{data.pendingApproval ? "Waiting for academy approval." : "No approved registration yet."}</h1><p>{data.pendingApproval ? "Your payment has been verified. An administrator must confirm it before your dashboard opens." : "Your dashboard opens after a program payment is verified and approved by the academy."}</p><Link to="/register">Explore programs</Link><button type="button" onClick={() => setRefreshKey(value => value + 1)}>Check again</button></div>;
+  return <div className={`portal portal-${mode} portal-theme-${theme}`}><aside className={`portal-sidebar ${menuOpen ? "is-open" : ""}`}><Link className="portal-brand" to={root} onClick={() => setMenuOpen(false)}><span className="portal-brand-mark"><img src={logo} alt="" /></span><span><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><small>TALENT ACADEMY</small></span></Link><div className="portal-sidebar-label">{mode === "admin" ? "ADMINISTRATION" : "PLAYER PORTAL"}</div><nav className="portal-nav">{menu[mode].map(([label,path,icon]) => <NavLink key={path} end={path === root} to={path} onClick={() => setMenuOpen(false)}><PortalIcon name={icon} size={19}/><span>{label}</span></NavLink>)}</nav><div className="portal-sidebar-foot"><Link to="/" className="portal-public-link"><span className="portal-public-icon"><PortalIcon name="arrow" size={17}/></span><span><strong>Public website</strong><small>Explore ItaBEES</small></span></Link><button className="portal-logout-link" type="button" onClick={logout}><PortalIcon name="logout" size={18}/><span>Log out</span></button></div></aside>{menuOpen && <button className="portal-scrim" type="button" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />}
+    <div className="portal-workspace"><header className="portal-topbar"><div className="portal-topbar-left"><button className="portal-menu-button" type="button" aria-label="Open menu" onClick={() => setMenuOpen(!menuOpen)}><PortalIcon name="menu" size={22}/></button><button className="portal-back-button" type="button" aria-label="Go back" onClick={() => navigate(-1)}><PortalIcon name="back" size={18}/></button><nav className="portal-breadcrumb"><Link to={root}>{mode === "admin" ? "Administration" : "Member space"}</Link><PortalIcon name="chevron" size={14}/><strong>{menu[mode].find(([,path]) => path === pathname)?.[0] || "Overview"}</strong></nav></div><div className="portal-topbar-right"><button className="portal-theme-toggle" type="button" aria-label="Toggle light and dark mode" onClick={() => { const next = theme === "dark" ? "light" : "dark"; setTheme(next); localStorage.setItem(`itabees-${mode}-theme`, next); }}><PortalIcon name={theme === "dark" ? "sun" : "moon"} size={19}/><span className="portal-theme-tooltip">{theme === "dark" ? "Light mode" : "Dark mode"}</span></button><div className="portal-user"><span className="portal-avatar">{(user.email || "I")[0].toUpperCase()}</span><span><strong>{user.email}</strong><small>{mode === "admin" ? "Administrator" : "Member"}</small></span></div></div></header><main className="portal-main">{preview && <p className="portal-preview-note">LOCAL PREVIEW · Sample information only. Payments, approvals and emails are not active here.</p>}{error && <p className="portal-error" role="alert">{error}</p>}<Outlet context={{ data, user, mode, preview, refresh: () => setRefreshKey(value => value + 1) }} /></main></div></div>;
+}
+
+export function LiveOverview() {
+  const { data, mode } = useOutletContext();
+  if (!data) return <p role="status">Loading dashboard…</p>;
+  if (mode === "admin") return <><PageHeading eyebrow="ADMIN / OVERVIEW" title="Academy command centre" description="Verified registrations and support activity."/><div className="portal-metrics"><Metric label="Registered players" value={data.registrations.length} detail="Payment and approval status tracked" icon="players"/><Metric label="Awaiting approval" value={data.registrations.filter(item => item.status === "awaiting_admin").length} detail="Confirm these payments" icon="check"/><Metric label="Support requests" value={data.tickets.length} detail="Member conversations" icon="messages"/></div><div className="portal-grid portal-grid-2 portal-section-gap"><Panel title="Recent registrations" action={<Link to="/admin/players">View all →</Link>}>{data.registrations.slice(0,5).map(item => <div className="live-row" key={item.id}><strong>{item.participantName}</strong><span>{item.programName}</span></div>)}{!data.registrations.length && <EmptyState title="No registrations yet" body="Paid registrations will appear here after Stripe verification."/>}</Panel><Panel title="Support inbox" action={<Link to="/admin/support">View messages →</Link>}>{data.tickets.slice(0,5).map(item => <div className="live-row" key={item.id}><strong>{item.subject}</strong><span>{item.email}</span></div>)}{!data.tickets.length && <EmptyState title="No support messages" body="Member questions will appear here."/>}</Panel></div></>;
+  return <><PageHeading eyebrow="MY ACADEMY / OVERVIEW" title="Your player space" description="Your verified programs and support conversations."/><div className="portal-metrics"><Metric label="Current programs" value={data.registrations.length} detail="Paid registrations" icon="programmes"/></div><Panel title="Your programs" eyebrow="CURRENT DEVELOPMENT" className="portal-section-gap">{data.registrations.map(item => <div className="live-program" key={item.id}><h3>{item.programName}</h3><p>{item.participantName} · {item.duration}</p><Status value={item.status}/></div>)}{!data.registrations.length && <EmptyState title="No paid program yet" body="Choose a program to register. Your program appears here after secure payment confirmation."/>}<Link className="portal-inline-link" to="/register">Explore programs →</Link></Panel></>;
+}
+
+export function LiveRegistrations() {
+  const { data, mode, refresh, preview } = useOutletContext();
+  const [approvalError, setApprovalError] = useState("");
+  const approve = async id => { if (preview) { setApprovalError("Approval is disabled in local preview."); return; } try { setApprovalError(""); const response = await authorizedFetch("/api/portal/approve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ registrationId: id }) }); const body = await response.json(); if (!response.ok) throw new Error(body.error); refresh(); } catch (error) { setApprovalError(error.message); } };
+  if (!data) return <p role="status">Loading registrations…</p>;
+  const records = data.registrations;
+  return <><PageHeading eyebrow={mode === "admin" ? "ADMIN / PLAYERS" : "MY DEVELOPMENT"} title={mode === "admin" ? "Registrations" : "My programmes"} description={mode === "admin" ? "Player and guardian details from verified payments. Approve each payment to open member access." : "Your current program registrations."}/>{approvalError && <p className="portal-error" role="alert">{approvalError}</p>}<Panel title={`${records.length} ${mode === "admin" ? "registered players" : "programs"}`}><div className="portal-table-wrap"><table className="portal-table"><thead><tr><th>Player</th><th>Program</th><th>Duration</th>{mode === "admin" && <><th>Contact</th><th>Registered</th></>}<th>Status</th>{mode === "admin" && <th>Access</th>}</tr></thead><tbody>{records.map(item => <tr key={item.id}><td><strong>{item.participantName}</strong>{mode === "admin" && <small>{item.guardianName}</small>}</td><td>{item.programName}</td><td>{item.duration}</td>{mode === "admin" && <><td><a href={`mailto:${item.email}`}>{item.email}</a><small>{item.phone}</small></td><td>{new Date(item.createdAt).toLocaleDateString()}</td></>}<td><Status value={item.status}/></td>{mode === "admin" && <td>{item.status === "awaiting_admin" ? <button className="portal-button portal-button-primary" type="button" onClick={() => approve(item.id)}>Confirm payment</button> : "Approved"}</td>}</tr>)}</tbody></table>{!records.length && <EmptyState title="No registrations yet" body="Verified program payments will appear here."/>}</div></Panel></>;
+}
+
+export function LiveSupport() {
+  const { mode, data, refresh, preview } = useOutletContext();
+  const [memberTickets, setMemberTickets] = useState([]), [subject, setSubject] = useState(""), [message, setMessage] = useState(""), [selected, setSelected] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false);
+  useEffect(() => { if (mode === "admin" || preview) return; authorizedFetch("/api/portal/support").then(response => response.json()).then(body => setMemberTickets(body.tickets || [])).catch(() => setNotice("Support messages are temporarily unavailable.")); }, [mode, preview]);
+  const tickets = mode === "admin" ? data?.tickets || [] : memberTickets;
+  const send = async event => { event.preventDefault(); if (preview) { setNotice("Support is disabled in local preview."); return; } setBusy(true); setNotice(""); try { const admin = mode === "admin"; const response = await authorizedFetch(admin ? "/api/portal/reply" : "/api/portal/support", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(admin ? { ticketId: selected || tickets[0]?.id, message } : { subject, message }) }); const body = await response.json(); if (!response.ok) throw new Error(body.error); setNotice(admin ? "Reply emailed to the member." : body.emailSent ? "Your message was sent to the academy." : "Your message was saved for the academy. Email notification is not configured yet."); setMessage(""); setSubject(""); if (admin) refresh(); else setMemberTickets(items => [ { id: body.id, ...body.ticket }, ...items ]); } catch (error) { setNotice(error.message); } finally { setBusy(false); } };
+  const current = tickets.find(item => item.id === selected) || tickets[0];
+  return <><PageHeading eyebrow={mode === "admin" ? "ADMIN / SUPPORT" : "HERE TO HELP"} title={mode === "admin" ? "Support inbox" : "Contact support"} description={mode === "admin" ? "Reply directly to members by email." : "Send the academy a question about your program or account."}/><div className="portal-grid portal-grid-2"><Panel title="Conversations">{tickets.map(ticket => <button className="live-ticket" type="button" key={ticket.id} onClick={() => setSelected(ticket.id)}><strong>{ticket.subject}</strong><small>{ticket.email} · {ticket.status}</small></button>)}{!tickets.length && <EmptyState title="No conversations yet" body="New support requests appear here."/>}</Panel><Panel title={mode === "admin" ? current?.subject || "Select a conversation" : "Send a message"}>{current?.messages.map((entry,index) => <div className="live-message" key={`${entry.sentAt}-${index}`}><strong>{entry.sender === "academy" ? "ItaBEES Support" : current.email}</strong><p>{entry.body}</p></div>)}<form className="live-support-form" onSubmit={send}>{mode !== "admin" && <label>Subject<input required minLength="3" maxLength="140" value={subject} onChange={event => setSubject(event.target.value)}/></label>}<label>{mode === "admin" ? "Reply to member" : "Your message"}<textarea required minLength={mode === "admin" ? 3 : 10} maxLength="4000" rows="5" value={message} onChange={event => setMessage(event.target.value)}/></label><button className="portal-button portal-button-primary" disabled={busy || (mode === "admin" && !current)} type="submit">{busy ? "Sending…" : mode === "admin" ? "Email reply" : "Send to support"}</button></form>{notice && <p role="status">{notice}</p>}</Panel></div></>;
+}

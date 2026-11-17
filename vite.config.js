@@ -9,11 +9,11 @@ const routes = [
   'gallery', 'faq', 'eligibility', 'get-involved',
   'donate', 'donate/checkout', 'donate/return', 'thank-you', 'about-us',
   'book-online', 'event-list', 'donate-page', 'thank-you-page', 'thank-you-page-2',
-  'admin/login', 'admin', 'admin/enquiries', 'admin/players', 'admin/parents',
+  'admin/login', 'admin', 'admin/enquiries', 'admin/players', 'admin/support', 'admin/parents',
   'admin/programmes', 'admin/training', 'admin/timetable', 'admin/events',
   'admin/coaches', 'admin/donations', 'admin/messages', 'admin/staff', 'admin/settings',
   'login', 'signup', 'forgot-password', 'dashboard', 'dashboard/my-programmes',
-  'dashboard/schedule', 'dashboard/events', 'dashboard/attendance',
+  'dashboard/schedule', 'dashboard/support', 'dashboard/events', 'dashboard/attendance',
   'dashboard/profile', 'dashboard/notifications',
 ]
 

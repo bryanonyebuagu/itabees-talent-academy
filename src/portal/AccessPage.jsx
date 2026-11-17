@@ -1,34 +1,52 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.jpeg';
-import { media } from '../data/media';
-import { Field } from './PortalUI';
-import PortalIcon from './PortalIcon';
-import './portal.css';
+import { useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "@firebase/auth";
+import logo from "../assets/logo.jpeg";
+import { media } from "../data/media";
+import { memberAuth, firebaseReady } from "../services/firebase";
+import { Field } from "./PortalUI";
+import PortalIcon from "./PortalIcon";
+import "./portal.css";
 
 export default function AccessPage({ kind }) {
   const navigate = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
-  const isAdmin = kind === 'admin';
-  const isSignup = kind === 'signup';
-  const isForgot = kind === 'forgot';
-  const title = isSignup ? 'Start your journey.' : isForgot ? 'Reset your password.' : isAdmin ? 'Academy command centre.' : 'Welcome to your player space.';
-  const description = isSignup ? 'Explore the information an ItaBEES registration would collect.' : isForgot ? 'Preview the password recovery screen.' : 'Explore the connected ItaBEES experience using fictional records.';
-  const submit = (event) => {
+  const [params] = useSearchParams();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const isAdmin = kind === "admin", isSignup = kind === "signup", isForgot = kind === "forgot";
+  const title = isSignup ? "Start your journey." : isForgot ? "Reset your password." : isAdmin ? "Academy command centre." : "Welcome to your player space.";
+  const submit = async event => {
     event.preventDefault();
-    if (isSignup || isForgot) { setSubmitted(true); return; }
-    setSubmitted(true);
+    const form = new FormData(event.currentTarget);
+    const email = String(form.get("email") || "").trim();
+    const password = String(form.get("password") || "");
+    const confirmation = String(form.get("confirmPassword") || "");
+    if (isSignup && password !== confirmation) { setError("The passwords do not match."); return; }
+    if (import.meta.env.DEV && !isSignup && !isForgot && email.toLowerCase() === import.meta.env.VITE_PREVIEW_EMAIL?.toLowerCase() && password === import.meta.env.VITE_PREVIEW_PASSWORD) { navigate(`${isAdmin ? "/admin" : "/dashboard"}?preview=1`); return; }
+    if (!firebaseReady) { setError("Account access is awaiting the academy’s Firebase configuration."); return; }
+    setBusy(true); setError(""); setNotice("");
+    try {
+      if (isForgot) { await sendPasswordResetEmail(memberAuth, email); setNotice("If this address has an account, a password reset email has been sent."); return; }
+      const credentials = isSignup ? await createUserWithEmailAndPassword(memberAuth, email, password) : await signInWithEmailAndPassword(memberAuth, email, password);
+      if (isSignup) {
+        await sendEmailVerification(credentials.user, { url: `${window.location.origin}/login` });
+        await signOut(memberAuth);
+        setNotice("Verification email sent. Open its link, then sign in. Dashboard access also requires academy payment approval.");
+        return;
+      }
+      if (isAdmin) {
+        const token = await credentials.user.getIdTokenResult(true);
+        if (token.claims.admin !== true) { setError("This account does not have administrator access."); return; }
+      }
+      if (!isAdmin && !credentials.user.emailVerified) { await sendEmailVerification(credentials.user, { url: `${window.location.origin}/login` }); await signOut(memberAuth); setNotice("Verify your email using the link we sent, then sign in again."); return; }
+      navigate(isAdmin ? "/admin" : "/dashboard");
+    } catch (caught) { setError(caught.code === "auth/invalid-credential" ? "The email or password is incorrect." : caught.code === "auth/email-already-in-use" ? "This email already has an account. Sign in instead." : caught.message || "Account access failed."); }
+    finally { setBusy(false); }
   };
-  return <div className="portal-access">
-    <div className="portal-access-art"><img src={isAdmin ? media.coaching : media.training} alt="ItaBEES academy training"/><Link className="portal-brand" to="/"><span className="portal-brand-mark"><img src={logo} alt=""/></span><span><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><small>TALENT ACADEMY</small></span></Link><div><span className="portal-eyebrow">BUILT FOR THE NEXT GENERATION</span><h1>Potential is only <span>the beginning.</span></h1><p>One academy. A clearer path for players, families and the team behind every session.</p></div></div>
-    <div className="portal-access-form-wrap"><div className="portal-access-form"><span className="portal-eyebrow">{isAdmin ? 'ADMIN / DEMO ACCESS' : 'PLAYER PORTAL / DEMO ACCESS'}</span><h2>{title}</h2><p>{description}</p>
-      <div className="portal-access-note"><strong>Frontend preview only.</strong> No account is created, credentials are not checked, and form entries are not sent or stored.</div>
-      {submitted ? <div className="portal-access-success" role="status"><PortalIcon name="check" size={24}/><h3>{isSignup ? 'Registration preview complete' : isForgot ? 'Recovery preview complete' : 'Login preview only'}</h3><p>{isSignup ? 'The registration form is ready for a future backend connection. No account or enquiry was submitted.' : isForgot ? 'No recovery email was sent. This screen is a design preview.' : 'Credentials were not checked or stored. Use the clearly labelled demo access below to explore the interface.'}</p><button className="portal-button portal-button-secondary" type="button" onClick={() => setSubmitted(false)}>Back to form</button></div> : <form onSubmit={submit}>
-        {isSignup ? <><div className="portal-field-grid"><Field label="Player full name"><input required name="player" autoComplete="name" placeholder="Player full name"/></Field><Field label="Date of birth"><input required name="birth" type="date"/></Field><Field label="Guardian name"><input required name="guardian" placeholder="Parent or guardian"/></Field><Field label="Phone number"><input required name="phone" type="tel" placeholder="Phone number"/></Field></div><Field label="Parent / guardian email"><input required name="email" type="email" autoComplete="email" placeholder="you@example.com"/></Field><Field label="Preferred programme"><select required name="programme" defaultValue=""><option value="" disabled>Select a programme</option><option>Player Development</option><option>Camps & Clinics</option><option>College Pathway</option><option>International Experiences</option></select></Field><Field label="Additional information"><textarea name="notes" rows="3" placeholder="Tell us about the player’s goals"/></Field><label className="portal-check-label"><input required type="checkbox"/>I am the parent or guardian and consent to this registration preview.</label></> : isForgot ? <Field label="Email address"><input required type="email" autoComplete="email" placeholder="you@example.com"/></Field> : <><Field label="Email address"><input required type="email" autoComplete="email" placeholder={isAdmin ? 'admin@example.com' : 'member@example.com'}/></Field><Field label="Password"><input required type="password" autoComplete="current-password" placeholder="Enter any demo password"/></Field></>}
-        <button className="portal-button portal-button-primary" type="submit"><PortalIcon name={isSignup ? 'user' : isForgot ? 'arrow' : 'lock'} size={17}/>{isSignup ? 'Preview registration' : isForgot ? 'Preview recovery' : 'Preview login'}</button>
-      </form>}
-      {!isSignup && !isForgot && <button className="portal-button portal-button-secondary portal-demo-entry" type="button" onClick={() => navigate(isAdmin ? '/admin' : '/dashboard')}><PortalIcon name="spark" size={17}/>Open {isAdmin ? 'admin' : 'member'} demo — no login required</button>}
-      <div className="portal-access-links"><Link to={isAdmin ? '/login' : '/admin/login'}>{isAdmin ? 'Member portal' : 'Admin demo'}</Link>{!isAdmin && !isSignup && !isForgot && <><Link to="/signup">Sign up</Link><Link to="/forgot-password">Forgot password?</Link></>}{(isSignup || isForgot) && <Link to="/login">Back to login</Link>}<Link to="/">Public website</Link></div>
-    </div></div>
-  </div>;
+  return <div className="portal-access"><div className="portal-access-art"><img src={isAdmin ? media.coaching : media.training} alt="ItaBEES academy training"/><Link className="portal-brand" to="/"><span className="portal-brand-mark"><img src={logo} alt=""/></span><span><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><small>TALENT ACADEMY</small></span></Link><div><span className="portal-eyebrow">BUILT FOR THE NEXT GENERATION</span><h1>Potential is only <span>the beginning.</span></h1><p>One academy. A clearer path for players, families and the team behind every session.</p></div></div>
+    <div className="portal-access-form-wrap"><div className="portal-access-form"><span className="portal-eyebrow">{isAdmin ? "ADMIN ACCESS" : "PLAYER PORTAL"}</span><h2>{title}</h2><p>{isSignup ? "Create a password with the email used for registration. Verify that email before signing in; academy approval is also required for dashboard access." : isForgot ? "We’ll email you a secure reset link." : "Sign in to see your approved programs and support conversations."}</p>{import.meta.env.DEV && !isSignup && !isForgot && <p className="portal-preview-note">Local preview: use the preview email and password configured on this computer. This does not authenticate against the live backend.</p>}
+      <form onSubmit={submit}><Field label="Email address"><input required name="email" type="email" autoComplete="email" defaultValue={isSignup ? params.get("email") || "" : ""} placeholder="you@example.com"/></Field>{!isForgot && <Field label={isSignup ? "Create new password" : "Password"}><input required name="password" type="password" minLength={isSignup ? 8 : undefined} autoComplete={isSignup ? "new-password" : "current-password"} placeholder={isSignup ? "At least 8 characters" : "Your password"}/></Field>}{isSignup && <Field label="Confirm new password"><input required name="confirmPassword" type="password" minLength="8" autoComplete="new-password" placeholder="Repeat your password"/></Field>}{error && <p className="form-error" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}<button className="portal-button portal-button-primary" type="submit" disabled={busy}><PortalIcon name={isForgot ? "arrow" : "lock"} size={17}/>{busy ? "Please wait…" : isSignup ? "Create password & send verification" : isForgot ? "Send reset link" : "Sign in"}</button></form>
+      <div className="portal-access-links"><Link to={isAdmin ? "/login" : "/admin/login"}>{isAdmin ? "Member login" : "Admin login"}</Link>{!isAdmin && !isSignup && !isForgot && <><Link to="/signup">Not yet a user? Sign up here</Link><Link to="/forgot-password">Forgot password?</Link></>}{(isSignup || isForgot) && <Link to="/login">Back to login</Link>}<Link to="/">Public website</Link></div>
+    </div></div></div>;
 }
