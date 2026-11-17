@@ -15,8 +15,8 @@ import Register from "./pages/Register";
 import Programs from "./pages/Programs";
 import Mentorship from "./pages/Mentorship";
 import Donate from "./pages/Donate";
-import DonationCheckout from "./pages/DonationCheckout";
-import DonationReturn from "./pages/DonationReturn";
+import PaymentCheckout from "./pages/PaymentCheckout";
+import PaymentConfirmation from "./pages/PaymentConfirmation";
 import ThankYou from "./pages/ThankYou";
 import { Eligibility, FAQ, Gallery, GetInvolved } from "./pages/ExplorePages";
 import DemoProvider from "./portal/DemoProvider";
@@ -76,6 +76,8 @@ export default function App() {
     <Route path="events" element={<Events />} />
     <Route path="contact" element={<Contact />} />
     <Route path="register" element={<Register />} />
+    <Route path="checkout" element={<PaymentCheckout />} />
+    <Route path="payment/confirmation" element={<PaymentConfirmation />} />
     <Route path="programs" element={<Programs />} />
     <Route path="mentorship" element={<Mentorship />} />
     <Route path="gallery" element={<Gallery />} />
@@ -83,8 +85,8 @@ export default function App() {
     <Route path="eligibility" element={<Eligibility />} />
     <Route path="get-involved" element={<GetInvolved />} />
     <Route path="donate" element={<Donate />} />
-    <Route path="donate/checkout" element={<DonationCheckout />} />
-    <Route path="donate/return" element={<DonationReturn />} />
+    <Route path="donate/checkout" element={<PaymentCheckout donation />} />
+    <Route path="donate/return" element={<Navigate to="/donate" replace />} />
     <Route path="thank-you" element={<ThankYou />} />
     <Route path="about-us" element={<Navigate to="/about" replace />} />
     <Route path="book-online" element={<Navigate to="/programs" replace />} />

@@ -28,6 +28,7 @@ export default function Header() {
         <div className="nav-register-popover" id="nav-register-popover" aria-label="Account options">
           <span className="nav-register-kicker">YOUR ITABEES SPACE</span>
           <Link className="nav-register-dashboard-link" to="/dashboard" onClick={closeMenu}>Dashboard <ArrowUpRight /></Link>
+          <Link to="/register" onClick={closeMenu}>Register for training <ArrowUpRight /></Link>
           <Link to="/login" onClick={closeMenu}>Login <ArrowUpRight /></Link>
           <Link to="/signup" onClick={closeMenu}>Sign up <ArrowUpRight /></Link>
           <Link to="/admin" onClick={closeMenu}>Login as admin <ArrowUpRight /></Link>

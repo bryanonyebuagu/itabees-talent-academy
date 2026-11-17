@@ -1,5 +1,8 @@
 import { ActionLink, ContentSection, PageHero } from "../components/PageParts";
 import { media } from "../data/media";
+import { Link } from "react-router-dom";
+import { CHECKOUT_PROGRAMS } from "../data/checkoutPrograms";
+import ArrowUpRight from "../components/ArrowUpRight";
 
 const galleryAssets = import.meta.glob("../assets/gallery folder/*", { eager: true, query: "?url", import: "default" });
 const photo = (name) => galleryAssets[`../assets/gallery folder/${name}`];
@@ -47,11 +50,11 @@ export default function Programs() {
     <PageHero eyebrow="OUR PROGRAMS" title={<>Find your <span className="editorial-accent">program.</span></>} image={media.programs} imageAlt="Coach guiding youth players through a soccer training session" description="Supplemental soccer development that works alongside a player's existing team environment." />
     <section className="programs-list" aria-labelledby="programs-list-title">
       <div className="programs-list-intro"><p className="eyebrow">ALL PROGRAMS</p><h2 id="programs-list-title">Development with <span>purpose.</span></h2></div>
-      {programs.map((program) => <article className="program-feature" key={program.title}>
-        <div className="program-feature-copy"><h3>{program.title} <span>{program.accent}</span></h3><p>{program.description}</p></div>
+      {programs.map((program, index) => <article className="program-feature" key={program.title}>
+        <div className="program-feature-copy"><h3>{program.title} <span>{program.accent}</span></h3><p>{program.description}</p><Link className="button button-yellow" to={`/checkout?program=${CHECKOUT_PROGRAMS[index].id}`}>Register for training <ArrowUpRight /></Link></div>
         <div className="program-feature-image"><img src={program.image} alt={program.alt} loading="lazy" /></div>
       </article>)}
     </section>
-    <ContentSection eyebrow="BOOK ONLINE" title={<>Training with <span className="editorial-accent">purpose.</span></>}><p>Nothing to book right now. Check back soon.</p><ActionLink to="/contact" black>Ask about training</ActionLink></ContentSection>
+    <ContentSection eyebrow="BOOK ONLINE" title={<>Training with <span className="editorial-accent">purpose.</span></>}><p>Explore sample training programs and complete a secure test registration.</p><ActionLink to="/register" black>Choose a program</ActionLink></ContentSection>
   </main>;
 }
