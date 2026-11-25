@@ -23,6 +23,11 @@
     "react-router-dom": "^7.18.5",
     "stripe": "^23.1.0"
   },
+  "overrides": {
+    "jwks-rsa": {
+      "jose": "4.15.9"
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.3.0",
