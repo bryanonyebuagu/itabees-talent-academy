@@ -2958,3 +2958,17 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
   .international-section .editorial-copy { padding-bottom:0; }
   .international-section .editorial-photo { margin-top:16px; }
 }
+.registration-wizard { display:grid; gap:22px; }
+.registration-wizard h2 { margin:0; }
+.registration-progress { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+.registration-progress span { height:5px; border-radius:9px; background:#deded8; }
+.registration-progress span.active { background:#ffe600; }
+.registration-choice { display:grid; gap:13px; min-width:0; padding:18px 0; border:0; border-top:1px solid #deded8; }
+.registration-choice legend { padding:0 0 12px; font-weight:800; }
+.registration-choice label,.registration-check { display:flex; align-items:flex-start; gap:10px; line-height:1.5; }
+.registration-choice input,.registration-check input { flex:none; width:18px; height:18px; margin-top:2px; accent-color:#080808; }
+.registration-waiver { max-height:300px; overflow:auto; padding:20px; border:1px solid #deded8; border-radius:12px; background:#f8f8f4; }
+.registration-waiver p + p { margin-top:15px; }
+.registration-comments { display:grid; gap:10px; font-weight:800; }
+.registration-comments textarea { width:100%; padding:14px; border:1px solid #deded8; border-radius:9px; font:inherit; resize:vertical; }
+.registration-actions { display:flex; flex-wrap:wrap; gap:12px; }

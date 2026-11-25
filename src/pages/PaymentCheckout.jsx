@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ArrowUpRight from "../components/ArrowUpRight";
+import RegistrationWizard from "../components/RegistrationWizard";
 import { CHECKOUT_PROGRAMS, formatCheckoutAmount } from "../data/checkoutPrograms";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,13 +38,12 @@ export default function PaymentCheckout({ donation = false }) {
   const amountCents = donation ? Math.round(donationAmount * 100) : program?.amountCents ?? 0;
   const validAmount = Number.isSafeInteger(amountCents) && amountCents >= 200 && amountCents <= 100000000;
   const update = key => event => setFields(current => ({ ...current, [key]: event.target.type === "checkbox" ? event.target.checked : event.target.value }));
-  const continuePayment = async event => {
-    event.preventDefault();
-    if (!fields.name.trim() || !emailPattern.test(fields.email.trim()) || (!donation && (!fields.participantName.trim() || !/^[+\d()\s-]{7,20}$/.test(fields.phone.trim()) || !/^\d{1,2}$/.test(fields.age) || Number(fields.age) < 5 || Number(fields.age) > 25))) { setError("Complete the required details before continuing."); return; }
+  const continuePayment = async submitted => {
+    if (!submitted.name.trim() || !emailPattern.test(submitted.email.trim())) { setError("Complete the required details before continuing."); return; }
     if (!validAmount) { setError("Choose a valid amount."); return; }
     setBusy(true); setError("");
     try {
-      const response = await fetch("/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind, programId: program?.id, amountCents, ...fields }) });
+      const response = await fetch("/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind, programId: program?.id, amountCents, ...submitted }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Payment could not be started.");
       setSetup(data);
@@ -51,7 +51,7 @@ export default function PaymentCheckout({ donation = false }) {
   };
   if (!donation && !program) return <main className="checkout-missing"><p className="eyebrow">PROGRAM REGISTRATION</p><h1>Choose your program first.</h1><Link className="button button-yellow" to="/register">View programs <ArrowUpRight /></Link></main>;
   return <main className="checkout-page stripe-checkout-page"><div className="checkout-heading"><p className="eyebrow">{donation ? "SUPPORT YOUNG ATHLETES" : "PROGRAM REGISTRATION"}</p><h1>{donation ? <>Complete <span>your gift.</span></> : <>Train with <span>purpose.</span></>}</h1><p>{donation ? "Your support helps young players access training and new opportunities." : "Register a player for the selected program and complete a secure test payment."}</p></div><div className="checkout-grid"><div>
-    {!setup ? <form className="checkout-form" onSubmit={continuePayment}><div className="checkout-step"><span>01</span><div><h2>{donation ? "Your details" : "Participant details"}</h2><p>Fields marked * are required.</p></div></div><div className="checkout-fields">
+    {!setup && !donation ? <RegistrationWizard onComplete={continuePayment} busy={busy} error={error} /> : !setup ? <form className="checkout-form" onSubmit={event => { event.preventDefault(); continuePayment(fields); }}><div className="checkout-step"><span>01</span><div><h2>{donation ? "Your details" : "Participant details"}</h2><p>Fields marked * are required.</p></div></div><div className="checkout-fields">
       <label>{donation ? "Your full name" : "Parent or guardian full name"} *<input required autoComplete="name" value={fields.name} onChange={update("name")} /></label>
       {!donation && <><label>Participant full name *<input required value={fields.participantName} onChange={update("participantName")} /></label><label>Guardian name, if different<input value={fields.guardianName} onChange={update("guardianName")} /></label><label>Participant age *<input required type="number" min="5" max="25" inputMode="numeric" value={fields.age} onChange={update("age")} /></label></>}
       <label>Email address *<input required type="email" autoComplete="email" value={fields.email} onChange={update("email")} /></label><label>Phone number {donation ? "" : "*"}<input required={!donation} type="tel" autoComplete="tel" value={fields.phone} onChange={update("phone")} /></label>

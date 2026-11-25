@@ -2,9 +2,22 @@ import { randomUUID } from "node:crypto";
 import { CHECKOUT_PROGRAMS } from "../../src/data/checkoutPrograms.js";
 import { paymentConfig, respondError, stripeClient } from "../_lib/payments.js";
 import { db } from "../_lib/firebase.js";
+import { PROGRAM_INTERESTS } from "../../src/data/registrationForm.js";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const clean = (value, max = 120) => String(value || "").trim().slice(0, max);
+function registrationAnswers(input, email, name) {
+  const birthDate = clean(input.birthDate, 10);
+  const date = new Date(`${birthDate}T12:00:00Z`);
+  const today = new Date();
+  const age = today.getUTCFullYear() - date.getUTCFullYear() - (today.getUTCMonth() < date.getUTCMonth() || today.getUTCMonth() === date.getUTCMonth() && today.getUTCDate() < date.getUTCDate() ? 1 : 0);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate) || Number.isNaN(date.getTime()) || age !== Number(input.age) || age < 4 || age > 18) throw new Error("Enter a valid player birth date and age.");
+  if (!clean(input.participantName) || !/^[+\d()\s-]{7,20}$/.test(clean(input.phone)) || !clean(input.address) || !clean(input.city) || !clean(input.state) || !clean(input.zip, 20)) throw new Error("Complete the player and guardian contact details.");
+  if (!["Boy", "Girl"].includes(input.gender) || input.waiverAccepted !== true || clean(input.signature).toLowerCase() !== name.toLowerCase() || !/^\d{4}-\d{2}-\d{2}$/.test(clean(input.agreementDate, 10))) throw new Error("Complete the participation waiver and signature.");
+  if (!["yes", "no"].includes(input.photoPermission) || !["Yes", "No"].includes(input.futureContact)) throw new Error("Choose your photo and communication preferences.");
+  const interests = Array.isArray(input.interests) ? input.interests.filter(item => PROGRAM_INTERESTS.includes(item)).slice(0, PROGRAM_INTERESTS.length) : [];
+  return { guardianName: name, email, secondaryEmail: clean(input.secondaryEmail, 254), phone: clean(input.phone, 30), secondaryPhone: clean(input.secondaryPhone, 30), address: clean(input.address, 250), city: clean(input.city), state: clean(input.state), zip: clean(input.zip, 20), participantName: clean(input.participantName), birthDate, age, gender: input.gender, waiverAccepted: true, signature: clean(input.signature), agreementDate: clean(input.agreementDate, 10), photoPermission: input.photoPermission, futureContact: input.futureContact, interests, comments: clean(input.comments, 2000) };
+}
 
 export default async function handler(request, response) {
   response.setHeader("Cache-Control", "no-store");
@@ -17,11 +30,11 @@ export default async function handler(request, response) {
     const email = clean(input.email, 254).toLowerCase();
     const name = clean(input.name);
     if (!kind || !name || !emailPattern.test(email)) return response.status(400).json({ error: "Enter a name and valid email address." });
-    let amountCents, title, programId = "", duration = "";
+    let amountCents, title, programId = "", duration = "", registration = null;
     if (kind === "program") {
       const program = CHECKOUT_PROGRAMS.find(item => item.id === input.programId);
       if (!program) return response.status(400).json({ error: "Choose a valid program." });
-      if (!clean(input.participantName) || !/^[+\d()\s-]{7,20}$/.test(clean(input.phone)) || !/^\d{1,2}$/.test(String(input.age || "")) || Number(input.age) < 5 || Number(input.age) > 25) return response.status(400).json({ error: "Enter the participant, phone number and age." });
+      try { registration = registrationAnswers(input, email, name); } catch (error) { return response.status(400).json({ error: error.message }); }
       amountCents = program.amountCents;
       title = program.name;
       programId = program.id;
@@ -41,7 +54,7 @@ export default async function handler(request, response) {
     record.intentId = intent.id;
     const batch = database.batch();
     batch.set(database.collection("payments").doc(intent.id), record);
-    if (kind === "program") batch.set(database.collection("registrations").doc(intent.id), { email, guardianName: record.guardianName || name, participantName: record.participantName, age: record.age, phone: record.phone, programId, programName: title, duration, amountCents, reference, status: "payment_pending", createdAt: record.createdAt });
+    if (kind === "program") batch.set(database.collection("registrations").doc(intent.id), { ...registration, programId, programName: title, duration, amountCents, reference, status: "payment_pending", createdAt: record.createdAt });
     await batch.commit();
     return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, intentId: intent.id, accessToken, reference, amountCents, title });
   } catch (error) { return respondError(response, error); }
