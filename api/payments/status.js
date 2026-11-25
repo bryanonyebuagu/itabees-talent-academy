@@ -13,7 +13,7 @@ export default async function handler(request, response) {
     if (!snapshot.exists) return response.status(404).json({ error: "Payment record not found." });
     const record = snapshot.data();
     if (record.accessToken !== token) return response.status(403).json({ error: "Payment record is not available." });
-    const { accessToken, phone, guardianName, ...publicRecord } = record;
+    const { accessToken, setupToken, phone, guardianName, ...publicRecord } = record;
     return response.status(200).json(publicRecord);
   } catch (error) { return respondError(response, error); }
 }

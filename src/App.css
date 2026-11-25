@@ -2963,6 +2963,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .registration-progress { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
 .registration-progress span { height:5px; border-radius:9px; background:#deded8; }
 .registration-progress span.active { background:#ffe600; }
+.registration-required-mark { color:#b00020; }
 .registration-choice { display:grid; gap:13px; min-width:0; padding:18px 0; border:0; border-top:1px solid #deded8; }
 .registration-choice legend { padding:0 0 12px; font-weight:800; }
 .registration-choice label,.registration-check { display:flex; align-items:flex-start; gap:10px; line-height:1.5; }

@@ -28,7 +28,7 @@ export default function App() {
   return <BrowserRouter><NavigationLoader /><ToastProvider><Routes>
     <Route path="admin/login" element={<AccessPage kind="admin" />} />
     <Route path="login" element={<AccessPage kind="member" />} />
-    <Route path="signup" element={<AccessPage kind="signup" />} />
+    <Route path="setup-login" element={<AccessPage kind="setup" />} />
     <Route path="forgot-password" element={<AccessPage kind="forgot" />} />
     <Route path="admin" element={<LivePortalLayout mode="admin" />}>
       <Route index element={<LiveOverview />} />

@@ -40,3 +40,11 @@ test("unsigned webhook request is rejected before database access", async () => 
   try { await webhook(request, response); assert.equal(response.code, 400); }
   finally { if (previous.secret === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = previous.secret; if (previous.publishable === undefined) delete process.env.STRIPE_PUBLISHABLE_KEY; else process.env.STRIPE_PUBLISHABLE_KEY = previous.publishable; if (previous.webhook === undefined) delete process.env.STRIPE_WEBHOOK_SECRET; else process.env.STRIPE_WEBHOOK_SECRET = previous.webhook; }
 });
+
+test("a repeated success event preserves an already approved registration", async () => {
+  const { database, collections } = fakeDatabase(payment);
+  await applyPaymentEvent(database, event("first", "payment_intent.succeeded"));
+  collections.registrations.get("pi_test123").status = "active";
+  await applyPaymentEvent(database, event("second", "payment_intent.succeeded"));
+  assert.equal(collections.registrations.get("pi_test123").status, "active");
+});

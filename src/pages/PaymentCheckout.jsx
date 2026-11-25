@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ArrowUpRight from "../components/ArrowUpRight";
@@ -28,11 +28,14 @@ function SecurePayment({ setup, kind }) {
 
 export default function PaymentCheckout({ donation = false }) {
   const [params] = useSearchParams();
+  const { hash } = useLocation();
+  const resumeToken = new URLSearchParams(hash.slice(1)).get("token");
   const kind = donation ? "donation" : "program";
   const program = CHECKOUT_PROGRAMS.find(item => item.id === params.get("program"));
   const donationAmount = Number(params.get("amount"));
   const [fields, setFields] = useState({ name: "", participantName: "", guardianName: "", email: "", phone: "", age: "", anonymous: false });
   const [setup, setSetup] = useState(null);
+  const [verificationSent, setVerificationSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const amountCents = donation ? Math.round(donationAmount * 100) : program?.amountCents ?? 0;
@@ -46,12 +49,28 @@ export default function PaymentCheckout({ donation = false }) {
       const response = await fetch("/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind, programId: program?.id, amountCents, ...submitted }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Payment could not be started.");
+      if (data.verificationSent) setVerificationSent(true);
+      else setSetup(data);
+    } catch (caught) { setError(caught.message); } finally { setBusy(false); }
+  };
+  const resumePayment = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch("/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ resumeToken }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not resume your registration.");
+      if (data.programId !== program.id) throw new Error("Open the original registration link from your email.");
+      if (data.paid) {
+        window.location.assign(`/payment/confirmation?id=${encodeURIComponent(data.intentId)}&token=${encodeURIComponent(data.accessToken)}`);
+        return;
+      }
       setSetup(data);
     } catch (caught) { setError(caught.message); } finally { setBusy(false); }
   };
   if (!donation && !program) return <main className="checkout-missing"><p className="eyebrow">PROGRAM REGISTRATION</p><h1>Choose your program first.</h1><Link className="button button-yellow" to="/register">View programs <ArrowUpRight /></Link></main>;
   return <main className="checkout-page stripe-checkout-page"><div className="checkout-heading"><p className="eyebrow">{donation ? "SUPPORT YOUNG ATHLETES" : "PROGRAM REGISTRATION"}</p><h1>{donation ? <>Complete <span>your gift.</span></> : <>Train with <span>purpose.</span></>}</h1><p>{donation ? "Your support helps young players access training and new opportunities." : "Register a player for the selected program and complete a secure test payment."}</p></div><div className="checkout-grid"><div>
-    {!setup && !donation ? <RegistrationWizard onComplete={continuePayment} busy={busy} error={error} /> : !setup ? <form className="checkout-form" onSubmit={event => { event.preventDefault(); continuePayment(fields); }}><div className="checkout-step"><span>01</span><div><h2>{donation ? "Your details" : "Participant details"}</h2><p>Fields marked * are required.</p></div></div><div className="checkout-fields">
+    {!setup && !donation && resumeToken ? <section className="checkout-form"><h2>Verify your email and continue to payment</h2><p>Your registration is saved.</p>{error && <p className="form-error" role="alert">{error}</p>}<button className="button button-yellow" type="button" disabled={busy} onClick={resumePayment}>{busy ? "Preparing payment…" : "Verify email and continue"}</button></section> : !setup && verificationSent ? <section className="checkout-form" role="status"><h2>Check your email</h2><p>Open the verification link to return to your saved registration and pay. Check your spam folder if the message hasn’t arrived.</p><button type="button" className="button button-black" onClick={() => setVerificationSent(false)}>Start a new registration</button></section> : !setup && !donation ? <RegistrationWizard onComplete={continuePayment} busy={busy} error={error} /> : !setup ? <form className="checkout-form" onSubmit={event => { event.preventDefault(); continuePayment(fields); }}><div className="checkout-step"><span>01</span><div><h2>{donation ? "Your details" : "Participant details"}</h2><p>Fields marked * are required.</p></div></div><div className="checkout-fields">
       <label>{donation ? "Your full name" : "Parent or guardian full name"} *<input required autoComplete="name" value={fields.name} onChange={update("name")} /></label>
       {!donation && <><label>Participant full name *<input required value={fields.participantName} onChange={update("participantName")} /></label><label>Guardian name, if different<input value={fields.guardianName} onChange={update("guardianName")} /></label><label>Participant age *<input required type="number" min="5" max="25" inputMode="numeric" value={fields.age} onChange={update("age")} /></label></>}
       <label>Email address *<input required type="email" autoComplete="email" value={fields.email} onChange={update("email")} /></label><label>Phone number {donation ? "" : "*"}<input required={!donation} type="tel" autoComplete="tel" value={fields.phone} onChange={update("phone")} /></label>

@@ -10,6 +10,9 @@ export default async function handler(request, response) {
     const snapshot = await db().collection("registrations").where("email", "==", user.email.toLowerCase()).get();
     const registrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort((a,b) => b.createdAt.localeCompare(a.createdAt));
     const active = registrations.filter(item => item.status === "active");
+    if (!user.admin && !registrations.some(item => item.paidAt || item.status === "active" || item.status === "awaiting_admin")) {
+      return response.status(403).json({ error: "Complete payment for an ItaBEES program before logging in." });
+    }
     return response.status(200).json({ email: user.email, registrations: active, pendingApproval: registrations.some(item => item.status === "awaiting_admin") });
   } catch { return response.status(503).json({ error: "Dashboard information is temporarily unavailable." }); }
 }

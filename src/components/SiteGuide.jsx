@@ -21,7 +21,7 @@ function reply(question, previous) {
   const topic = direct || (/^(and|what about|how about|how much|where|when|tell me more|does it)/i.test(lower) ? topics.find(item => item.key === previous) : null);
   if (!topic) return { answer: "I can help you find programs, registration, pathways, camps, events, donations, your account, or contact details. What would you like to know?", link: "/faq", label: "Browse FAQs", key: previous };
   if (topic.key === "programs" && /price|cost|fee|how much/.test(lower)) return { answer: `Published supplemental training is ${formatCheckoutAmount(6900)}–${formatCheckoutAmount(13900)} per month per player, with $10 off monthly for each additional sibling. Private sessions are priced separately. Camps and trips are priced when announced.`, link: "/register", label: "View pricing", key: topic.key };
-  if (topic.key === "programs" && /register|enroll|sign up/.test(lower)) return { answer: "Choose a program on the registration page. Enter the participant and guardian details, then continue to secure Stripe test checkout. After payment, create a password and verify your email. The academy must approve the registration before dashboard access opens.", link: "/register", label: "Register for training", key: topic.key };
+  if (topic.key === "programs" && /register|enroll|sign up/.test(lower)) return { answer: "Choose a program on the registration page. Enter the participant and guardian details, verify the guardian email, then continue to Stripe test checkout. After payment, use the emailed link to set up your login. The academy must approve the registration before dashboard access opens.", link: "/register", label: "Register for training", key: topic.key };
   return topic;
 }
 

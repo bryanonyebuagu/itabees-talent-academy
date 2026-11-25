@@ -1,7 +1,8 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { CHECKOUT_PROGRAMS } from "../../src/data/checkoutPrograms.js";
 import { paymentConfig, respondError, stripeClient } from "../_lib/payments.js";
 import { db } from "../_lib/firebase.js";
+import { registrationLink, sendSupportEmail } from "../_lib/mail.js";
 import { PROGRAM_INTERESTS } from "../../src/data/registrationForm.js";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,6 +27,22 @@ export default async function handler(request, response) {
     const { publishableKey } = paymentConfig();
     const stripe = stripeClient();
     const input = request.body || {};
+    const database = db();
+    if (input.resumeToken) {
+      if (!/^[0-9a-f-]{36}$/.test(input.resumeToken)) return response.status(400).json({ error: "Invalid registration link." });
+      const draftRef = database.collection("registrationDrafts").doc(createHash("sha256").update(input.resumeToken).digest("hex"));
+      const draft = (await draftRef.get()).data();
+      if (!draft || draft.expiresAt.toMillis() < Date.now()) return response.status(410).json({ error: "This registration link has expired. Start a new registration or contact ItaBEES if you already paid." });
+      const { record, registration } = draft;
+      const intent = await stripe.paymentIntents.create({ amount: record.amountCents, currency: record.currency, automatic_payment_methods: { enabled: true }, receipt_email: record.email, description: record.title, metadata: { reference: record.reference, kind: record.kind, programId: record.programId } }, { idempotencyKey: record.reference });
+      await database.runTransaction(async transaction => {
+        const paymentRef = database.collection("payments").doc(intent.id);
+        if ((await transaction.get(paymentRef)).exists) return;
+        transaction.create(paymentRef, { ...record, intentId: intent.id });
+        transaction.create(database.collection("registrations").doc(intent.id), { ...registration, programId: record.programId, programName: record.title, duration: record.duration, amountCents: record.amountCents, reference: record.reference, status: "payment_pending", createdAt: record.createdAt });
+      });
+      return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, intentId: intent.id, accessToken: record.accessToken, reference: record.reference, amountCents: record.amountCents, programId: record.programId, paid: intent.status === "succeeded" || intent.status === "processing" });
+    }
     const kind = input.kind === "donation" ? "donation" : input.kind === "program" ? "program" : null;
     const email = clean(input.email, 254).toLowerCase();
     const name = clean(input.name);
@@ -49,13 +66,27 @@ export default async function handler(request, response) {
     const reference = randomUUID();
     const accessToken = randomUUID();
     const record = { reference, accessToken, kind, title, programId, duration, amountCents, currency: "usd", email, name, participantName: kind === "program" ? clean(input.participantName) : "", guardianName: kind === "program" ? clean(input.guardianName) : "", age: kind === "program" ? Number(input.age) : null, phone: clean(input.phone, 30), anonymous: kind === "donation" && input.anonymous === true, status: "pending", createdAt: new Date().toISOString() };
-    const database = db();
+    if (kind === "program") {
+      const token = randomUUID();
+      record.setupToken = randomUUID();
+      const link = registrationLink("/checkout", { program: programId }, token);
+      const draftRef = database.collection("registrationDrafts").doc(createHash("sha256").update(token).digest("hex"));
+      const deliveryRef = database.collection("registrationEmailLimits").doc(createHash("sha256").update(email).digest("hex"));
+      const allowed = await database.runTransaction(async transaction => {
+        const now = Date.now();
+        const lastDelivery = (await transaction.get(deliveryRef)).data();
+        if (lastDelivery && lastDelivery.expiresAt.toMillis() > now) return false;
+        transaction.set(deliveryRef, { expiresAt: new Date(now + 60_000) });
+        transaction.create(draftRef, { record, registration, expiresAt: new Date(now + 23 * 60 * 60 * 1000) });
+        return true;
+      });
+      if (!allowed) return response.status(429).json({ error: "Wait a minute before requesting another registration email." });
+      await sendSupportEmail({ to: email, subject: "Verify your ItaBEES registration email", text: `Verify your email and continue to payment for ${title}: ${link}`, idempotencyKey: `registration-${reference}` });
+      return response.status(202).json({ verificationSent: true });
+    }
     const intent = await stripe.paymentIntents.create({ amount: amountCents, currency: "usd", automatic_payment_methods: { enabled: true }, receipt_email: email, description: title, metadata: { reference, kind, programId } }, { idempotencyKey: reference });
     record.intentId = intent.id;
-    const batch = database.batch();
-    batch.set(database.collection("payments").doc(intent.id), record);
-    if (kind === "program") batch.set(database.collection("registrations").doc(intent.id), { ...registration, programId, programName: title, duration, amountCents, reference, status: "payment_pending", createdAt: record.createdAt });
-    await batch.commit();
+    await database.collection("payments").doc(intent.id).set(record);
     return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, intentId: intent.id, accessToken, reference, amountCents, title });
   } catch (error) { return respondError(response, error); }
 }

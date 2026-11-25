@@ -6,3 +6,12 @@ export async function sendSupportEmail({ to, subject, text, idempotencyKey }) {
   if (!result.ok) throw new Error("Support email could not be delivered.");
   return result.json();
 }
+
+export function registrationLink(path, params, token) {
+  const origin = process.env.PUBLIC_SITE_URL;
+  if (!origin) throw new Error("PUBLIC_SITE_URL is required.");
+  const url = new URL(path, origin);
+  url.search = new URLSearchParams(params).toString();
+  url.hash = new URLSearchParams({ token }).toString();
+  return url.toString();
+}

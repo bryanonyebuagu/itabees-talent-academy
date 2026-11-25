@@ -12,7 +12,7 @@ const routes = [
   'admin/login', 'admin', 'admin/enquiries', 'admin/players', 'admin/support', 'admin/parents',
   'admin/programmes', 'admin/training', 'admin/timetable', 'admin/events',
   'admin/coaches', 'admin/donations', 'admin/messages', 'admin/staff', 'admin/settings',
-  'login', 'signup', 'forgot-password', 'dashboard', 'dashboard/my-programmes',
+  'login', 'setup-login', 'forgot-password', 'dashboard', 'dashboard/my-programmes',
   'dashboard/schedule', 'dashboard/support', 'dashboard/events', 'dashboard/attendance',
   'dashboard/profile', 'dashboard/notifications',
 ]
