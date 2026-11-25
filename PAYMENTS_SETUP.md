@@ -14,7 +14,9 @@ Set `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `FIR
 
 Create a Stripe webhook for `https://<your-domain>/api/payments/webhook`. Subscribe to `payment_intent.succeeded`, `payment_intent.payment_failed`, and `payment_intent.canceled`. Copy its signing secret into `STRIPE_WEBHOOK_SECRET`. Enable Stripe email receipts in the test account if receipt email testing is required. The site shows a paid confirmation only after the signed success webhook updates its payment record. A program registration then waits for an administrator to confirm the payment in Admin → Registrations; only approved registrations open member access.
 
-The registration fees and durations in `src/data/checkoutPrograms.js` are samples. Confirm actual offerings, fees, durations, eligibility, currency, and availability before accepting real payments. Donation checkout supports one-time USD gifts only. No subscription billing or custom promo codes are configured.
+The registration page now shows the published USD prices from the academy pricing sheet. Checkout is still in Stripe test mode. Monthly plans currently create a single test PaymentIntent, not a recurring subscription, and the additional-sibling discount is displayed but not applied at checkout. Configure and test those billing rules before accepting real payments. Camps and international trips show pricing when announced. Donation checkout supports one-time USD gifts only.
+
+The five-step registration includes a participation waiver adapted from the clinic form. Have the final wording reviewed by a qualified North Carolina attorney before accepting live registrations. The photo and future-contact choices are recorded separately and do not prevent participation when declined.
 
 For local end-to-end testing, run the site with Vercel's local development server and forward Stripe test webhooks to `/api/payments/webhook`. Use Stripe's published test cards to check successful and declined payments. An unsigned request, wrong amount, or duplicate webhook must never mark a payment paid. A returned browser URL by itself never marks a payment paid.
 
