@@ -3,6 +3,7 @@ import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ArrowUpRight from "../components/ArrowUpRight";
+import { ProgramName } from "../components/ProgramPricingCard";
 import RegistrationWizard from "../components/RegistrationWizard";
 import { CHECKOUT_PROGRAMS, formatCheckoutAmount } from "../data/checkoutPrograms";
 
@@ -76,5 +77,13 @@ export default function PaymentCheckout({ donation = false }) {
       <label>Email address *<input required type="email" autoComplete="email" value={fields.email} onChange={update("email")} /></label><label>Phone number {donation ? "" : "*"}<input required={!donation} type="tel" autoComplete="tel" value={fields.phone} onChange={update("phone")} /></label>
       {donation && <label className="checkout-anonymous"><input type="checkbox" checked={fields.anonymous} onChange={update("anonymous")} /> Keep my name anonymous in public acknowledgements</label>}
     </div>{error && <p className="form-error" role="alert">{error}</p>}<button className="button button-yellow checkout-submit" disabled={busy || !validAmount} type="submit">{busy ? "Preparing payment…" : "Continue to secure payment"} <ArrowUpRight /></button><p className="payment-test-note">Review the amount and billing terms before paying. Monthly training renews automatically; a second child registered by the same guardian receives $10 off each month.</p></form> : <Elements stripe={getStripe(setup.publishableKey)} options={{ clientSecret: setup.clientSecret, appearance: { theme: "stripe", variables: { colorPrimary: "#080808", colorText: "#080808", borderRadius: "10px" } } }}><SecurePayment setup={setup} kind={kind} /></Elements>}
-  </div><aside className="checkout-summary"><p className="eyebrow">{donation ? "YOUR DONATION" : "SELECTED PROGRAM"}</p><h2>{donation ? "Support the next generation" : program.name}</h2><p>{donation ? "Help young athletes train, grow and access opportunities beyond the field." : program.description}</p><div><span>{donation ? "Donation" : "Program price"}</span><strong>{validAmount ? formatCheckoutAmount(amountCents) : "Choose an amount"}</strong></div><div className="checkout-total"><span>Total today</span><strong>{validAmount ? formatCheckoutAmount(amountCents) : "—"}</strong></div>{setup?.recurring && <p>Renews monthly at {formatCheckoutAmount(setup.amountCents)} until canceled.</p>}<Link to={donation ? "/donate" : "/programs"}>Change {donation ? "donation" : "program"}</Link></aside></div></main>;
+  </div><aside className={`checkout-summary${donation ? "" : " checkout-summary--program"}`}>
+    <p className="eyebrow">{donation ? "YOUR DONATION" : "SELECTED PROGRAM"}</p>
+    {donation ? <h2>Support the next generation</h2> : <ProgramName name={program.name} as="h2" />}
+    {!donation && <p className="checkout-summary-price"><strong>{formatCheckoutAmount(amountCents)}</strong><small>{program.duration === "Monthly" ? "/ month per player" : "/ session"}</small></p>}
+    <p>{donation ? "Help young athletes train, grow and access opportunities beyond the field." : program.description}</p>
+    <div className="checkout-total"><span>{donation ? "Donation today" : "Total today"}</span><strong>{validAmount ? formatCheckoutAmount(amountCents) : "—"}</strong></div>
+    {setup?.recurring && <p>Renews monthly at {formatCheckoutAmount(setup.amountCents)} until canceled.</p>}
+    <Link className={donation ? "" : "button button-yellow checkout-change-program"} to={donation ? "/donate" : "/register#training-programs"}>Change {donation ? "donation" : "program"}{!donation && <ArrowUpRight />}</Link>
+  </aside></div></main>;
 }

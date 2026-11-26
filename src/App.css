@@ -2286,6 +2286,36 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .registration-program-grid strong { color:#ffe600; margin:auto 0 20px; font-size:21px; text-shadow:0 2px 5px #000; }
 .registration-program-grid strong small { font-size:12px; font-weight:600; color:#ddd; text-transform:uppercase; }
 .registration-program-grid .button { font-size:14px; }
+.registration-programs { scroll-margin-top:88px; }
+.registration-program-grid { align-items:stretch; }
+.registration-program-grid .program-pricing-card { position:relative; min-height:360px; padding:34px; border-color:#424242; background:linear-gradient(150deg,#171717,#080808 65%); box-shadow:0 20px 44px #0002, inset 0 1px #ffffff12; }
+.program-pricing-card .program-pricing-title,.checkout-summary--program .program-pricing-title { max-width:90%; margin:0 0 18px; color:#fff; font-weight:800; text-transform:uppercase; letter-spacing:-.015em; }
+.program-pricing-title span { color:#ffe600; text-shadow:0 2px 5px #000; }
+.program-pricing-main { flex:1; }
+.registration-program-grid .program-pricing-amount { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; margin:0 0 13px; line-height:1; }
+.registration-program-grid .program-pricing-amount strong,.checkout-summary--program .checkout-summary-price strong { margin:0; color:#ffe600; font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(58px,5vw,76px); font-weight:800; line-height:.95; text-shadow:0 3px 8px #000; }
+.registration-program-grid .program-pricing-amount small,.checkout-summary--program .checkout-summary-price small { color:#ddd; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+.registration-program-grid .program-pricing-description { margin:0 0 16px; color:#f0f0f0; font-size:15px; line-height:1.55; }
+.registration-program-grid .program-pricing-detail { margin:0 0 25px; padding-top:14px; border-top:1px solid #ffffff28; color:#bcbcbc; font-size:13px; line-height:1.5; }
+.program-pricing-action { margin-top:auto; justify-content:center; width:100%; text-align:center; }
+.program-pricing-promotion { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+.program-pricing-promotion del { color:#ff6666; font-weight:800; }
+.program-pricing-promotion span { padding:4px 7px; border-radius:4px; background:#bd1827; color:#fff; font-size:11px; font-weight:900; }
+.registration-program-grid .program-pricing-unpriced { margin:8px 0 16px; color:#ffe600; font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(29px,3vw,38px); font-weight:800; line-height:1.1; text-shadow:0 2px 5px #000; }
+.registration-program-grid .sibling-offer-card { border:2px solid #ffe600; box-shadow:0 20px 44px #0003,0 0 28px #ffe60032; }
+.sibling-offer-tag { position:absolute; top:-13px; right:25px; z-index:1; padding:8px 12px; border-radius:5px; background:#c51628; color:#fff; font-size:12px; font-weight:900; letter-spacing:.05em; transform:rotate(7deg); box-shadow:0 5px 12px #0006; }
+.registration-program-grid .sibling-offer-card .program-pricing-title { max-width:72%; }
+.registration-program-grid .sibling-offer-amount { margin:7px 0 16px; color:#ffe600; font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(68px,6vw,90px); font-weight:900; line-height:.9; text-shadow:0 3px 8px #000; }
+.sibling-offer-amount span { font-size:.55em; }
+.checkout-summary--program { border-color:#424242; background:linear-gradient(150deg,#171717,#080808 65%); color:#fff; box-shadow:0 20px 44px #0002; }
+.checkout-summary--program .eyebrow { color:#ffe600; text-shadow:0 2px 5px #000; }
+.checkout-summary--program .checkout-summary-price { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; margin:0 0 17px; }
+.checkout-summary--program > p:not(.eyebrow):not(.checkout-summary-price) { color:#ddd; font-size:14px; }
+.checkout-summary--program > div { border-top-color:#ffffff33; }
+.checkout-summary--program .checkout-total { border-top-color:#ffe600; }
+.checkout-summary--program .checkout-total strong { color:#ffe600; }
+.checkout-summary--program .checkout-change-program { display:flex; justify-content:center; width:100%; margin-top:18px; border:1px solid #ffe600; text-align:center; }
+.checkout-summary--program .checkout-change-program:hover { border-color:#ffe600; }
 .program-feature-copy .button { margin-top:24px; }
 .stripe-checkout-page { min-height:70vh; }
 .stripe-checkout-page .checkout-grid > div { min-width:0; }
@@ -2301,6 +2331,7 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .confirmation-details p:last-child { border:0; }
 .itabees-account-loading { display:grid; justify-items:center; gap:10px; width:min(100%,300px); margin:24px auto; color:#fff; }.itabees-account-loading strong { font-family:'Space Grotesk',sans-serif; font-size:27px; }.itabees-account-loading strong span { color:#ffe600; }.itabees-account-loading p { margin:0; font-size:13px; }.itabees-account-progress { width:100%; height:7px; overflow:hidden; border-radius:999px; background:#444; }.itabees-account-progress::after { content:''; display:block; width:55%; height:100%; background:#ffe600; animation:itabeesLoading 1.2s ease-in-out infinite alternate; }@keyframes itabeesLoading { from { transform:translateX(-100%); } to { transform:translateX(190%); } }@media(prefers-reduced-motion:reduce) { .itabees-account-progress::after { animation:none; width:100%; } }
 @media(max-width:700px) { .registration-programs { padding:68px 6%; }.registration-program-grid { grid-template-columns:1fr; }.registration-program-grid article { min-height:0; padding:26px; }.stripe-checkout-page .checkout-grid { gap:22px; }.confirmation-details p { display:block; }.confirmation-details strong { display:block; margin-bottom:4px; } }
+@media(max-width:700px) { .registration-program-grid .program-pricing-card { min-height:0; padding:28px; }.registration-program-grid .sibling-offer-card { padding-top:35px; }.registration-program-grid .sibling-offer-card .program-pricing-title { max-width:70%; }.program-pricing-action { margin-top:12px; } }
 
 .site-guide { position:fixed; left:20px; bottom:20px; z-index:100; font-family:'Inter',Arial,sans-serif; }
 .site-guide-toggle { border:1px solid #ffe600; border-radius:999px; padding:11px 18px; background:#080808; color:#ffe600; font-size:13px; font-weight:800; box-shadow:0 8px 28px #0005; cursor:pointer; transition:transform .25s,background .25s,color .25s; }
