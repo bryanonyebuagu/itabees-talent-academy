@@ -366,3 +366,10 @@
   text-shadow:0 2px 4px #000,0 4px 10px #0009;
 }
 .portal-brand .brand-ita { text-shadow:none; }
+
+.portal-table-caption { text-align:left; color:var(--p-muted); font-size:12px; padding:0 10px 14px; }
+.application-answer-table { min-width:360px; margin-top:16px; background:var(--p-card); }
+.application-answer-table caption { text-align:left; font-weight:800; padding:12px 10px; }
+.application-answer-table td { white-space:pre-wrap; overflow-wrap:anywhere; min-width:220px; }
+.application-answer-table th[scope="row"] { width:170px; vertical-align:top; }
+.registration-details summary { cursor:pointer; white-space:nowrap; }
