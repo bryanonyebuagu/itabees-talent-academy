@@ -3027,7 +3027,9 @@ input::placeholder,textarea::placeholder { opacity:1; }
 .registration-waiver p + p { margin-top:15px; }
 .registration-comments { display:grid; gap:10px; font-weight:800; }
 .registration-comments textarea { width:100%; padding:14px; border:1px solid #deded8; border-radius:9px; font:inherit; resize:vertical; }
-.registration-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.registration-actions { display:flex; align-items:center; justify-content:space-between; flex-wrap:nowrap; gap:12px; width:100%; padding-top:24px; border-top:1px solid #deded8; }
+.registration-actions > button[type="submit"] { margin-left:auto; }
+@media(max-width:600px) { .registration-actions { gap:10px; }.registration-actions .button { min-width:0; padding:14px 16px; font-size:13px; }.registration-actions > button[type="submit"] { flex-shrink:1; } }
 
 .assistance-confirmation { min-height:70vh; padding:100px 6%; background:#080808; color:#fff; text-align:center; }
 .assistance-confirmation > svg { width:84px; height:84px; color:#30b36d; margin-bottom:25px; }
