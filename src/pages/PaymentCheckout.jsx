@@ -4,6 +4,7 @@ import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-
 import { loadStripe } from "@stripe/stripe-js";
 import ArrowUpRight from "../components/ArrowUpRight";
 import { ProgramName } from "../components/ProgramPricingCard";
+import { media } from "../data/media";
 import RegistrationWizard from "../components/RegistrationWizard";
 import { CHECKOUT_PROGRAMS, formatCheckoutAmount } from "../data/checkoutPrograms";
 
@@ -78,6 +79,7 @@ export default function PaymentCheckout({ donation = false }) {
       {donation && <label className="checkout-anonymous"><input type="checkbox" checked={fields.anonymous} onChange={update("anonymous")} /> Keep my name anonymous in public acknowledgements</label>}
     </div>{error && <p className="form-error" role="alert">{error}</p>}<button className="button button-yellow checkout-submit" disabled={busy || !validAmount} type="submit">{busy ? "Preparing payment…" : "Continue to secure payment"} <ArrowUpRight /></button><p className="payment-test-note">Review the amount and billing terms before paying. Monthly training renews automatically; a second child registered by the same guardian receives $10 off each month.</p></form> : <Elements stripe={getStripe(setup.publishableKey)} options={{ clientSecret: setup.clientSecret, appearance: { theme: "stripe", variables: { colorPrimary: "#080808", colorText: "#080808", borderRadius: "10px" } } }}><SecurePayment setup={setup} kind={kind} /></Elements>}
   </div><aside className={`checkout-summary${donation ? "" : " checkout-summary--program"}`}>
+    {!donation && <img className="application-sidebar-image" src={media.training} alt="ItaBEES player development" />}
     <p className="eyebrow">{donation ? "YOUR DONATION" : "SELECTED PROGRAM"}</p>
     {donation ? <h2>Support the next generation</h2> : <ProgramName name={program.name} as="h2" />}
     {!donation && <p className="checkout-summary-price"><strong>{formatCheckoutAmount(amountCents)}</strong><small>{program.duration === "Monthly" ? "/ month per player" : "/ session"}</small></p>}

@@ -2992,6 +2992,28 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .registration-wizard { display:grid; gap:22px; }
 .registration-wizard h2 { margin:0; }
 .registration-progress { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+.application-paths { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.application-paths button { display:grid; gap:8px; text-align:left; padding:22px; border:1px solid #ccc; border-radius:12px; background:#fff; color:#080808; cursor:pointer; transition:background .3s,border-color .3s; }
+.application-paths button[aria-pressed="true"] { background:#080808; color:#fff; border:2px solid #ffe600; }
+.application-paths small { color:#ffe600; font-weight:900; text-shadow:0 1px 3px #000; }
+.application-paths strong { font-family:'Barlow Condensed',Impact,sans-serif; font-size:28px; text-transform:uppercase; }
+.application-paths button:focus-visible,.application-progress button:focus-visible { outline:3px solid #b69b00; outline-offset:4px; }
+.application-progress ol { list-style:none; display:flex; justify-content:space-between; padding:0; margin:14px 0 18px; }
+.application-progress li { position:relative; flex:1; display:flex; }
+.application-progress li:last-child { flex:0; }
+.application-progress li:not(:last-child)::after { content:''; height:3px; background:#deded8; position:absolute; left:32px; right:0; top:15px; }
+.application-progress li.complete::after { background:#19824d; }
+.application-progress button { width:32px; height:32px; border:0; border-radius:50%; display:grid; place-items:center; background:#e4e4df; color:#62625d; flex-shrink:0; padding:7px; font-weight:800; }
+.application-progress .complete button { background:#19824d; color:#fff; cursor:pointer; }
+.application-progress .current button { background:#ffe600; color:#080808; }
+.application-progress svg { width:18px; height:18px; }
+.application-progress p { font-size:14px; margin:0 0 12px; }
+.application-progress-track { height:5px; background:#deded8; border-radius:8px; overflow:hidden; }
+.application-progress-track span { display:block; height:100%; background:#ffe600; transition:width .3s; }
+.application-wide { grid-column:1/-1; }
+.application-sidebar-image { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:10px; margin-bottom:24px; }
+@media(min-width:901px) { .stripe-checkout-page .checkout-grid:has(.checkout-summary--program) { grid-template-columns:minmax(260px,.72fr) minmax(0,1.5fr); gap:36px; }.stripe-checkout-page .checkout-grid:has(.checkout-summary--program) > div { grid-column:2; grid-row:1; }.stripe-checkout-page .checkout-summary--program { grid-column:1; grid-row:1; } }
+@media(max-width:600px) { .application-paths { gap:8px; }.application-paths button { padding:15px 12px; }.application-paths strong { font-size:22px; }.application-progress button { width:27px; height:27px; padding:5px; }.application-progress li:not(:last-child)::after { left:27px; top:12px; } }
 .registration-progress span { height:5px; border-radius:9px; background:#deded8; }
 .registration-progress span.active { background:#ffe600; }
 .registration-required-mark { color:#b00020; }

@@ -94,7 +94,18 @@ export default async function handler(request, response) {
     if (kind === "program") {
       const program = CHECKOUT_PROGRAMS.find(item => item.id === input.programId);
       if (!program) return response.status(400).json({ error: "Choose a valid program." });
-      try { registration = registrationAnswers(input, email, name); } catch (error) { return response.status(400).json({ error: error.message }); }
+      try {
+        registration = registrationAnswers(input, email, name);
+        if (input.applicationType) {
+          if (!["financial-assistance", "supplemental-training"].includes(input.applicationType)) throw new Error("Choose a valid application type.");
+          const application = {};
+          const fields = ["school", "grade", "athleteEmail", "gpa", "club", "division", "coachName", "coachPhone", "coachEmail", "emergencyName", "emergencyRelationship", "emergencyPhone", "financialNeed", "medicalConditions", "medications", "allergies", "goals", "documents", ...[1, 2].flatMap(n => ["Name", "Role", "Phone", "Email"].map(part => `reference${n}${part}`))];
+          for (const key of fields) application[key] = clean(input[key], 2000);
+          if (["school", "grade", "emergencyName", "emergencyRelationship", "emergencyPhone"].some(key => !application[key])) throw new Error("Complete the school and emergency contact information.");
+          registration.applicationType = input.applicationType;
+          registration.application = application;
+        }
+      } catch (error) { return response.status(400).json({ error: error.message }); }
       amountCents = program.amountCents;
       title = program.name;
       programId = program.id;
