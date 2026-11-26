@@ -3040,3 +3040,5 @@ input::placeholder,textarea::placeholder { opacity:1; }
 .assistance-admin-request summary { cursor:pointer; line-height:1.7; }
 .assistance-admin-request dl > div { display:grid; grid-template-columns:minmax(100px,1fr) 2fr; gap:20px; padding:10px 0; border-bottom:1px solid #8883; }
 .assistance-admin-request dt { font-weight:700; }.assistance-admin-request dd { margin:0; white-space:pre-wrap; }
+
+.registration-wizard .application-optional { color:#626262; opacity:1; font-weight:700; }
