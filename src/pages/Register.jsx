@@ -9,7 +9,7 @@ export default function Register() {
   return <main>
     <PageHero eyebrow="REGISTER FOR TRAINING" title={<>Your Journey <span className="editorial-accent">Starts Here.</span></>} image={media.training} imageAlt="Young ItaBEES athlete training" description="Choose a training program, tell us about your player and continue to secure checkout." />
     <section className="registration-programs" id="training-programs">
-      <div className="application-paths"><a className="button button-yellow" href="#program-prices">Supplemental Training</a><Link className="button button-black" to="/financial-assistance">Financial Assistance</Link></div><p className="registration-disclaimer">Financial assistance applications go directly to academy review and require no payment.</p><p className="eyebrow" id="program-prices">CHOOSE YOUR TRAINING PROGRAM</p>
+      <p className="eyebrow" id="program-prices">CHOOSE YOUR TRAINING PROGRAM</p>
       <h2>Find <span className="editorial-accent">your program.</span></h2>
       <p className="registration-disclaimer">Supplemental training renews automatically each month. The second child registered by the same parent or guardian receives $10 off per month; the discounted amount appears before payment.</p>
       <div className="registration-program-grid">
