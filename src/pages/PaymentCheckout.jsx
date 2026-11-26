@@ -11,6 +11,13 @@ import { CHECKOUT_PROGRAMS, formatCheckoutAmount } from "../data/checkoutProgram
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const stripeCache = new Map();
 function getStripe(key) { if (!stripeCache.has(key)) stripeCache.set(key, loadStripe(key)); return stripeCache.get(key); }
+async function paymentResponse(response) {
+  const text = await response.text();
+  let data;
+  try { data = text ? JSON.parse(text) : null; } catch { /* Report an actionable service error below. */ }
+  if (!data || typeof data !== "object") throw new Error("The academy could not receive your submission. Your entries are still here. Please try again in a moment, or contact info@itabeestalentacademy.com.");
+  return data;
+}
 
 function SecurePayment({ setup, kind }) {
   const stripe = useStripe();
@@ -51,7 +58,7 @@ export default function PaymentCheckout({ donation = false, assistance = false }
     setBusy(true); setError("");
     try {
       const response = await fetch(submitted.applicationType === "financial-assistance" ? "/api/assistance" : "/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind, programId: program?.id, amountCents, ...submitted }) });
-      const data = await response.json();
+      const data = await paymentResponse(response);
       if (!response.ok) throw new Error(data.error || "Payment could not be started.");
       if (data.submitted) { navigate("/financial-assistance/requested"); return; }
       if (data.verificationSent) setVerificationSent(true);
@@ -63,7 +70,7 @@ export default function PaymentCheckout({ donation = false, assistance = false }
     setError("");
     try {
       const response = await fetch("/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ resumeToken }) });
-      const data = await response.json();
+      const data = await paymentResponse(response);
       if (!response.ok) throw new Error(data.error || "Could not resume your registration.");
       if (data.programId !== program.id) throw new Error("Open the original registration link from your email.");
       if (data.paid) {

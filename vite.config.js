@@ -22,6 +22,13 @@ const routes = [
 export default defineConfig({
   plugins: [react()],
   server: {
+    proxy: {
+      '/api': {
+        target: 'https://www.itabeestalentacademy.com',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
     watch: { ignored: ['**/.edge-preview/**', '**/.chrome-*/**'] },
   },
   build: {
