@@ -15,8 +15,13 @@ export default async function handler(request, response) {
     const paymentRef = database.collection("payments").doc(id);
     const [registration, payment] = await Promise.all([registrationRef.get(), paymentRef.get()]);
     if (!registration.exists || !payment.exists || payment.data().status !== "paid") return response.status(409).json({ error: "A verified payment is required before approval." });
-    const intent = await stripeClient().paymentIntents.retrieve(id);
+    const stripe = stripeClient();
+    const intent = await stripe.paymentIntents.retrieve(id);
     if (intent.status !== "succeeded" || intent.amount !== payment.data().amountCents || intent.currency !== "usd") return response.status(409).json({ error: "Stripe has not confirmed this payment." });
+    if (payment.data().subscriptionId) {
+      const subscription = await stripe.subscriptions.retrieve(payment.data().subscriptionId);
+      if (subscription.status !== "active") return response.status(409).json({ error: "The monthly subscription is not active." });
+    }
     await registrationRef.update({ status: "active", approvedAt: new Date().toISOString(), approvedBy: admin.uid });
     let emailSent = false;
     try { await sendSupportEmail({ to: registration.data().email, subject: "Your ItaBEES registration is approved", text: `Your registration for ${registration.data().programName} has been approved. Sign in to your dashboard: ${process.env.PUBLIC_SITE_URL || "https://itabees-talent-academy.vercel.app"}/login`, idempotencyKey: `registration-approved-${id}` }); emailSent = true; }

@@ -4,10 +4,10 @@ import { formatCheckoutAmount } from "../data/checkoutPrograms";
 import ArrowUpRight from "./ArrowUpRight";
 
 const topics = [
-  { key: "programs", words: /program|training|academy|enroll|sign up|register|price|cost|fee/i, link: "/programs", label: "Explore programs", answer: "ItaBEES offers recreational and elite supplemental training, private sessions, mentorship, camps and international experiences. Published pricing is on the registration page; checkout is currently in test mode." },
+  { key: "programs", words: /program|training|academy|enroll|sign up|register|price|cost|fee/i, link: "/programs", label: "Explore programs", answer: "ItaBEES offers recreational and elite supplemental training, private sessions, mentorship, camps and international experiences. Published pricing is on the registration page." },
   { key: "camp", words: /camp|clinic|summer|bbq/i, link: "/camps-and-clinics", label: "Camps & Clinics", answer: "Camps and clinics provide additional chances to train, compete and learn beyond a player's regular team. The official launch clinic details are on the Camps & Clinics page." },
   { key: "pathway", words: /pathway|college|professional|scout|scholarship/i, link: "/player-pathway", label: "Player Pathway", answer: "The Player Pathway page explains development, college, professional and international directions. ItaBEES helps families explore a path suited to each player." },
-  { key: "donate", words: /donat|gift|support the academy/i, link: "/donate", label: "Donate", answer: "The Donate page lets you choose a suggested or custom one-time amount. The payment checkout is currently in Stripe test mode." },
+  { key: "donate", words: /donat|gift|support the academy/i, link: "/donate", label: "Donate", answer: "The Donate page lets you choose a suggested or custom one-time amount and review it before checkout." },
   { key: "team", words: /coach|team|mentor/i, link: "/coaches", label: "Our Team", answer: "Meet the ItaBEES advisory council and learn about its mentorship and player pathways experience on Our Team." },
   { key: "eligibility", words: /eligible|age|u6|u19|qualif/i, link: "/eligibility", label: "Eligibility", answer: "Eligibility depends on the specific program or event. The Eligibility page lists the academy's published starting points. Contact the academy for current availability." },
   { key: "events", words: /event|schedule|when|date/i, link: "/events", label: "News & Events", answer: "Upcoming academy events and current details are listed on the Events page. Camps & Clinics also has the launch clinic details." },
@@ -21,7 +21,7 @@ function reply(question, previous) {
   const topic = direct || (/^(and|what about|how about|how much|where|when|tell me more|does it)/i.test(lower) ? topics.find(item => item.key === previous) : null);
   if (!topic) return { answer: "I can help you find programs, registration, pathways, camps, events, donations, your account, or contact details. What would you like to know?", link: "/faq", label: "Browse FAQs", key: previous };
   if (topic.key === "programs" && /price|cost|fee|how much/.test(lower)) return { answer: `Published supplemental training is ${formatCheckoutAmount(6900)}–${formatCheckoutAmount(13900)} per month per player, with $10 off monthly for each additional sibling. Private sessions are priced separately. Camps and trips are priced when announced.`, link: "/register", label: "View pricing", key: topic.key };
-  if (topic.key === "programs" && /register|enroll|sign up/.test(lower)) return { answer: "Choose a program on the registration page. Enter the participant and guardian details, verify the guardian email, then continue to Stripe test checkout. After payment, use the emailed link to set up your login. The academy must approve the registration before dashboard access opens.", link: "/register", label: "Register for training", key: topic.key };
+  if (topic.key === "programs" && /register|enroll|sign up/.test(lower)) return { answer: "Choose a program on the registration page. Enter the participant and guardian details, verify the guardian email, then continue to secure checkout. After payment, use the emailed link to set up your login. The academy must approve the registration before dashboard access opens.", link: "/register", label: "Register for training", key: topic.key };
   return topic;
 }
 

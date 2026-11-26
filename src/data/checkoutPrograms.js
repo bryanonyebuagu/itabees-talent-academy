@@ -1,4 +1,4 @@
-// Published ItaBEES pricing. Checkout remains in Stripe test mode until live billing is configured.
+// Published ItaBEES pricing. The server determines the Stripe mode and sibling price.
 export const CHECKOUT_PROGRAMS = [
   { id: "recreational-one-day", name: "Recreational Supplemental Training", description: "Group training · 1 day per week", amountCents: 6900, duration: "Monthly", siblingDiscountCents: 1000 },
   { id: "recreational-two-days", name: "Recreational Supplemental Training", description: "Group training · 2 days per week", amountCents: 10900, duration: "Monthly", siblingDiscountCents: 1000 },

@@ -1,6 +1,7 @@
 import { paymentConfig, respondError, stripeClient } from "../_lib/payments.js";
 import { db } from "../_lib/firebase.js";
 import { applyPaymentEvent } from "../_lib/paymentEvent.js";
+import { applySubscriptionEvent } from "../_lib/subscriptionEvent.js";
 
 import { registrationLink, sendSupportEmail } from "../_lib/mail.js";
 
@@ -14,8 +15,16 @@ export default async function handler(request, response) {
     for await (const chunk of request) chunks.push(chunk);
     const stripe = stripeClient();
     const event = stripe.webhooks.constructEvent(Buffer.concat(chunks), request.headers["stripe-signature"], process.env.STRIPE_WEBHOOK_SECRET);
-    if (!["payment_intent.succeeded", "payment_intent.payment_failed", "payment_intent.canceled"].includes(event.type)) return response.status(200).json({ received: true });
+    const paymentEvents = ["payment_intent.succeeded", "payment_intent.payment_failed", "payment_intent.canceled"];
+    const subscriptionEvents = ["invoice.paid", "invoice.payment_failed", "customer.subscription.deleted"];
+    if (!paymentEvents.includes(event.type) && !subscriptionEvents.includes(event.type)) return response.status(200).json({ received: true });
     const database = db();
+    if (subscriptionEvents.includes(event.type)) {
+      await applySubscriptionEvent(database, event);
+      return response.status(200).json({ received: true });
+    }
+    const trackedPayment = await database.collection("payments").doc(event.data.object.id).get();
+    if (!trackedPayment.exists && event.data.object.invoice) return response.status(200).json({ received: true });
     await applyPaymentEvent(database, event);
     if (event.type === "payment_intent.succeeded") {
       const id = event.data.object.id;

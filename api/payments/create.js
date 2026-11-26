@@ -7,6 +7,16 @@ import { PROGRAM_INTERESTS } from "../../src/data/registrationForm.js";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const clean = (value, max = 120) => String(value || "").trim().slice(0, max);
+async function siblingPrice(database, record, program) {
+  if (program.duration !== "Monthly") return program.amountCents;
+  const registrations = await database.collection("registrations").where("email", "==", record.email).get();
+  const otherChild = registrations.docs.some(doc => {
+    const item = doc.data();
+    return item.subscriptionId && item.paidAt && !["canceled", "billing_past_due"].includes(item.status) &&
+      item.participantName?.trim().toLowerCase() !== record.participantName.trim().toLowerCase();
+  });
+  return program.amountCents - (otherChild ? program.siblingDiscountCents : 0);
+}
 function registrationAnswers(input, email, name) {
   const birthDate = clean(input.birthDate, 10);
   const date = new Date(`${birthDate}T12:00:00Z`);
@@ -24,7 +34,7 @@ export default async function handler(request, response) {
   response.setHeader("Cache-Control", "no-store");
   if (request.method !== "POST") return response.status(405).json({ error: "Method not allowed." });
   try {
-    const { publishableKey } = paymentConfig();
+    const { publishableKey, mode } = paymentConfig();
     const stripe = stripeClient();
     const input = request.body || {};
     const database = db();
@@ -34,14 +44,47 @@ export default async function handler(request, response) {
       const draft = (await draftRef.get()).data();
       if (!draft || draft.expiresAt.toMillis() < Date.now()) return response.status(410).json({ error: "This registration link has expired. Start a new registration or contact ItaBEES if you already paid." });
       const { record, registration } = draft;
-      const intent = await stripe.paymentIntents.create({ amount: record.amountCents, currency: record.currency, automatic_payment_methods: { enabled: true }, receipt_email: record.email, description: record.title, metadata: { reference: record.reference, kind: record.kind, programId: record.programId } }, { idempotencyKey: record.reference });
+      const program = CHECKOUT_PROGRAMS.find(item => item.id === record.programId);
+      const amountCents = draft.checkoutAmountCents ?? await siblingPrice(database, record, program);
+      if (draft.checkoutAmountCents === undefined) await draftRef.update({ checkoutAmountCents: amountCents });
+      record.amountCents = amountCents;
+      let intent, clientSecret;
+      if (program.duration === "Monthly") {
+        const emailHash = createHash("sha256").update(record.email).digest("hex");
+        const customerRef = database.collection("stripeCustomers").doc(`${mode}-${emailHash}`);
+        const existingCustomer = await customerRef.get();
+        const customer = existingCustomer.exists ? { id: existingCustomer.data().id } : await stripe.customers.create({ email: record.email }, { idempotencyKey: `guardian-${emailHash}` });
+        if (!existingCustomer.exists) await customerRef.create({ id: customer.id, email: record.email });
+        const productRef = database.collection("stripeProducts").doc(`${mode}-${program.id}`);
+        const existingProduct = await productRef.get();
+        const product = existingProduct.exists ? { id: existingProduct.data().id } : await stripe.products.create({ name: `${program.name} · ${program.description}`, metadata: { programId: program.id } }, { idempotencyKey: `program-${program.id}` });
+        if (!existingProduct.exists) await productRef.create({ id: product.id, programId: program.id });
+        const subscription = await stripe.subscriptions.create({
+          customer: customer.id,
+          items: [{ price_data: { currency: "usd", product: product.id, unit_amount: amountCents, recurring: { interval: "month" } } }],
+          payment_behavior: "default_incomplete",
+          payment_settings: { save_default_payment_method: "on_subscription", payment_method_types: ["card"] },
+          metadata: { reference: record.reference, programId: program.id, participantName: record.participantName },
+          expand: ["latest_invoice.confirmation_secret"],
+        }, { idempotencyKey: record.reference });
+        const invoice = subscription.latest_invoice;
+        clientSecret = invoice?.confirmation_secret?.client_secret;
+        const intentId = clientSecret?.split("_secret_")[0];
+        if (!clientSecret || !/^pi_[A-Za-z0-9]+$/.test(intentId)) throw new Error("Subscription payment could not be prepared.");
+        intent = { id: intentId, status: "requires_payment_method" };
+        record.subscriptionId = subscription.id;
+        record.customerId = customer.id;
+      } else {
+        intent = await stripe.paymentIntents.create({ amount: amountCents, currency: record.currency, automatic_payment_methods: { enabled: true }, receipt_email: record.email, description: record.title, metadata: { reference: record.reference, kind: record.kind, programId: record.programId } }, { idempotencyKey: record.reference });
+        clientSecret = intent.client_secret;
+      }
       await database.runTransaction(async transaction => {
         const paymentRef = database.collection("payments").doc(intent.id);
         if ((await transaction.get(paymentRef)).exists) return;
         transaction.create(paymentRef, { ...record, intentId: intent.id });
-        transaction.create(database.collection("registrations").doc(intent.id), { ...registration, programId: record.programId, programName: record.title, duration: record.duration, amountCents: record.amountCents, reference: record.reference, status: "payment_pending", createdAt: record.createdAt });
+        transaction.create(database.collection("registrations").doc(intent.id), { ...registration, programId: record.programId, programName: record.title, duration: record.duration, amountCents, reference: record.reference, subscriptionId: record.subscriptionId || null, status: "payment_pending", createdAt: record.createdAt });
       });
-      return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, intentId: intent.id, accessToken: record.accessToken, reference: record.reference, amountCents: record.amountCents, programId: record.programId, paid: intent.status === "succeeded" || intent.status === "processing" });
+      return response.status(200).json({ clientSecret, publishableKey, mode, intentId: intent.id, accessToken: record.accessToken, reference: record.reference, amountCents, recurring: Boolean(record.subscriptionId), programId: record.programId, paid: intent.status === "succeeded" || intent.status === "processing" });
     }
     const kind = input.kind === "donation" ? "donation" : input.kind === "program" ? "program" : null;
     const email = clean(input.email, 254).toLowerCase();
@@ -87,6 +130,6 @@ export default async function handler(request, response) {
     const intent = await stripe.paymentIntents.create({ amount: amountCents, currency: "usd", automatic_payment_methods: { enabled: true }, receipt_email: email, description: title, metadata: { reference, kind, programId } }, { idempotencyKey: reference });
     record.intentId = intent.id;
     await database.collection("payments").doc(intent.id).set(record);
-    return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, intentId: intent.id, accessToken, reference, amountCents, title });
+    return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, mode, intentId: intent.id, accessToken, reference, amountCents, title });
   } catch (error) { return respondError(response, error); }
 }
