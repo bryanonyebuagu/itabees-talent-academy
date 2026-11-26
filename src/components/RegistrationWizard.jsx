@@ -44,7 +44,7 @@ export default function RegistrationWizard({ onComplete, busy, error, initialTyp
     else setStep(current => current + 1);
   };
   return <form className="checkout-form registration-wizard" onSubmit={advance}>
-    <div className="application-paths" role="group" aria-label="Select application type">{[["financial-assistance", "Financial Assistance"], ["supplemental-training", "Supplemental Training"]].map(([id, name], index) => <button key={id} type="button" aria-pressed={applicationType === id} onClick={() => { setApplicationType(id); onTypeChange?.(id); setStep(0); setValidation(""); }}><small>0{index + 1}</small><strong>{name}</strong></button>)}</div>
+    <div className="application-paths" role="group" aria-label="Select application type">{[["supplemental-training", "Supplemental Training"], ["financial-assistance", "Financial Assistance"]].map(([id, name], index) => <button key={id} type="button" aria-pressed={applicationType === id} onClick={() => { setApplicationType(id); onTypeChange?.(id); setStep(0); setValidation(""); }}><small>0{index + 1}</small><strong>{name}</strong></button>)}</div>
     <ApplicationProgress steps={sections} current={step} onBack={index => { setStep(index); setValidation(""); }} />
     <ProgramName name={title} as="h2" /><p>Complete one application per player. {applicationType === "financial-assistance" ? "Financial assistance applications go directly to academy review. No payment is required." : "Supplemental training uses the selected program’s published price."} Fields marked <span className="registration-required-mark">*</span> are required.</p>
 
