@@ -3042,3 +3042,13 @@ input::placeholder,textarea::placeholder { opacity:1; }
 .assistance-admin-request dt { font-weight:700; }.assistance-admin-request dd { margin:0; white-space:pre-wrap; }
 
 .registration-wizard .application-optional { color:#626262; opacity:1; font-weight:700; }
+.application-next { margin-top:14px; padding:30px; border:1px solid #ffe60035; border-radius:14px; background:#080808; color:#ddd; }
+.application-next h3 { margin:0 0 24px; color:#fff; font-family:'Barlow Condensed',Impact,sans-serif; font-size:32px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+.application-next h3 span,.application-next li > span,.application-next-contact a { color:#ffe600; text-shadow:0 2px 5px #000; }
+.application-next ol { display:grid; gap:20px; list-style:none; margin:0; padding:0; }
+.application-next li { display:grid; grid-template-columns:26px 1fr; gap:12px; align-items:start; }
+.application-next li > span { font-family:'Barlow Condensed',Impact,sans-serif; font-size:23px; font-weight:800; line-height:1.4; }
+.registration-wizard .application-next p { margin:0; color:#ddd; font-size:16px; line-height:1.65; }
+.registration-wizard .application-next-contact { margin-top:26px; padding-top:22px; border-top:1px solid #ffffff26; }
+.application-next-contact a { display:block; width:fit-content; overflow-wrap:anywhere; font-weight:700; }
+@media(max-width:600px) { .application-next { padding:24px 20px; }.application-next h3 { font-size:28px; }.registration-wizard .application-next p { font-size:15px; } }
