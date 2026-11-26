@@ -11,6 +11,7 @@ import InternationalExperiences from "./pages/InternationalExperiences";
 import CollegePathway from "./pages/CollegePathway";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
+import AssistanceConfirmation from "./pages/AssistanceConfirmation";
 import Register from "./pages/Register";
 import Programs from "./pages/Programs";
 import Mentorship from "./pages/Mentorship";
@@ -21,7 +22,7 @@ import ThankYou from "./pages/ThankYou";
 import { Eligibility, FAQ, Gallery, GetInvolved } from "./pages/ExplorePages";
 import { ToastProvider } from "./portal/ToastProvider";
 import AccessPage from "./portal/AccessPage";
-import { LiveOverview, LivePortalLayout, LiveRegistrations, LiveSupport } from "./portal/LivePortal";
+import { LiveOverview, LivePortalLayout, LiveRegistrations, LiveSupport, LiveAssistance } from "./portal/LivePortal";
 import NavigationLoader from "./components/NavigationLoader";
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
     <Route path="forgot-password" element={<AccessPage kind="forgot" />} />
     <Route path="admin" element={<LivePortalLayout mode="admin" />}>
       <Route index element={<LiveOverview />} />
+      <Route path="financial-assistance" element={<LiveAssistance />} />
       <Route path="players" element={<LiveRegistrations />} />
       <Route path="support" element={<LiveSupport />} />
       <Route path="*" element={<Navigate to="/admin" replace />} />
@@ -54,6 +56,8 @@ export default function App() {
     <Route path="college-pathway" element={<CollegePathway />} />
     <Route path="events" element={<Events />} />
     <Route path="contact" element={<Contact />} />
+    <Route path="financial-assistance" element={<PaymentCheckout assistance />} />
+    <Route path="financial-assistance/requested" element={<AssistanceConfirmation />} />
     <Route path="register" element={<Register />} />
     <Route path="checkout" element={<PaymentCheckout />} />
     <Route path="payment/confirmation" element={<PaymentConfirmation />} />

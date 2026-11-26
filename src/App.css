@@ -3026,3 +3026,15 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .registration-comments { display:grid; gap:10px; font-weight:800; }
 .registration-comments textarea { width:100%; padding:14px; border:1px solid #deded8; border-radius:9px; font:inherit; resize:vertical; }
 .registration-actions { display:flex; flex-wrap:wrap; gap:12px; }
+
+.assistance-confirmation { min-height:70vh; padding:100px 6%; background:#080808; color:#fff; text-align:center; }
+.assistance-confirmation > svg { width:84px; height:84px; color:#30b36d; margin-bottom:25px; }
+.assistance-confirmation h1 { font-family:'Barlow Condensed',Impact,sans-serif; font-size:clamp(50px,7vw,100px); line-height:1; text-transform:uppercase; max-width:1000px; margin:0 auto 30px; }
+.assistance-confirmation p { max-width:680px; margin:20px auto; line-height:1.7; }
+.assistance-confirmation p a { color:#ffe600; }
+.assistance-confirmation .button { margin-top:25px; }
+.checkout-grid:not(:has(.checkout-summary)) { display:block; max-width:1000px; margin-left:auto; margin-right:auto; }
+.assistance-admin-request { padding:24px 0; border-bottom:1px solid #8885; overflow-wrap:anywhere; }
+.assistance-admin-request summary { cursor:pointer; line-height:1.7; }
+.assistance-admin-request dl > div { display:grid; grid-template-columns:minmax(100px,1fr) 2fr; gap:20px; padding:10px 0; border-bottom:1px solid #8883; }
+.assistance-admin-request dt { font-weight:700; }.assistance-admin-request dd { margin:0; white-space:pre-wrap; }

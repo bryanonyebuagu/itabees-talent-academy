@@ -17,7 +17,7 @@ async function siblingPrice(database, record, program) {
   });
   return program.amountCents - (otherChild ? program.siblingDiscountCents : 0);
 }
-function registrationAnswers(input, email, name) {
+export function registrationAnswers(input, email, name) {
   const birthDate = clean(input.birthDate, 10);
   const date = new Date(`${birthDate}T12:00:00Z`);
   const today = new Date();
@@ -37,6 +37,7 @@ export default async function handler(request, response) {
     const { publishableKey, mode } = paymentConfig();
     const stripe = stripeClient();
     const input = request.body || {};
+    if (input.applicationType === "financial-assistance") return response.status(400).json({ error: "Submit financial assistance through the assistance application form. Payment is not required." });
     const database = db();
     if (input.resumeToken) {
       if (!/^[0-9a-f-]{36}$/.test(input.resumeToken)) return response.status(400).json({ error: "Invalid registration link." });
