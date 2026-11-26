@@ -17,7 +17,8 @@ const extraFields = {
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const labelText = label => label.endsWith("(optional)") ? <>{label.slice(0, -10)}<span className="application-optional">(optional)</span></> : label;
 const requiredMark = <span className="registration-required-mark" aria-hidden="true"> *</span>;
-const field = (label, key, value, update, options = {}) => <label key={key}><span>{labelText(label)}{options.required && requiredMark}</span><input required={options.required} type={options.type || "text"} value={value} onChange={update(key)} autoComplete={options.autoComplete} min={options.min} max={options.max} /></label>;
+const grades = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade (Freshman)", "10th Grade (Sophomore)", "11th Grade (Junior)", "12th Grade (Senior)"];
+const field = (label, key, value, update, options = {}) => <label key={key}><span>{labelText(label)}{options.required && requiredMark}</span>{key === "grade" ? <select required={options.required} value={value} onChange={update(key)}><option value="" disabled>Select grade</option>{grades.map(grade => <option key={grade} value={grade}>{grade}</option>)}</select> : <input required={options.required} type={options.type || "text"} value={value} onChange={update(key)} autoComplete={options.autoComplete} min={options.min} max={options.max} />}</label>;
 
 export default function RegistrationWizard({ onComplete, busy, error, initialType = "supplemental-training", onTypeChange }) {
   const [applicationType, setApplicationType] = useState(initialType);

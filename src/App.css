@@ -1700,8 +1700,8 @@ h1,h2,h3,.value-item strong,.pathway-step h3 { font-family:'Space Grotesk',Arial
 .contact-form { padding:35px; background:#f7f7f3; border:1px solid #e7e7e0; border-radius:18px; box-shadow:0 20px 45px #0000000d; }
 .contact-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:19px; }
 .contact-form label,.checkout-fields label { display:flex; flex-direction:column; gap:8px; font-size:13px; font-weight:700; margin-bottom:18px; }
-.contact-form input,.contact-form select,.contact-form textarea,.checkout-fields input,.promo-row input { width:100%; min-height:46px; padding:12px 14px; border:1px solid #cfcfc8; border-radius:7px; background:#fff; color:#111; font:inherit; }
-.contact-form textarea { resize:vertical; }.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus,.checkout-fields input:focus,.promo-row input:focus { outline:2px solid #ffe600; outline-offset:1px; border-color:#111; }
+.contact-form input,.contact-form select,.contact-form textarea,.checkout-fields input,.checkout-fields select,.promo-row input { width:100%; min-height:46px; padding:12px 14px; border:1px solid #cfcfc8; border-radius:7px; background:#fff; color:#111; font:inherit; }
+.contact-form textarea { resize:vertical; }.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus,.checkout-fields input:focus,.checkout-fields select:focus,.promo-row input:focus { outline:2px solid #ffe600; outline-offset:1px; border-color:#111; }
 .form-error { color:#b00020; font-size:12px; line-height:1.5; }.form-success { color:#17643b; font-weight:700; }.form-error a { text-decoration:underline; }
 
 /* Home campaign treatments */
