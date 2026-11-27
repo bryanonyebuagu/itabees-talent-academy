@@ -50,13 +50,22 @@ export default function AccessPage({ kind }) {
     const confirmation = String(form.get("confirmPassword") || "");
     if (isSetup && password !== confirmation) { setError("The passwords do not match."); return; }
     if (import.meta.env.DEV && !isSetup && !isForgot && email.toLowerCase() === import.meta.env.VITE_PREVIEW_EMAIL?.toLowerCase() && password === import.meta.env.VITE_PREVIEW_PASSWORD) { navigate(`${isAdmin ? "/admin" : "/dashboard"}?preview=1`); return; }
-    if (!isSetup && !firebaseReady) { setError("Account access is awaiting the academy’s Firebase configuration."); return; }
+    if (!firebaseReady) { setError("Account access is awaiting the academy’s Firebase configuration."); return; }
     setBusy(true); setError(""); setNotice("");
     try {
       if (isForgot) { await sendPasswordResetEmail(memberAuth, email); setNotice("If this address has an account, a password reset email has been sent."); return; }
       if (isSetup) {
         await setupRequest({ id, token, password });
-        navigate("/login", { state: { loginSetupComplete: true } });
+        // Account creation is allowed only after the server verifies payment.
+        let verificationSent = false;
+        try {
+          const credentials = await signInWithEmailAndPassword(memberAuth, setupEmail, password);
+          try {
+            await sendEmailVerification(credentials.user, { url: `${window.location.origin}/login` });
+            verificationSent = true;
+          } finally { await signOut(memberAuth); }
+        } catch { /* Login can retry verification delivery without recreating the account. */ }
+        navigate("/login", { state: { loginSetupComplete: true, verificationSent } });
         return;
       }
       const credentials = await signInWithEmailAndPassword(memberAuth, email, password);
@@ -79,8 +88,8 @@ export default function AccessPage({ kind }) {
     finally { setBusy(false); }
   };
   return <div className="portal-access"><div className="portal-access-art"><img src={isAdmin ? media.coaching : media.training} alt="ItaBEES academy training"/><Link className="portal-brand" to="/"><span className="portal-brand-mark"><img src={logo} alt=""/></span><span><strong><span className="brand-ita">Ita</span><span className="brand-bees">BEES</span></strong><small>TALENT ACADEMY</small></span></Link><div><span className="portal-eyebrow">BUILT FOR THE NEXT GENERATION</span><h1>Potential is only <span>the beginning.</span></h1><p>One academy. A clearer path for players, families and the team behind every session.</p></div></div>
-    <div className="portal-access-form-wrap"><div className="portal-access-form"><span className="portal-eyebrow">{isAdmin ? "ADMIN ACCESS" : "PLAYER PORTAL"}</span><h2>{title}</h2><p>{isSetup ? "Create and confirm your password for your paid registration. Verify your email when you sign in." : isForgot ? "We’ll email you a secure reset link." : "Sign in to see your approved programs and support conversations."}</p>{import.meta.env.DEV && !isSetup && !isForgot && <p className="portal-preview-note">Local preview: use the preview email and password configured on this computer. This does not authenticate against the live backend.</p>}
-      {state?.loginSetupComplete && !isAdmin && !isForgot && !isSetup && <p role="status">Your login is ready. Sign in with your email and new password to verify your email.</p>}
+    <div className="portal-access-form-wrap"><div className="portal-access-form"><span className="portal-eyebrow">{isAdmin ? "ADMIN ACCESS" : "PLAYER PORTAL"}</span><h2>{title}</h2><p>{isSetup ? "Your payment is confirmed. Create and confirm your password; we’ll then email your verification link." : isForgot ? "We’ll email you a secure reset link." : "Sign in to see your approved programs and support conversations."}</p>{import.meta.env.DEV && !isSetup && !isForgot && <p className="portal-preview-note">Local preview: use the preview email and password configured on this computer. This does not authenticate against the live backend.</p>}
+      {state?.loginSetupComplete && !isAdmin && !isForgot && !isSetup && <p role="status">{state.verificationSent ? "Your login is ready. Check your email and click the verification link, then sign in with your email and new password." : "Your login is ready. Sign in with your email and new password to request your verification link."}</p>}
       {isSetup && !setupEmail ? <p role="status">{setupMessage || "Checking your login setup link…"}</p> : <form onSubmit={submit}><Field label="Email address"><input required name="email" type="email" autoComplete="email" defaultValue={isSetup ? setupEmail : ""} readOnly={isSetup} placeholder="you@example.com"/></Field>{!isForgot && <Field label={isSetup ? "Create new password" : "Password"}><input required name="password" type="password" minLength={isSetup ? 8 : undefined} autoComplete={isSetup ? "new-password" : "current-password"} placeholder={isSetup ? "At least 8 characters" : "Your password"}/></Field>}{isSetup && <Field label="Confirm new password"><input required name="confirmPassword" type="password" minLength="8" autoComplete="new-password" placeholder="Repeat your password"/></Field>}{error && <p className="form-error" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}<button className="portal-button portal-button-primary" type="submit" disabled={busy}><PortalIcon name={isForgot ? "arrow" : "lock"} size={17}/>{busy ? "Please wait…" : isSetup ? "Set up my login" : isForgot ? "Send reset link" : "Sign in"}</button></form>}
       <div className="portal-access-links"><Link to={isAdmin ? "/login" : "/admin/login"}>{isAdmin ? "Member login" : "Admin login"}</Link>{!isAdmin && !isSetup && !isForgot && <><Link to="/register">Register for a program</Link><Link to="/forgot-password">Forgot password?</Link></>}{(isSetup || isForgot) && <Link to="/login">Back to login</Link>}<Link to="/">Public website</Link></div>
     </div></div></div>;

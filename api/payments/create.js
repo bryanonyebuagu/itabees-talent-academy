@@ -4,6 +4,7 @@ import { paymentConfig, respondError, stripeClient } from "../_lib/payments.js";
 import { db } from "../_lib/firebase.js";
 import { PROGRAM_INTERESTS } from "../../src/data/registrationForm.js";
 
+const ACADEMY_NAME = "ItaBEES Talent Academy";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const clean = (value, max = 120) => String(value || "").trim().slice(0, max);
 async function siblingPrice(database, record, program) {
@@ -56,10 +57,11 @@ export function createPaymentHandler({ databaseProvider = db, configProvider = p
         if (!existingCustomer.exists) await customerRef.create({ id: customer.id, email: record.email });
         const productRef = database.collection("stripeProducts").doc(`${mode}-${program.id}`);
         const existingProduct = await productRef.get();
-        const product = existingProduct.exists ? { id: existingProduct.data().id } : await stripe.products.create({ name: `${program.name} · ${program.description}`, metadata: { programId: program.id } }, { idempotencyKey: `program-${program.id}` });
+        const product = existingProduct.exists ? await stripe.products.update(existingProduct.data().id, { name: `${ACADEMY_NAME} · ${program.name} · ${program.description}` }) : await stripe.products.create({ name: `${ACADEMY_NAME} · ${program.name} · ${program.description}`, metadata: { programId: program.id } }, { idempotencyKey: `program-${program.id}` });
         if (!existingProduct.exists) await productRef.create({ id: product.id, programId: program.id });
         const subscription = await stripe.subscriptions.create({
           customer: customer.id,
+          description: `${ACADEMY_NAME} · ${record.title}`,
           items: [{ price_data: { currency: "usd", product: product.id, unit_amount: amountCents, recurring: { interval: "month" } } }],
           payment_behavior: "default_incomplete",
           payment_settings: { save_default_payment_method: "on_subscription", payment_method_types: ["card"] },
@@ -74,7 +76,7 @@ export function createPaymentHandler({ databaseProvider = db, configProvider = p
         record.subscriptionId = subscription.id;
         record.customerId = customer.id;
       } else {
-        intent = await stripe.paymentIntents.create({ amount: amountCents, currency: record.currency, automatic_payment_methods: { enabled: true }, receipt_email: record.email, description: record.title, metadata: { reference: record.reference, kind: record.kind, programId: record.programId } }, { idempotencyKey: record.reference });
+        intent = await stripe.paymentIntents.create({ amount: amountCents, currency: record.currency, automatic_payment_methods: { enabled: true }, receipt_email: record.email, description: `${ACADEMY_NAME} · ${record.title}`, metadata: { reference: record.reference, kind: record.kind, programId: record.programId } }, { idempotencyKey: record.reference });
         clientSecret = intent.client_secret;
       }
       await database.runTransaction(async transaction => {
@@ -137,7 +139,7 @@ export function createPaymentHandler({ databaseProvider = db, configProvider = p
       // Prepare checkout immediately; retain draft tokens for safe retries and older email links.
       return handler({ ...request, body: { resumeToken: token }, method: "POST" }, response);
     }
-    const intent = await stripe.paymentIntents.create({ amount: amountCents, currency: "usd", automatic_payment_methods: { enabled: true }, receipt_email: email, description: title, metadata: { reference, kind, programId } }, { idempotencyKey: reference });
+    const intent = await stripe.paymentIntents.create({ amount: amountCents, currency: "usd", automatic_payment_methods: { enabled: true }, receipt_email: email, description: title.includes(ACADEMY_NAME) ? title : `${ACADEMY_NAME} · ${title}`, metadata: { reference, kind, programId } }, { idempotencyKey: reference });
     record.intentId = intent.id;
     await database.collection("payments").doc(intent.id).set(record);
     return response.status(200).json({ clientSecret: intent.client_secret, publishableKey, mode, intentId: intent.id, accessToken, reference, amountCents, title });

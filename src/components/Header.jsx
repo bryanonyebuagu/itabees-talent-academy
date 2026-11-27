@@ -22,15 +22,13 @@ export default function Header() {
       {pathname !== "/" && <NavLink to="/" end onClick={closeMenu}>Home</NavLink>}
       {groups.map(({ label, links }) => <div className={`nav-group ${activeGroup === label ? "is-active" : ""}`} key={label} onMouseEnter={() => { if (isDesktop()) setActiveGroup(label); }} onMouseLeave={() => { if (isDesktop()) setActiveGroup(null); }} onFocus={() => { if (isDesktop()) setActiveGroup(label); }} onBlur={event => { if (isDesktop() && !event.currentTarget.contains(event.relatedTarget)) setActiveGroup(null); }}><button className="nav-group-trigger" type="button" aria-expanded={activeGroup === label} aria-controls={`nav-panel-${label.toLowerCase()}`} onClick={() => { setRegisterOpen(false); setActiveGroup(current => isDesktop() ? label : current === label ? null : label); }}>{label}<span className="nav-group-chevron" aria-hidden="true" /></button><div className="nav-group-panel" id={`nav-panel-${label.toLowerCase()}`}><span className="nav-group-kicker">EXPLORE {label.toUpperCase()}</span>{links.map(([name, to]) => <NavLink key={to} to={to} onClick={closeMenu}>{name}<ArrowUpRight /></NavLink>)}</div></div>)}
       <NavLink to="/player-pathway" onClick={closeMenu}>Player Pathway</NavLink>
-      <div className={`nav-register ${registerOpen ? "is-open" : ""}`}>
-        <NavLink to="/dashboard" className="nav-register-link" onClick={closeMenu}>Register<span className="nav-group-chevron" aria-hidden="true" /></NavLink>
+      <div className={`nav-register ${registerOpen ? "is-open" : ""}`} onMouseLeave={() => { if (isDesktop()) setRegisterOpen(false); }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setRegisterOpen(false); }} onKeyDown={event => { if (event.key === "Escape") setRegisterOpen(false); }}>
         <button className="nav-register-trigger" type="button" aria-expanded={registerOpen} aria-controls="nav-register-popover" onClick={() => { setActiveGroup(null); setRegisterOpen(current => !current); }}>Register<span className="nav-group-chevron" aria-hidden="true" /></button>
         <div className="nav-register-popover" id="nav-register-popover" aria-label="Account options">
           <span className="nav-register-kicker">YOUR ITABEES SPACE</span>
-          <Link className="nav-register-dashboard-link" to="/dashboard" onClick={closeMenu}>Dashboard <ArrowUpRight /></Link>
           <Link to="/register" onClick={closeMenu}>Register for training <ArrowUpRight /></Link>
           <Link to="/login" onClick={closeMenu}>Login <ArrowUpRight /></Link>
-          <Link to="/admin" onClick={closeMenu}>Login as admin <ArrowUpRight /></Link>
+          <Link to="/admin/login" onClick={closeMenu}>Login as admin <ArrowUpRight /></Link>
         </div>
       </div>
     </nav>

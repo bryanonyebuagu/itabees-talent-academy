@@ -10,8 +10,8 @@ test("three-step training application opens monthly Stripe payment without a ver
     collection: name => ({ doc: id => ref(`${name}/${id}`), where: () => ({ get: async () => ({ docs: [] }) }) }),
     runTransaction: async fn => fn({ get: async item => ({ exists: records.has(item.path), data: () => records.get(item.path) }), set: (item, value) => records.set(item.path, { ...value, ...(value.expiresAt ? { expiresAt: { toMillis: () => value.expiresAt.getTime() } } : {}) }), create: (item, value) => records.set(item.path, { ...value, ...(value.expiresAt ? { expiresAt: { toMillis: () => value.expiresAt.getTime() } } : {}) }) }),
   };
-  let subscriptionParams;
-  const stripe = { customers: { create: async () => ({ id: "cus_guardian" }) }, products: { create: async () => ({ id: "prod_training" }) }, subscriptions: { create: async input => { subscriptionParams = input; return { id: "sub_training", latest_invoice: { confirmation_secret: { client_secret: "pi_training_secret_test" } } }; } } };
+  let subscriptionParams, productParams;
+  const stripe = { customers: { create: async () => ({ id: "cus_guardian" }) }, products: { create: async input => { productParams = input; return { id: "prod_training" }; } }, subscriptions: { create: async input => { subscriptionParams = input; return { id: "sub_training", latest_invoice: { confirmation_secret: { client_secret: "pi_training_secret_test" } } }; } } };
   const handler = createPaymentHandler({ databaseProvider: () => database, configProvider: () => ({ publishableKey: "pk_test_example", mode: "test" }), stripeProvider: () => stripe });
   const body = { kind: "program", applicationType: "supplemental-training", programId: "recreational-one-day", name: "Test Guardian", email: "guardian@example.com", participantName: "Test Athlete", birthDate: `${new Date().getUTCFullYear() - 10}-01-01`, gender: "Girl", phone: "5028074444", address: "Test address", city: "Charlotte", state: "NC", zip: "28269", waiverAccepted: true, jerseySize: "Youth M", existingParticipant: "No", club: "Test FC", goals: "Build confidence", allergies: "Peanuts", emergencyName: "Test Contact", emergencyRelationship: "Relative", emergencyPhone: "5028074444" };
   const response = () => ({ setHeader() {}, status(code) { this.code = code; return this; }, json(value) { this.value = value; return this; } });
@@ -25,6 +25,8 @@ test("three-step training application opens monthly Stripe payment without a ver
   assert.equal(result.value.verificationSent, undefined);
   assert.equal(result.value.clientSecret, "pi_training_secret_test");
   assert.equal(result.value.recurring, true);
+  assert.match(subscriptionParams.description, /^ItaBEES Talent Academy/);
+  assert.match(productParams.name, /^ItaBEES Talent Academy/);
   assert.equal(subscriptionParams.items[0].price_data.recurring.interval, "month");
   assert.equal(subscriptionParams.items[0].price_data.unit_amount, 6900);
   assert.equal(subscriptionParams.cancel_at, undefined);
