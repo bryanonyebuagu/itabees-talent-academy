@@ -20,5 +20,6 @@ export default function ProgramPricingCard({ program, promotion = false }) {
       {program.duration === "Monthly" && <p className="program-pricing-detail">Automatic monthly training · $10/month off for an eligible additional child</p>}
     </div>
     <Link className="button button-yellow program-pricing-action" to={`/checkout?program=${program.id}`}>Register for this program <ArrowUpRight /></Link>
+    {program.name.includes("Supplemental") && <Link className="training-assistance-link" to="/financial-assistance">Do you need financial assistance?</Link>}
   </article>;
 }

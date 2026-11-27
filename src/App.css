@@ -3054,3 +3054,9 @@ input::placeholder,textarea::placeholder { opacity:1; }
 .registration-wizard .application-next-contact { margin-top:26px; padding-top:22px; border-top:1px solid #ffffff26; }
 .application-next-contact a { display:block; width:fit-content; overflow-wrap:anywhere; font-weight:700; }
 @media(max-width:600px) { .application-next { padding:24px 20px; }.application-next h3 { font-size:22px; }.registration-wizard .application-next p { font-size:17px; } }
+
+.training-assistance-link { display:block; margin-top:16px; color:#ffe600; font-size:13px; font-weight:700; text-align:center; text-decoration:underline; text-decoration-color:transparent; text-underline-offset:4px; transition:text-decoration-color .2s ease; }
+.training-assistance-link:hover,.training-assistance-link:focus-visible { text-decoration-color:currentColor; }
+.training-assistance-link:focus-visible { outline:2px solid #ffe600; outline-offset:5px; }
+@media(max-width:700px) { .site-guide--home { display:none; } }
+@media(min-width:701px) { .home-back-to-top { left:auto; right:clamp(16px,2.5vw,38px); } }

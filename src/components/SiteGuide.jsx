@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { formatCheckoutAmount } from "../data/checkoutPrograms";
 import ArrowUpRight from "./ArrowUpRight";
 
@@ -21,15 +21,16 @@ function reply(question, previous) {
   const topic = direct || (/^(and|what about|how about|how much|where|when|tell me more|does it)/i.test(lower) ? topics.find(item => item.key === previous) : null);
   if (!topic) return { answer: "I can help you find programs, registration, pathways, camps, events, donations, your account, or contact details. What would you like to know?", link: "/faq", label: "Browse FAQs", key: previous };
   if (topic.key === "programs" && /price|cost|fee|how much/.test(lower)) return { answer: `Published supplemental training is ${formatCheckoutAmount(6900)}–${formatCheckoutAmount(13900)} per month per player, with $10 off monthly for each additional sibling. Private sessions are priced separately. Camps and trips are priced when announced.`, link: "/register", label: "View pricing", key: topic.key };
-  if (topic.key === "programs" && /register|enroll|sign up/.test(lower)) return { answer: "Choose a program on the registration page. Enter the participant and guardian details, verify the guardian email, then continue to secure checkout. After payment, use the emailed link to set up your login. The academy must approve the registration before dashboard access opens.", link: "/register", label: "Register for training", key: topic.key };
+  if (topic.key === "programs" && /register|enroll|sign up/.test(lower)) return { answer: "Choose a program on the registration page. Enter the player and guardian details, accept the acknowledgement, then continue directly to secure checkout. After payment, create your login and verify your email. The academy must approve the registration before dashboard access opens.", link: "/register", label: "Register for training", key: topic.key };
   return topic;
 }
 
 export default function SiteGuide() {
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [context, setContext] = useState("");
   const [messages, setMessages] = useState([{ role: "guide", answer: "Hi! Ask me about programs, navigating the site, registration, or your member dashboard.", link: "/programs", label: "Explore programs" }]);
   const send = event => { event.preventDefault(); const question = draft.trim(); if (!question) return; const answer = reply(question, context); setMessages(items => [...items, { role: "you", answer: question }, { role: "guide", ...answer }]); setContext(answer.key); setDraft(""); };
-  return <div className="site-guide"><button className="site-guide-toggle" type="button" aria-expanded={open} aria-controls="site-guide-panel" onClick={() => setOpen(!open)}>{open ? "Close help" : "Ask ItaBEES"}</button>{open && <section className="site-guide-panel" id="site-guide-panel" aria-label="ItaBEES site guide"><header><strong>ItaBEES site guide</strong><span>Programs & navigation</span></header><div className="site-guide-messages" aria-live="polite">{messages.map((message,index) => <div className={`site-guide-message ${message.role}`} key={index}><p>{message.answer}</p>{message.link && <Link to={message.link} onClick={() => setOpen(false)}>{message.label} <ArrowUpRight /></Link>}</div>)}</div><form onSubmit={send}><label className="sr-only" htmlFor="site-guide-question">Ask a question</label><input id="site-guide-question" maxLength="300" value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about a program…" /><button type="submit">Send</button></form><small>Answers use published site information. For personal advice, contact the academy.</small></section>}</div>;
+  return <div className={`site-guide${pathname === "/" ? " site-guide--home" : ""}`}><button className="site-guide-toggle" type="button" aria-expanded={open} aria-controls="site-guide-panel" onClick={() => setOpen(!open)}>{open ? "Close help" : "Ask ItaBEES"}</button>{open && <section className="site-guide-panel" id="site-guide-panel" aria-label="ItaBEES site guide"><header><strong>ItaBEES site guide</strong><span>Programs & navigation</span></header><div className="site-guide-messages" aria-live="polite">{messages.map((message,index) => <div className={`site-guide-message ${message.role}`} key={index}><p>{message.answer}</p>{message.link && <Link to={message.link} onClick={() => setOpen(false)}>{message.label} <ArrowUpRight /></Link>}</div>)}</div><form onSubmit={send}><label className="sr-only" htmlFor="site-guide-question">Ask a question</label><input id="site-guide-question" maxLength="300" value={draft} onChange={event => setDraft(event.target.value)} placeholder="Ask about a program…" /><button type="submit">Send</button></form><small>Answers use published site information. For personal advice, contact the academy.</small></section>}</div>;
 }

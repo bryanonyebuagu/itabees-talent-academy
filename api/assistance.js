@@ -13,8 +13,8 @@ export function createAssistanceHandler(databaseProvider = db) { return async fu
     let answers;
     try { answers = registrationAnswers(input,email,name); } catch (error) { return response.status(400).json({ error: error.message }); }
     const application = {};
-    for (const key of ["school","grade","athleteEmail","gpa","club","division","coachName","coachPhone","coachEmail","emergencyName","emergencyRelationship","emergencyPhone","financialNeed","medicalConditions","medications","allergies","goals","documents", ...[1,2].flatMap(n => ["Name","Role","Phone","Email"].map(part => `reference${n}${part}`))]) application[key] = String(input[key] || "").trim().slice(0,2000);
-    if (["school","grade","emergencyName","emergencyRelationship","emergencyPhone"].some(key => !application[key])) return response.status(400).json({ error: "Complete school and emergency contact information." });
+    for (const key of ["club","jerseySize","existingParticipant","emergencyName","emergencyRelationship","emergencyPhone","medicalConditions","medications","allergies","goals"]) application[key] = String(input[key] || "").trim().slice(0,2000);
+    if (["emergencyName","emergencyRelationship","emergencyPhone"].some(key => !application[key])) return response.status(400).json({ error: "Complete emergency contact information." });
     const database = databaseProvider();
     const id = randomUUID();
     const limitRef = database.collection("assistanceSubmissionLimits").doc(createHash("sha256").update(email).digest("hex"));

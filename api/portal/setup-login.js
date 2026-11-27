@@ -21,7 +21,7 @@ export default async function handler(request, response) {
     if (typeof password !== "string" || password.length < 8 || password.length > 128) {
       return response.status(400).json({ error: "Use a password between 8 and 128 characters." });
     }
-    await auth().createUser({ email: record.email, password, emailVerified: true });
+    await auth().createUser({ email: record.email, password, emailVerified: false });
     return response.status(201).json({ email: record.email });
   } catch (error) {
     if (error.code === "auth/email-already-exists") {
