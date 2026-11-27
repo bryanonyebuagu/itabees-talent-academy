@@ -6,9 +6,9 @@ export function stripeClient() {
 }
 
 export function paymentConfig() {
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const secret = process.env.STRIPE_SECRET_KEY?.trim();
+  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY?.trim();
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
   const live = /^(sk|rk)_live_/.test(secret || "") && publishableKey?.startsWith("pk_live_");
   const test = /^(sk|rk)_test_/.test(secret || "") && publishableKey?.startsWith("pk_test_");
   if ((!live && !test) || !webhookSecret?.startsWith("whsec_")) throw new Error("Matching Stripe keys and a webhook signing secret are required.");

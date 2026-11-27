@@ -14,7 +14,7 @@ export default async function handler(request, response) {
     const chunks = [];
     for await (const chunk of request) chunks.push(chunk);
     const stripe = stripeClient();
-    const event = stripe.webhooks.constructEvent(Buffer.concat(chunks), request.headers["stripe-signature"], process.env.STRIPE_WEBHOOK_SECRET);
+    const event = stripe.webhooks.constructEvent(Buffer.concat(chunks), request.headers["stripe-signature"], process.env.STRIPE_WEBHOOK_SECRET?.trim());
     const paymentEvents = ["payment_intent.succeeded", "payment_intent.payment_failed", "payment_intent.canceled"];
     const subscriptionEvents = ["invoice.paid", "invoice.payment_failed", "customer.subscription.deleted"];
     if (!paymentEvents.includes(event.type) && !subscriptionEvents.includes(event.type)) return response.status(200).json({ received: true });

@@ -21,6 +21,10 @@ test("Stripe keys must match, and live payments need explicit activation and mai
     assert.equal(paymentConfig().mode, "live");
     process.env.STRIPE_SECRET_KEY = "rk_live_example";
     assert.equal(paymentConfig().mode, "live");
+    process.env.STRIPE_SECRET_KEY = " rk_live_example\n";
+    process.env.STRIPE_PUBLISHABLE_KEY = " pk_live_example\n";
+    process.env.STRIPE_WEBHOOK_SECRET = " whsec_example\n";
+    assert.equal(paymentConfig().secret, "rk_live_example");
     process.env.STRIPE_LIVE_ENABLED = "false";
     assert.throws(paymentConfig, /not enabled/);
     process.env.STRIPE_PUBLISHABLE_KEY = "pk_test_example";
