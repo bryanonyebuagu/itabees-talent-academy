@@ -13,7 +13,7 @@ test("three-step training application opens monthly Stripe payment without a ver
   let subscriptionParams, productParams;
   const stripe = { customers: { create: async () => ({ id: "cus_guardian" }) }, products: { create: async input => { productParams = input; return { id: "prod_training" }; } }, subscriptions: { create: async input => { subscriptionParams = input; return { id: "sub_training", latest_invoice: { confirmation_secret: { client_secret: "pi_training_secret_test" } } }; } } };
   const handler = createPaymentHandler({ databaseProvider: () => database, configProvider: () => ({ publishableKey: "pk_test_example", mode: "test" }), stripeProvider: () => stripe });
-  const body = { kind: "program", applicationType: "supplemental-training", programId: "recreational-one-day", name: "Test Guardian", email: "guardian@example.com", participantName: "Test Athlete", birthDate: `${new Date().getUTCFullYear() - 10}-01-01`, gender: "Girl", phone: "5028074444", address: "Test address", city: "Charlotte", state: "NC", zip: "28269", waiverAccepted: true, jerseySize: "Youth M", existingParticipant: "No", club: "Test FC", goals: "Build confidence", allergies: "Peanuts", emergencyName: "Test Contact", emergencyRelationship: "Relative", emergencyPhone: "5028074444" };
+  const body = { kind: "program", applicationType: "supplemental-training", programId: "recreational-one-day", name: "Test Guardian", email: "guardian@example.com", participantName: "Test Athlete", birthDate: `${new Date().getUTCFullYear() - 10}-01-01`, gender: "Girl", phone: "5028074444", address: "Test address", city: "Charlotte", state: "NC", zip: "28269", waiverAccepted: true, jerseySize: "Youth M", club: "Test FC", goals: "Build confidence", allergies: "Peanuts", emergencyName: "Test Contact", emergencyRelationship: "Relative", emergencyPhone: "5028074444" };
   const response = () => ({ setHeader() {}, status(code) { this.code = code; return this; }, json(value) { this.value = value; return this; } });
   const invalid = response();
   await handler({ method: "POST", body: { ...body, jerseySize: "" } }, invalid);
@@ -33,7 +33,7 @@ test("three-step training application opens monthly Stripe payment without a ver
   const saved = records.get("registrations/pi_training");
   assert.equal(saved.application.jerseySize, "Youth M");
   assert.equal(saved.application.allergies, "Peanuts");
-  assert.equal(saved.application.existingParticipant, "No");
+  assert.equal(saved.application.existingParticipant, undefined);
   assert.equal(saved.age, 10);
   assert.equal(saved.status, "payment_pending");
   assert.ok(CHECKOUT_PROGRAMS.filter(program => program.name.includes("Supplemental")).every(program => program.duration === "Monthly"));

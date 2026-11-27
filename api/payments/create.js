@@ -100,10 +100,10 @@ export function createPaymentHandler({ databaseProvider = db, configProvider = p
         if (input.applicationType) {
           if (!["financial-assistance", "supplemental-training"].includes(input.applicationType)) throw new Error("Choose a valid application type.");
           const application = {};
-          const fields = ["club", "jerseySize", "existingParticipant", "emergencyName", "emergencyRelationship", "emergencyPhone", "medicalConditions", "medications", "allergies", "goals"];
+          const fields = ["club", "jerseySize", "emergencyName", "emergencyRelationship", "emergencyPhone", "medicalConditions", "medications", "allergies", "goals"];
           for (const key of fields) application[key] = clean(input[key], 2000);
           if (["emergencyName", "emergencyRelationship", "emergencyPhone"].some(key => !application[key])) throw new Error("Complete the emergency contact information.");
-          if (!["Youth XS", "Youth S", "Youth M", "Youth L", "Youth XL", "Adult S", "Adult M", "Adult L", "Adult XL", "Adult XXL"].includes(application.jerseySize) || !["Yes", "No"].includes(application.existingParticipant)) throw new Error("Select a jersey size and existing participant status.");
+          if (!["Youth XS", "Youth S", "Youth M", "Youth L", "Youth XL", "Adult S", "Adult M", "Adult L", "Adult XL", "Adult XXL"].includes(application.jerseySize)) throw new Error("Select a jersey size.");
           registration.applicationType = input.applicationType;
           registration.application = application;
         }

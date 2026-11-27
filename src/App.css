@@ -3059,3 +3059,11 @@ input::placeholder,textarea::placeholder { opacity:1; }
 @media(min-width:701px) { .home-back-to-top { left:auto; right:clamp(16px,2.5vw,38px); } }
 
 @media(min-width:1101px) { .nav-register-trigger { border:0; padding:0; background:transparent; cursor:pointer; font-family:inherit; } }
+
+.registration-gender { display:flex; align-items:center; gap:24px; padding:0; border:0; }
+.registration-gender legend { padding-bottom:12px; }
+.registration-gender label { display:inline-flex; flex-direction:row; align-items:center; gap:9px; margin-bottom:0; cursor:pointer; font-weight:500; }
+.registration-gender input[type="radio"] { appearance:none; -webkit-appearance:none; display:grid; place-content:center; width:21px; height:21px; min-height:0; margin:0; padding:0; border:2px solid #333; border-radius:2px; background:#fff; cursor:pointer; }
+.registration-gender input[type="radio"]:checked { background:#ffe600; border-color:#080808; }
+.registration-gender input[type="radio"]:checked::after { content:""; width:6px; height:11px; border:solid #080808; border-width:0 2px 2px 0; transform:translateY(-1px) rotate(45deg); }
+.registration-gender input[type="radio"]:focus-visible { outline:3px solid #ffe600; outline-offset:3px; }
