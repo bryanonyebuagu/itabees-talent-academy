@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createPaymentHandler } from "../api/payments/create.js";
+import { applicationFixture } from "./application-fixture.js";
 import { CHECKOUT_PROGRAMS } from "../src/data/checkoutPrograms.js";
 
 test("three-step training application opens monthly Stripe payment without a verification-email wait", async () => {
@@ -13,12 +14,16 @@ test("three-step training application opens monthly Stripe payment without a ver
   let subscriptionParams, productParams;
   const stripe = { customers: { create: async () => ({ id: "cus_guardian" }) }, products: { create: async input => { productParams = input; return { id: "prod_training" }; } }, subscriptions: { create: async input => { subscriptionParams = input; return { id: "sub_training", latest_invoice: { confirmation_secret: { client_secret: "pi_training_secret_test" } } }; } } };
   const handler = createPaymentHandler({ databaseProvider: () => database, configProvider: () => ({ publishableKey: "pk_test_example", mode: "test" }), stripeProvider: () => stripe });
-  const body = { kind: "program", applicationType: "supplemental-training", programId: "recreational-one-day", name: "Test Guardian", email: "guardian@example.com", participantName: "Test Athlete", birthDate: `${new Date().getUTCFullYear() - 10}-01-01`, gender: "Girl", phone: "5028074444", address: "Test address", city: "Charlotte", state: "NC", zip: "28269", waiverAccepted: true, jerseySize: "Youth M", club: "Test FC", goals: "Build confidence", allergies: "Peanuts", emergencyName: "Test Contact", emergencyRelationship: "Relative", emergencyPhone: "5028074444" };
+  const body = applicationFixture({ kind: "program", applicationType: "supplemental-training", programId: "recreational-one-day" });
   const response = () => ({ setHeader() {}, status(code) { this.code = code; return this; }, json(value) { this.value = value; return this; } });
   const invalid = response();
   await handler({ method: "POST", body: { ...body, jerseySize: "" } }, invalid);
   assert.equal(invalid.code, 400);
   assert.equal(records.size, 0);
+  for (const extra of [{ financialAssistance: "Yes", financialNeed: "Need assistance", assistanceType: "Payment plan" }, { programId: "private-training-member" }]) {
+    const blocked = response(); await handler({ method: "POST", body: { ...body, ...extra } }, blocked);
+    assert.equal(blocked.code, 400); assert.equal(records.size, 0);
+  }
   const result = response();
   await handler({ method: "POST", body }, result);
   assert.equal(result.code, 200);
@@ -31,9 +36,9 @@ test("three-step training application opens monthly Stripe payment without a ver
   assert.equal(subscriptionParams.items[0].price_data.unit_amount, 6900);
   assert.equal(subscriptionParams.cancel_at, undefined);
   const saved = records.get("registrations/pi_training");
-  assert.equal(saved.application.jerseySize, "Youth M");
-  assert.equal(saved.application.allergies, "Peanuts");
-  assert.equal(saved.application.existingParticipant, undefined);
+  assert.equal(saved.application.jerseySize, "M");
+  assert.equal(saved.comments, "Peanut allergy");
+  assert.equal(saved.application.existingParticipant, "No");
   assert.equal(saved.age, 10);
   assert.equal(saved.status, "payment_pending");
   assert.ok(CHECKOUT_PROGRAMS.filter(program => program.name.includes("Supplemental")).every(program => program.duration === "Monthly"));

@@ -1,24 +1,7 @@
 export const WAIVER_TEXT = [
-  "I understand that participation in soccer and related physical activities involves inherent risks, including but not limited to falls, collisions, muscle strains, sprains, fractures and other injuries.",
-  "I voluntarily authorize the registered player to participate in ITABEES Talent Academy soccer activities. I acknowledge and accept the risks associated with participation.",
-  "To the fullest extent permitted by law, I release and hold harmless ITABEES Talent Academy, its owners, coaches, employees, volunteers, representatives, partners and facility providers from claims arising from ordinary risks associated with participation, except where prohibited by law.",
-  "I certify that the player is physically able to participate or that I have disclosed any relevant medical condition, restriction or accommodation.",
-  "In the event of an emergency, I authorize ITABEES Talent Academy representatives to contact emergency services and obtain reasonable emergency assistance for the player when I or the emergency contact cannot be reached.",
+  "1. I, as the parent/guardian of the player(s), hereby give approval to his/her participation in ITABEES Talent Academy Programs.",
+  "2. I recognize the possibility of serious injury to such a player and assume all risks and hazards related to such program participation offered by ITABEES Talent Academy.",
+  "3. I hereby release, discharge, absolve; and indemnify and agree to defend and hold harmless, ITABEES Talent Academy and its affiliates, sponsors, tournament sponsors, employees, coaches, representatives, and agents from and with respect to any claim, cause of action, liability, expense or obligation arising in connection with, or related to, such players participation in any ITABEES Talent Academy programs.",
+  "4. I hereby grant permission to the team\u2019s coaching staff, or the team\u2019s personnel, in my absence, to authorize and obtain medical care and treatment from any licensed physicians, nurses, or medical personnel to the extent deemed necessary by such physician, nurse, or medical personnel and I assume full financial responsibility for said treatment.",
+  "5. I understand that I am responsible for informing ITABEES Talent Academy of any allergies, medical conditions, medications, activity restrictions, or accommodations my child may need while participating in any ITABEES Talent Academy program. I understand that ITABEES Talent Academy cannot be aware of these needs unless I provide this information, and that any disclosed needs will be reviewed and addressed where reasonably practicable, without creating any guarantee or obligation to approve every request or accommodation. I agree to release, indemnify, and hold harmless ITABEES Talent Academy, its employees, and coaches from claims arising from incomplete, inaccurate, or undisclosed information, or from ITABEES Talent Academy\u2019s good-faith efforts to support the needs I have disclosed."
 ];
-
-export const PROGRAM_INTERESTS = [
-  "Elite (Professional and College) Soccer Pathway",
-  "Exposure to Scouts and Licensed FIFA Players Agents",
-  "International Camps and Tournaments",
-  "Seasonal Domestic Camps and Clinics",
-  "Recreational Soccer Pathway",
-  "Academic Enrichment or Tutoring",
-  "Character Development and Mentorship",
-  "Not sure yet",
-];
-
-export const initialRegistration = {
-  name: "", email: "", secondaryEmail: "", phone: "", secondaryPhone: "", address: "", city: "", state: "", zip: "",
-  participantName: "", birthDate: "", age: "", gender: "", waiverAccepted: false, signature: "", agreementDate: "",
-  photoPermission: "", futureContact: "", interests: [], comments: "",
-};

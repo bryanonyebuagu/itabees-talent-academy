@@ -5,6 +5,7 @@ import { resolve } from 'node:path'
 const routes = [
   'about', 'player-development', 'camps-and-clinics', 'player-pathway',
   'assessments', 'coaches', 'international-experiences', 'college-pathway',
+  'apply/private-training', 'apply/mentorship', 'apply/camps-clinics', 'apply/international-experiences', 'admin/applications',
   'financial-assistance', 'financial-assistance/requested', 'admin/financial-assistance',
   'events', 'contact', 'register', 'checkout', 'payment/confirmation', 'programs', 'mentorship',
   'gallery', 'faq', 'eligibility', 'get-involved',

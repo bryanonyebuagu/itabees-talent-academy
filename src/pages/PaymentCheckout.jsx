@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ArrowUpRight from "../components/ArrowUpRight";
 import { ProgramName } from "../components/ProgramPricingCard";
 import { media } from "../data/media";
 import RegistrationWizard from "../components/RegistrationWizard";
+import { formTypeForProgram } from "../data/applicationForms";
 import { CHECKOUT_PROGRAMS, formatCheckoutAmount } from "../data/checkoutPrograms";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,7 +39,8 @@ function SecurePayment({ setup, kind }) {
 export default function PaymentCheckout({ donation = false, assistance = false }) {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const [applicationType, setApplicationType] = useState(assistance ? "financial-assistance" : "supplemental-training");
+  const applicationType = assistance ? "financial-assistance" : "supplemental-training";
+  const [submissionId] = useState(() => crypto.randomUUID());
   const { hash } = useLocation();
   const resumeToken = new URLSearchParams(hash.slice(1)).get("token");
   const kind = donation ? "donation" : "program";
@@ -56,10 +58,10 @@ export default function PaymentCheckout({ donation = false, assistance = false }
     if (submitted.applicationType !== "financial-assistance" && !validAmount) { setError("Choose a valid amount."); return; }
     setBusy(true); setError("");
     try {
-      const response = await fetch(submitted.applicationType === "financial-assistance" ? "/api/assistance" : "/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind, programId: program?.id, amountCents, ...submitted }) });
+      const response = await fetch(submitted.applicationType === "financial-assistance" ? "/api/assistance" : "/api/payments/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind, programId: program?.id, amountCents, ...submitted, submissionId }) });
       const data = await paymentResponse(response);
       if (!response.ok) throw new Error(data.error || "Payment could not be started.");
-      if (data.submitted) { navigate("/financial-assistance/requested"); return; }
+      if (data.submitted) { navigate("/financial-assistance/requested", { state: { emailSent: data.emailSent } }); return; }
       setSetup(data);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (caught) { setError(caught.message); } finally { setBusy(false); }
@@ -80,9 +82,10 @@ export default function PaymentCheckout({ donation = false, assistance = false }
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (caught) { setError(caught.message); } finally { setBusy(false); }
   };
+  if (!donation && !assistance && program && formTypeForProgram(program) !== "supplemental-training") return <Navigate to={`/apply/${formTypeForProgram(program)}?program=${program.id}`} replace />;
   if (!donation && !program && !assistance) return <main className="checkout-missing"><p className="eyebrow">PROGRAM REGISTRATION</p><h1>Choose your program first.</h1><Link className="button button-yellow" to="/register">View programs <ArrowUpRight /></Link></main>;
   return <main className="checkout-page stripe-checkout-page"><div className="checkout-heading"><p className="eyebrow">{donation ? "SUPPORT YOUNG ATHLETES" : assistance ? "FINANCIAL ASSISTANCE" : "PROGRAM REGISTRATION"}</p><h1>{donation ? <>Complete <span>your gift.</span></> : assistance ? <>Apply for <span>financial assistance.</span></> : <>Train <span>with purpose.</span></>}</h1><p>{donation ? "Your support helps young players access training and new opportunities." : assistance ? "Submit your application directly to the academy for review. No payment is required." : "Register a player for the selected program and complete a secure payment."}</p></div><div className="checkout-grid"><div>
-    {!setup && !donation && resumeToken ? <section className="checkout-form"><h2>Verify your email and continue to payment</h2><p>Your registration is saved.</p>{error && <p className="form-error" role="alert">{error}</p>}<button className="button button-yellow" type="button" disabled={busy} onClick={resumePayment}>{busy ? "Preparing payment…" : "Verify email and continue"}</button></section> : !setup && !donation ? <RegistrationWizard initialType={applicationType} onTypeChange={type => { if (type === "supplemental-training" && !program) navigate("/register#training-programs"); else setApplicationType(type); }} onComplete={continuePayment} busy={busy} error={error} /> : !setup ? <form className="checkout-form" onSubmit={event => { event.preventDefault(); continuePayment(fields); }}><div className="checkout-step"><span>01</span><div><h2>{donation ? "Your details" : "Participant details"}</h2><p>Fields marked * are required.</p></div></div><div className="checkout-fields">
+    {!setup && !donation && resumeToken ? <section className="checkout-form"><h2>Resume your saved registration</h2><p>Your registration is saved.</p>{error && <p className="form-error" role="alert">{error}</p>}<button className="button button-yellow" type="button" disabled={busy} onClick={resumePayment}>{busy ? "Preparing payment…" : "Continue to payment"}</button></section> : !setup && !donation ? <RegistrationWizard initialType={applicationType} onComplete={continuePayment} busy={busy} error={error} /> : !setup ? <form className="checkout-form" onSubmit={event => { event.preventDefault(); continuePayment(fields); }}><div className="checkout-step"><span>01</span><div><h2>{donation ? "Your details" : "Participant details"}</h2><p>Fields marked * are required.</p></div></div><div className="checkout-fields">
       <label>{donation ? "Your full name" : "Parent or guardian full name"} *<input required autoComplete="name" value={fields.name} onChange={update("name")} /></label>
       {!donation && <><label>Participant full name *<input required value={fields.participantName} onChange={update("participantName")} /></label><label>Guardian name, if different<input value={fields.guardianName} onChange={update("guardianName")} /></label><label>Participant age *<input required type="number" min="5" max="25" inputMode="numeric" value={fields.age} onChange={update("age")} /></label></>}
       <label>Email address *<input required type="email" autoComplete="email" value={fields.email} onChange={update("email")} /></label><label>Phone number {donation ? "" : "*"}<input required={!donation} type="tel" autoComplete="tel" value={fields.phone} onChange={update("phone")} /></label>
@@ -97,6 +100,6 @@ export default function PaymentCheckout({ donation = false, assistance = false }
     <div className="checkout-total"><span>{donation ? "Donation today" : "Total today"}</span><strong>{validAmount ? formatCheckoutAmount(amountCents) : "—"}</strong></div>
     {setup?.recurring && <p>Renews monthly at {formatCheckoutAmount(setup.amountCents)} until canceled.</p>}
     <Link className={donation ? "" : "button button-yellow checkout-change-program"} to={donation ? "/donate" : "/register#training-programs"}>Change {donation ? "donation" : "program"}{!donation && <ArrowUpRight />}</Link>
-    {!donation && program?.name.includes("Supplemental") && <Link className="training-assistance-link" to="/financial-assistance">Do you need financial assistance?</Link>}
+    {!donation && program?.name.includes("Supplemental") && <Link className="training-assistance-link" to={`/financial-assistance${program ? `?program=${program.id}` : ""}`}>Do you need financial assistance?</Link>}
   </aside>}</div></main>;
 }

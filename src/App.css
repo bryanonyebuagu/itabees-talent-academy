@@ -3067,3 +3067,16 @@ input::placeholder,textarea::placeholder { opacity:1; }
 .registration-gender input[type="radio"]:checked { background:#ffe600; border-color:#080808; }
 .registration-gender input[type="radio"]:checked::after { content:""; width:6px; height:11px; border:solid #080808; border-width:0 2px 2px 0; transform:translateY(-1px) rotate(45deg); }
 .registration-gender input[type="radio"]:focus-visible { outline:3px solid #ffe600; outline-offset:3px; }
+
+.application-options { display:flex; flex-wrap:wrap; gap:14px 24px; padding:0 0 18px; border:0; grid-column:1/-1; }
+.application-options legend { font-size:13px; padding:0 0 12px; }
+.checkout-fields .application-options label { flex-direction:row; align-items:center; margin:0; font-weight:500; gap:9px; }
+.application-options input { width:20px; height:20px; min-height:0; margin:0; padding:0; accent-color:#080808; }
+.application-program-fields { border-top:1px solid #deded8; margin-top:22px; padding-top:28px; }
+.application-program-fields h3,.registration-wizard > h3 { font-size:clamp(24px,2.5vw,34px); margin:20px 0 12px; }
+.application-outcome { margin:20px 0; padding:20px; border:1px solid #ffe600; border-radius:10px; background:#f9f8e6; color:#111; line-height:1.6; }
+.application-outcome p { margin:8px 0 0; }
+.application-assistance-link { color:#080808; margin:24px 0; }
+.application-assistance-link:hover,.application-assistance-link:focus-visible { color:#5e5500; }
+.registration-wizard .registration-check { margin:22px 0; align-items:center; }
+@media(max-width:700px) { .registration-actions { gap:12px; }.registration-actions .button { font-size:11px; padding:14px 12px; }.application-options { gap:16px 22px; } }

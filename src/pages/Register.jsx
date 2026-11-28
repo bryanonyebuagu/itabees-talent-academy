@@ -7,7 +7,7 @@ import { CHECKOUT_PROGRAMS, PRICE_ON_REQUEST } from "../data/checkoutPrograms";
 
 export default function Register() {
   return <main>
-    <PageHero eyebrow="REGISTER FOR TRAINING" title={<>Your Journey <span className="editorial-accent">Starts Here.</span></>} image={media.training} imageAlt="Young ItaBEES athlete training" description="Choose a training program, tell us about your player and continue to secure checkout." />
+    <PageHero eyebrow="REGISTER FOR TRAINING" title={<>Your Journey <span className="editorial-accent">Starts Here.</span></>} image={media.training} imageAlt="Young ItaBEES athlete training" description="Choose your program: enroll in monthly training, request private coaching or mentorship, register for a camp, or share your travel interest." />
     <section className="registration-programs" id="training-programs">
       <p className="eyebrow" id="program-prices">CHOOSE YOUR TRAINING PROGRAM</p>
       <h2>Find <span className="editorial-accent">your program.</span></h2>
@@ -25,7 +25,7 @@ export default function Register() {
         {PRICE_ON_REQUEST.map(program => <article className="program-pricing-card" key={program.name}>
           <ProgramName name={program.name} />
           <div className="program-pricing-main"><p className="program-pricing-unpriced">{program.price}</p><p className="program-pricing-description">{program.description}</p></div>
-          <Link className="button button-yellow program-pricing-action" to="/contact">Ask about availability <ArrowUpRight /></Link>
+          <Link className="button button-yellow program-pricing-action" to={program.name === "Soccer Clinics & Camps" ? "/apply/camps-clinics" : "/apply/international-experiences"}>{program.name === "Soccer Clinics & Camps" ? "Register for Camp or Clinic" : "Submit Travel Interest"} <ArrowUpRight /></Link>
         </article>)}
       </div>
     </section>

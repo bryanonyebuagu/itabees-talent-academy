@@ -2,7 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { CHECKOUT_PROGRAMS } from "../../src/data/checkoutPrograms.js";
 import { paymentConfig, respondError, stripeClient } from "../_lib/payments.js";
 import { db } from "../_lib/firebase.js";
-import { PROGRAM_INTERESTS } from "../../src/data/registrationForm.js";
+import { applicationAnswers } from "../_lib/application.js";
 
 const ACADEMY_NAME = "ItaBEES Talent Academy";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -17,18 +17,6 @@ async function siblingPrice(database, record, program) {
   });
   return program.amountCents - (otherChild ? (program.siblingDiscountCents || 0) : 0);
 }
-export function registrationAnswers(input, email, name) {
-  const birthDate = clean(input.birthDate, 10);
-  const date = new Date(`${birthDate}T12:00:00Z`);
-  const today = new Date();
-  const age = today.getUTCFullYear() - date.getUTCFullYear() - (today.getUTCMonth() < date.getUTCMonth() || today.getUTCMonth() === date.getUTCMonth() && today.getUTCDate() < date.getUTCDate() ? 1 : 0);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate) || Number.isNaN(date.getTime()) || age < 4 || age > 18) throw new Error("Enter a valid player birth date (ages 4 to 18).");
-  if (!clean(input.participantName) || !/^[+\d()\s-]{7,20}$/.test(clean(input.phone)) || !clean(input.address) || !clean(input.city) || !clean(input.state) || !clean(input.zip, 20)) throw new Error("Complete the player and guardian contact details.");
-  if (!["Boy", "Girl"].includes(input.gender) || input.waiverAccepted !== true) throw new Error("Agree to the Participation Waiver and Release before submitting.");
-  const interests = Array.isArray(input.interests) ? input.interests.filter(item => PROGRAM_INTERESTS.includes(item)).slice(0, PROGRAM_INTERESTS.length) : [];
-  return { guardianName: name, email, secondaryEmail: clean(input.secondaryEmail, 254), phone: clean(input.phone, 30), secondaryPhone: clean(input.secondaryPhone, 30), address: clean(input.address, 250), city: clean(input.city), state: clean(input.state), zip: clean(input.zip, 20), participantName: clean(input.participantName), birthDate, age, gender: input.gender, waiverAccepted: true, consentMethod: "checkbox", agreementDate: new Date().toISOString().slice(0,10), photoPermission: null, futureContact: null, interests, comments: clean(input.comments, 2000) };
-}
-
 export function createPaymentHandler({ databaseProvider = db, configProvider = paymentConfig, stripeProvider = stripeClient } = {}) { return async function handler(request, response) {
   response.setHeader("Cache-Control", "no-store");
   if (request.method !== "POST") return response.status(405).json({ error: "Method not allowed." });
@@ -89,24 +77,17 @@ export function createPaymentHandler({ databaseProvider = db, configProvider = p
     }
     const kind = input.kind === "donation" ? "donation" : input.kind === "program" ? "program" : null;
     const email = clean(input.email, 254).toLowerCase();
-    const name = clean(input.name);
+    const name = clean(input.guardianFirstName && input.guardianLastName ? `${input.guardianFirstName} ${input.guardianLastName}` : input.name);
     if (!kind || !name || !emailPattern.test(email)) return response.status(400).json({ error: "Enter a name and valid email address." });
     let amountCents, title, programId = "", duration = "", registration = null;
     if (kind === "program") {
       const program = CHECKOUT_PROGRAMS.find(item => item.id === input.programId);
       if (!program) return response.status(400).json({ error: "Choose a valid program." });
       try {
-        registration = registrationAnswers(input, email, name);
-        if (input.applicationType) {
-          if (!["financial-assistance", "supplemental-training"].includes(input.applicationType)) throw new Error("Choose a valid application type.");
-          const application = {};
-          const fields = ["club", "jerseySize", "emergencyName", "emergencyRelationship", "emergencyPhone", "medicalConditions", "medications", "allergies", "goals"];
-          for (const key of fields) application[key] = clean(input[key], 2000);
-          if (["emergencyName", "emergencyRelationship", "emergencyPhone"].some(key => !application[key])) throw new Error("Complete the emergency contact information.");
-          if (!["Youth XS", "Youth S", "Youth M", "Youth L", "Youth XL", "Adult S", "Adult M", "Adult L", "Adult XL", "Adult XXL"].includes(application.jerseySize)) throw new Error("Select a jersey size.");
-          registration.applicationType = input.applicationType;
-          registration.application = application;
-        }
+        if (program.duration !== "Monthly") throw new Error("Private training and mentorship now use request forms. Submit a request before arranging payment.");
+        if (input.applicationType !== "supplemental-training") throw new Error("Complete the supplemental training enrollment form.");
+        registration = applicationAnswers(input, "supplemental-training");
+        if (registration.application.financialAssistance === "Yes") throw new Error("Submit your financial assistance application before paying. No payment is required for review.");
       } catch (error) { return response.status(400).json({ error: error.message }); }
       amountCents = program.amountCents;
       title = program.name;
@@ -121,7 +102,7 @@ export function createPaymentHandler({ databaseProvider = db, configProvider = p
     }
     const reference = randomUUID();
     const accessToken = randomUUID();
-    const record = { reference, accessToken, kind, title, programId, duration, amountCents, currency: "usd", email, name, participantName: kind === "program" ? clean(input.participantName) : "", guardianName: kind === "program" ? clean(input.guardianName) : "", age: kind === "program" ? registration.age : null, phone: clean(input.phone, 30), anonymous: kind === "donation" && input.anonymous === true, status: "pending", createdAt: new Date().toISOString() };
+    const record = { reference, accessToken, kind, title, programId, duration, amountCents, currency: "usd", email, name, participantName: kind === "program" ? registration.participantName : "", guardianName: kind === "program" ? registration.guardianName : "", age: kind === "program" ? registration.age : null, phone: clean(input.phone, 30), anonymous: kind === "donation" && input.anonymous === true, status: "pending", createdAt: new Date().toISOString() };
     if (kind === "program") {
       const token = randomUUID();
       record.setupToken = randomUUID();
